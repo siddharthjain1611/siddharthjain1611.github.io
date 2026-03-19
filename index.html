@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Siddharth Jain — Product Manager</title>
+<meta name="description" content="Product Manager with 3.5 years building algorithmic, data-driven products across multi-sided marketplaces and logistics platforms."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1208;
+  --ink-light: #4a3f2f;
+  --paper: #f5f0e8;
+  --paper-dark: #ede7d9;
+  --accent: #c0392b;
+  --rule: #c8bfaa;
+  --mono: 'DM Mono', monospace;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --display: 'Playfair Display', Georgia, serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 18px; line-height: 1.7; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.5; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 3rem; background: rgba(245,240,232,0.93); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
+.nav-logo { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.15em; color: var(--ink-light); text-transform: uppercase; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+/* HERO */
+#hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 3rem 5rem; position: relative; border-bottom: 1px solid var(--rule); }
+.hero-kicker { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+.hero-name { font-family: var(--display); font-size: clamp(4rem, 10vw, 9rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; color: var(--ink); opacity: 0; animation: fadeUp 0.9s ease 0.4s forwards; }
+.hero-name em { font-style: italic; color: var(--accent); }
+.hero-tagline { margin-top: 2rem; max-width: 580px; font-size: 1.15rem; font-weight: 300; color: var(--ink-light); line-height: 1.65; opacity: 0; animation: fadeUp 0.9s ease 0.6s forwards; }
+.hero-meta { display: flex; gap: 3.5rem; margin-top: 3rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s ease 0.8s forwards; }
+.hero-stat { display: flex; flex-direction: column; }
+.hero-stat-num { font-family: var(--display); font-size: 2.4rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.hero-stat-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin-top: 0.3rem; }
+.hero-scroll { position: absolute; bottom: 2.5rem; right: 3rem; display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-light); opacity: 0; animation: fadeUp 1s ease 1.2s forwards; }
+.scroll-line { width: 48px; height: 1px; background: var(--rule); animation: scrollLine 2s ease-in-out 1.5s infinite; }
+.hero-issue { position: absolute; top: 6rem; right: 3rem; text-align: right; opacity: 0; animation: fadeUp 0.8s ease 1s forwards; }
+.hero-issue-label { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rule); }
+.hero-issue-val { font-family: var(--display); font-size: 5rem; font-weight: 900; color: var(--paper-dark); line-height: 1; letter-spacing: -0.04em; }
+
+/* SECTIONS */
+section { padding: 6rem 3rem; border-bottom: 1px solid var(--rule); }
+.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 4rem; }
+.section-num { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.1em; }
+.section-title { font-family: var(--display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.1; color: var(--ink); }
+.section-rule { flex: 1; height: 1px; background: var(--rule); margin-left: 1rem; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: start; }
+.about-story { font-size: 1.05rem; font-weight: 300; line-height: 1.9; color: var(--ink-light); }
+.about-story p + p { margin-top: 1.4rem; }
+.about-story strong { color: var(--ink); font-weight: 600; }
+.about-pull { border-left: 3px solid var(--accent); padding-left: 1.8rem; margin-top: 2.5rem; }
+.about-pull blockquote { font-family: var(--display); font-size: 1.45rem; font-style: italic; font-weight: 400; line-height: 1.45; color: var(--ink); }
+.about-sidebar { display: flex; flex-direction: column; gap: 1.8rem; }
+.sidebar-card { background: var(--paper-dark); border: 1px solid var(--rule); padding: 1.6rem; }
+.sidebar-card-label { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
+.sidebar-card-content { font-size: 0.95rem; color: var(--ink-light); line-height: 1.6; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.6rem; }
+.tag { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; padding: 0.28rem 0.65rem; border: 1px solid var(--rule); color: var(--ink-light); background: var(--paper); }
+
+/* LOOKING FOR */
+.looking-header { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; margin-top: 5rem; }
+.looking-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.looking-card { background: var(--paper); padding: 2rem 1.8rem; }
+.looking-card-icon { font-size: 1.4rem; margin-bottom: 1rem; }
+.looking-card-title { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
+.looking-card-body { font-size: 0.88rem; font-weight: 300; color: var(--ink-light); line-height: 1.7; }
+
+/* EXPERIENCE */
+.exp-list { display: flex; flex-direction: column; }
+.exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; padding: 3rem 0; border-top: 1px solid var(--rule); opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.exp-item.visible { opacity: 1; transform: translateY(0); }
+.exp-left { padding-top: 0.3rem; }
+.exp-period { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; color: var(--ink-light); text-transform: uppercase; }
+.exp-company { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-top: 0.5rem; line-height: 1.2; }
+.exp-location { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--rule); text-transform: uppercase; margin-top: 0.3rem; }
+.exp-role { font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 0.8rem; line-height: 1.2; }
+.exp-desc { font-size: 0.97rem; font-weight: 300; color: var(--ink-light); line-height: 1.75; }
+.exp-highlights { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.exp-highlight { display: flex; gap: 0.8rem; align-items: baseline; font-size: 0.91rem; color: var(--ink-light); }
+.exp-highlight::before { content: '—'; color: var(--accent); font-family: var(--mono); flex-shrink: 0; }
+
+/* CASE CARDS */
+.cases-intro { font-size: 0.97rem; font-weight: 300; color: var(--ink-light); max-width: 600px; margin-bottom: 3rem; line-height: 1.75; }
+.cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.case-card { background: var(--paper); padding: 2.2rem; position: relative; cursor: pointer; min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s; }
+.case-card:not(.empty):hover { background: var(--paper-dark); }
+.case-card.visible { opacity: 1; transform: translateY(0); }
+.case-card.empty { cursor: default; background: repeating-linear-gradient(45deg, var(--paper), var(--paper) 10px, var(--paper-dark) 10px, var(--paper-dark) 20px); }
+.case-num { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.15em; color: var(--rule); text-transform: uppercase; margin-bottom: 0.8rem; }
+.case-tag { display: inline-block; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.55rem; background: var(--accent); color: white; margin-bottom: 0.9rem; }
+.case-title { font-family: var(--display); font-size: 1.25rem; font-weight: 700; line-height: 1.25; color: var(--ink); margin-bottom: 0.7rem; }
+.case-subtitle { font-size: 0.86rem; font-weight: 300; color: var(--ink-light); line-height: 1.6; }
+.case-footer { margin-top: 1.8rem; display: flex; justify-content: space-between; align-items: center; }
+.case-company { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); }
+.case-arrow { font-size: 1rem; color: var(--accent); transition: transform 0.2s; display: inline-block; }
+.case-card:not(.empty):hover .case-arrow { transform: translateX(5px); }
+.case-placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; color: var(--rule); text-transform: uppercase; text-align: center; }
+
+/* DRAWER */
+.case-drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(26,18,8,0.5); z-index: 300; backdrop-filter: blur(3px); }
+.case-drawer-overlay.open { display: block; }
+.case-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(780px, 100vw); background: var(--paper); z-index: 400; overflow-y: auto; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); border-left: 1px solid var(--rule); }
+.case-drawer.open { transform: translateX(0); }
+.drawer-inner { padding: 3.5rem 3rem 5rem; }
+.drawer-close-wrap { display: flex; justify-content: flex-end; margin-bottom: 2rem; }
+.drawer-close { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); background: none; border: 1px solid var(--rule); padding: 0.45rem 1rem; cursor: pointer; transition: all 0.2s; }
+.drawer-close:hover { background: var(--accent); color: white; border-color: var(--accent); }
+.drawer-tag { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: white; background: var(--accent); display: inline-block; padding: 0.25rem 0.6rem; margin-bottom: 1.2rem; }
+.drawer-title { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; line-height: 1.15; color: var(--ink); margin-bottom: 0.6rem; }
+.drawer-meta { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--rule); }
+.drawer-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 2.5rem; }
+.drawer-stat { background: var(--paper-dark); padding: 1.2rem 1rem; text-align: center; }
+.drawer-stat-num { font-family: var(--display); font-size: 1.8rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.drawer-stat-lbl { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-top: 0.3rem; }
+.drawer-section-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-top: 2.5rem; margin-bottom: 1rem; }
+.drawer-body { font-size: 0.97rem; font-weight: 300; color: var(--ink-light); line-height: 1.85; }
+.drawer-body p + p { margin-top: 1.1rem; }
+.drawer-body strong { color: var(--ink); font-weight: 600; }
+.drawer-body ul { padding-left: 1.2rem; margin-top: 0.8rem; }
+.drawer-body ul li { margin-bottom: 0.6rem; line-height: 1.75; }
+.drawer-body ul li::marker { color: var(--accent); }
+.drawer-pull { border-left: 3px solid var(--accent); padding-left: 1.4rem; margin: 2rem 0; }
+.drawer-pull p { font-family: var(--display); font-size: 1.2rem; font-style: italic; color: var(--ink); line-height: 1.5; }
+.drawer-end { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; color: var(--rule); text-transform: uppercase; }
+
+/* RESUME */
+#resume { background: var(--ink); color: var(--paper); text-align: center; padding: 7rem 3rem; border-bottom: none; }
+#resume .section-title { color: var(--paper); }
+#resume .section-num { color: var(--accent); }
+#resume .section-rule { background: rgba(245,240,232,0.15); }
+.resume-body { max-width: 600px; margin: 0 auto 3rem; font-size: 1.05rem; font-weight: 300; color: rgba(245,240,232,0.7); line-height: 1.75; }
+.resume-btn { display: inline-flex; align-items: center; gap: 1rem; padding: 1.1rem 2.5rem; background: var(--accent); color: white; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+.resume-btn:hover { background: #a93226; }
+
+/* CONTACT */
+#contact { background: var(--paper-dark); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.contact-intro { font-family: var(--display); font-size: 1.9rem; font-style: italic; font-weight: 400; line-height: 1.4; color: var(--ink); margin-bottom: 1.5rem; }
+.contact-body { font-size: 0.97rem; font-weight: 300; color: var(--ink-light); line-height: 1.8; }
+.contact-links { display: flex; flex-direction: column; }
+.contact-link-item { display: flex; flex-direction: column; gap: 0.3rem; padding: 1.2rem 0; border-bottom: 1px solid var(--rule); }
+.contact-link-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+.contact-link-val { font-family: var(--display); font-size: 1.05rem; font-weight: 400; color: var(--ink); text-decoration: none; transition: color 0.2s; }
+.contact-link-val:hover { color: var(--accent); }
+
+/* FOOTER */
+footer { padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--rule); background: var(--paper); }
+.footer-left, .footer-right { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; color: var(--rule); text-transform: uppercase; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scrollLine { 0%,100% { width: 48px; opacity: 1; } 50% { width: 72px; opacity: 0.5; } }
+
+/* RESPONSIVE */
+@media (max-width: 960px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1.2rem; }
+  section { padding: 4rem 1.5rem; }
+  #hero { padding: 0 1.5rem 4rem; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .looking-grid { grid-template-columns: 1fr 1fr; }
+  .exp-item { grid-template-columns: 1fr; gap: 0.8rem; }
+  .cases-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+@media (max-width: 600px) {
+  .cases-grid { grid-template-columns: 1fr; }
+  .looking-grid { grid-template-columns: 1fr; }
+  .case-drawer { width: 100vw; }
+  .drawer-stat-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Siddharth Jain</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#cases">Case Studies</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-issue">
+    <div class="hero-issue-label">Portfolio</div>
+    <div class="hero-issue-val">2025</div>
+  </div>
+  <div class="hero-kicker">Product Manager &nbsp;·&nbsp; Bengaluru, India</div>
+  <h1 class="hero-name">Siddharth<br/><em>Jain.</em></h1>
+  <p class="hero-tagline">I build products at the intersection of algorithms, marketplaces, and human behaviour. Three and a half years shipping for India's logistics and consumer internet infrastructure.</p>
+  <div class="hero-meta">
+    <div class="hero-stat"><span class="hero-stat-num">3.5</span><span class="hero-stat-label">Years in Product</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">4M</span><span class="hero-stat-label">MAUs Scaled</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">&#8377;80Cr+</span><span class="hero-stat-label">ARR Generated</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">Cities Deployed</span></div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to read</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">The Story</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="about-grid">
+    <div>
+      <div class="about-story">
+        <p>I started in computer science at IIITM Gwalior and ended up in product management — not by accident, but because I found the space between <strong>technical systems and human decisions</strong> to be the most interesting place to work.</p>
+        <p>At <strong>Delhivery</strong>, I own the intracity marketplace: the algorithms that match drivers to orders, the pricing that balances supply and demand in real time, and the earner-side experience that determines whether a driver accepts a trip. It's the kind of product where a small change in one variable has immediate, measurable consequences across six cities and tens of thousands of daily orders.</p>
+        <p>Before that, at <strong>Urbanladder (Reliance Retail)</strong>, I built an interior design product line from scratch — which sounds different but involves the same core problem: connecting supply to demand efficiently, defining the right metrics, and iterating fast enough to matter.</p>
+        <p>My MBA thesis studied why people resist digital payments. I surveyed 300+ users using the KANO model and found that the usual answers — UX, trust, awareness — were less predictive than incentive design and transaction cost framing. That kind of finding from primary research is what I find most useful in product work.</p>
+        <p>I care about three things in any PM role: a clear problem that is genuinely hard, engineers and data scientists who want to debate the solution, and the ability to measure whether what I shipped actually worked.</p>
+      </div>
+      <div class="about-pull">
+        <blockquote>"The most interesting PM problems are the ones where the system and the human are in tension with each other."</blockquote>
+      </div>
+    </div>
+    <div class="about-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-card-label">Currently</div>
+        <div class="sidebar-card-content">Product Manager, Intracity Marketplace<br/>Delhivery · Bengaluru<br/><br/>Building supply-demand matching, surge pricing, and driver-side product for India's intracity delivery network.</div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-card-label">Education</div>
+        <div class="sidebar-card-content">B.Tech (CS) + MBA, Integrated<br/>IIITM Gwalior · 2017–2022<br/><br/>Thesis: Digital payment adoption barriers using KANO model. 300+ user surveys.</div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-card-label">Domain Depth</div>
+        <div class="tag-list">
+          <span class="tag">Multi-sided Marketplace</span><span class="tag">Logistics</span><span class="tag">Driver/Earner Product</span><span class="tag">Surge Pricing</span><span class="tag">Real-time Dispatch</span><span class="tag">A/B Experimentation</span><span class="tag">ML Collaboration</span><span class="tag">Consumer Growth</span><span class="tag">CRM</span><span class="tag">Payments</span><span class="tag">0 to 1</span>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-card-label">Technical Skills</div>
+        <div class="tag-list">
+          <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">ML Pipelines</span><span class="tag">Microservices</span><span class="tag">API Design</span><span class="tag">Tableau</span><span class="tag">Statistical Analysis</span><span class="tag">PRD Writing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="looking-header">What I'm Looking For</div>
+  <div class="looking-grid">
+    <div class="looking-card">
+      <div class="looking-card-icon">&#9881;&#65039;</div>
+      <div class="looking-card-title">Hard Technical Problems</div>
+      <div class="looking-card-body">Products where the core challenge is algorithmic or systemic — matching, pricing, ranking, routing, or real-time decisioning. I want to work closely with engineering and data science, not above them.</div>
+    </div>
+    <div class="looking-card">
+      <div class="looking-card-icon">&#128208;</div>
+      <div class="looking-card-title">Metrics-Driven Culture</div>
+      <div class="looking-card-body">Teams that treat experimentation as standard practice. Places where a good hypothesis and a clean A/B test are respected more than a well-designed slide deck.</div>
+    </div>
+    <div class="looking-card">
+      <div class="looking-card-icon">&#127959;&#65039;</div>
+      <div class="looking-card-title">Scale with Consequence</div>
+      <div class="looking-card-body">Products used by millions of people where a 1% improvement in a core metric is meaningful. I've built at this scale and I want the next role to raise that bar.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Work</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Dec 2023 – Present</div>
+        <div class="exp-company">Delhivery</div>
+        <div class="exp-location">Bengaluru</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-role">Product Manager, Intracity Marketplace</div>
+        <div class="exp-desc">Own the full marketplace stack for intracity delivery: supply-demand matching, driver acceptance mechanics, surge pricing, real-time routing, and the consumer-facing app. Work spans algorithmic product, earner experience, and growth. Led a cross-functional team of 12 engineers and designers across 6 cities.</div>
+        <div class="exp-highlights">
+          <div class="exp-highlight">Scaled Delhivery Direct from 0.5M to 4M MAUs, generating &#8377;80 Cr+ ARR</div>
+          <div class="exp-highlight">P80 pickup time of 15 minutes at 99.9% uptime on 18,000+ daily orders</div>
+          <div class="exp-highlight">14% intercity conversion lift via A/B experimentation, adding &#8377;8 Cr quarterly revenue</div>
+          <div class="exp-highlight">Shipped customer-funded Driver Tips product after 100+ earner discovery interviews</div>
+          <div class="exp-highlight">Led B2B enterprise API suite enabling &#8377;10 Cr+ in quarterly partner integrations</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">Jan 2022 – Dec 2023</div>
+        <div class="exp-company">Urbanladder</div>
+        <div class="exp-location">Reliance Retail Group · Bengaluru</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-role">Associate Product Manager</div>
+        <div class="exp-desc">Built UrbanInteriors from zero — an interior design product line connecting customers to designers. Also led support automation and CRM transformation across the business, working across consumer, operations, and CRM product surfaces.</div>
+        <div class="exp-highlights">
+          <div class="exp-highlight">0 to &#8377;37.5L monthly revenue, growing from 5 to 50+ design projects per month</div>
+          <div class="exp-highlight">47% reduction in support costs via AI chatbot with 95%+ CSAT maintained</div>
+          <div class="exp-highlight">30% increase in store revenue per sq. ft via Clevertap + Salesforce CRM integration</div>
+          <div class="exp-highlight">67% reduction in support ticket reopening through Salesforce workflow redesign</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-period">2020 – 2022</div>
+        <div class="exp-company">Earlier Experience</div>
+        <div class="exp-location">Multiple</div>
+      </div>
+      <div class="exp-right">
+        <div class="exp-role">Jupiter &middot; Xiaomi &middot; Policybazaar</div>
+        <div class="exp-desc">Three internships across fintech, consumer electronics, and insurance. Built a clustering and DNN pipeline on 2M+ SMS records at Jupiter (neobank). Reduced payment failure to below 1.5% and increased conversion by 25% via UPI 2.0 AutoPay at Policybazaar. Built a product visibility tracker and sentiment analysis model at 96% accuracy at Xiaomi.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Case Studies</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="cases-intro">Five write-ups on real product problems. Each covers the situation, the key decisions, what was built, and what the results were. Click any card to read the full case.</p>
+  <div class="cases-grid">
+
+    <div class="case-card" data-case="tips">
+      <div>
+        <div class="case-num">01</div>
+        <div class="case-tag">Driver Product</div>
+        <div class="case-title">Building a Customer-Funded Driver Tips System</div>
+        <div class="case-subtitle">How 100+ earner interviews diagnosed an acceptance rate problem, and how we shipped an incentive product without adding ops cost.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <div class="case-card" data-case="scale">
+      <div>
+        <div class="case-num">02</div>
+        <div class="case-tag">Marketplace Growth</div>
+        <div class="case-title">0.5M to 4M MAUs: Scaling an Intracity Marketplace</div>
+        <div class="case-subtitle">The product decisions, experiments, and tradeoffs behind scaling Delhivery Direct from a small consumer app to India's largest intracity platform.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <div class="case-card" data-case="interiors">
+      <div>
+        <div class="case-num">03</div>
+        <div class="case-tag">0 to 1</div>
+        <div class="case-title">Launching UrbanInteriors from Zero</div>
+        <div class="case-subtitle">Building a supply-side matching product for interior design — from MVP scoping to &#8377;37.5L in monthly revenue.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Urbanladder · 2022</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <div class="case-card" data-case="surge">
+      <div>
+        <div class="case-num">04</div>
+        <div class="case-tag">Pricing &amp; Algorithms</div>
+        <div class="case-title">Designing Surge Pricing for Hyperlocal Delivery</div>
+        <div class="case-subtitle">How we built a dynamic pricing system that balances driver supply, order demand, and price sensitivity — and what we got wrong the first time.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <div class="case-card" data-case="chatbot">
+      <div>
+        <div class="case-num">05</div>
+        <div class="case-tag">Automation</div>
+        <div class="case-title">Cutting Support Costs 47% Without Hurting CSAT</div>
+        <div class="case-subtitle">The rollout strategy, metric framework, and decisions behind deploying an AI support chatbot — including what almost made us roll it back.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Urbanladder · 2023</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <div class="case-card empty">
+      <div class="case-placeholder">More Coming<br/>Soon</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-header" style="justify-content:center;">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Resume</h2>
+    <div class="section-rule"></div>
+  </div>
+  <p class="resume-body">A one-page summary of my work, metrics, and skills. Updated for 2025. Covers marketplace, logistics, and consumer product experience.</p>
+  <a href="Siddharth_Jain_Resume.pdf" class="resume-btn" download>Download Resume &#8595;</a>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Let's Talk</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-intro">"The best PM conversations start with a specific problem, not a job description."</div>
+      <p class="contact-body">I'm open to senior PM roles at companies building marketplace, fintech, consumer, or logistics products. If you're working on something interesting — or just want to talk through a product problem — I'm easy to reach.<br/><br/>Best to email directly. I respond within 24 hours.</p>
+    </div>
+    <div class="contact-links">
+      <div class="contact-link-item">
+        <span class="contact-link-label">Email</span>
+        <a href="mailto:siddharthjain1611@gmail.com" class="contact-link-val">siddharthjain1611@gmail.com</a>
+      </div>
+      <div class="contact-link-item">
+        <span class="contact-link-label">Phone</span>
+        <a href="tel:+919256800777" class="contact-link-val">+91 92568 00777</a>
+      </div>
+      <div class="contact-link-item">
+        <span class="contact-link-label">LinkedIn</span>
+        <a href="https://linkedin.com/in/siddharthjain" target="_blank" class="contact-link-val">linkedin.com/in/siddharthjain</a>
+      </div>
+      <div class="contact-link-item">
+        <span class="contact-link-label">Location</span>
+        <span class="contact-link-val" style="cursor:default;">Bengaluru, India</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">Siddharth Jain · Product Manager · 2025</div>
+  <div class="footer-right">siddharthjain1611@gmail.com</div>
+</footer>
+
+<!-- DRAWER -->
+<div class="case-drawer-overlay" id="drawerOverlay"></div>
+<div class="case-drawer" id="caseDrawer">
+  <div class="drawer-inner" id="drawerContent"></div>
+</div>
+
+<script>
+const CASES = {
+  tips: {
+    tag: "Driver Product",
+    title: "Building a Customer-Funded Driver Tips System",
+    meta: "Delhivery · Intracity Marketplace · 2024",
+    stats: [{ num: "100+", lbl: "Driver Interviews" }, { num: "&#8377;0", lbl: "Incremental Ops Cost" }, { num: "Driver", lbl: "Acceptance Improved" }],
+    sections: [
+      { title: "The Problem", body: `<p>In mid-2024, we noticed a steady decline in driver acceptance rates during evening peak hours in Bangalore and Hyderabad. The existing tool to address this was <strong>Boost</strong> — a company-funded incentive that paid drivers extra per trip during low-supply periods. Boost worked, but it was expensive, blunt, and created a dependency where drivers would wait for Boost conditions before accepting orders.</p><p>The core question: is this an incentive problem, a UX problem, or a supply problem? Before building anything, we needed to understand what was actually happening from the driver's perspective.</p>` },
+      { title: "Discovery: What the Interviews Revealed", body: `<p>I conducted 100+ structured interviews with drivers across Bangalore, Hyderabad, and Delhi over 3 weeks, across three cohorts: high-acceptance drivers, low-acceptance drivers, and recently churned drivers.</p><p>The findings were more nuanced than "drivers want more money." Key themes:</p><ul><li><strong>Tip expectation from food delivery experience:</strong> Many drivers had previously delivered for Swiggy or Zomato where tipping was common. They expected a similar mechanism on Delhivery Direct but found none — creating a perceived pay gap that wasn't reflected in actual payout data.</li><li><strong>Boost felt arbitrary:</strong> Drivers didn't understand when Boost would activate. The unpredictability made them hesitant to accept at regular rates, expecting a better offer might appear.</li><li><strong>Long-distance trips had no visible upside:</strong> For cross-zone intracity trips that took longer, drivers felt they were losing availability without proportional reward.</li></ul><p>The insight that unlocked the product direction: <strong>customers were already tipping informally</strong> — handing drivers cash or saying "keep the change." This happened in roughly 12% of deliveries based on driver reports. The product gap was that we weren't capturing or formalising this behaviour.</p>` },
+      { title: "The Product Decision", body: `<p>Three options were on the table:</p><ul><li><strong>Option A:</strong> Increase base payout for high-demand periods. Clean, but expensive and didn't address the tip expectation gap.</li><li><strong>Option B:</strong> Build a customer-funded tip flow post-delivery. Captures existing informal behaviour, zero incremental ops cost, creates a positive signal visible to drivers before accepting.</li><li><strong>Option C:</strong> Show estimated earnings including potential tip before acceptance. Informational only — doesn't change the actual incentive structure.</li></ul><p>We chose <strong>Option B with a pre-acceptance earnings estimate</strong> as a secondary feature. Tipping was already happening at ~12% informally — we were formalising behaviour, not creating new spend. Critical constraints: tips must be clearly optional, the default display must be zero (not a suggested amount that feels like pressure), and the feature must not inflate checkout drop-off.</p>` },
+      { title: "What We Shipped", body: `<p>The MVP: a post-delivery tip screen with three preset amounts and a custom option, a tip summary on the driver's earnings dashboard, and a small "estimated earnings" indicator on the acceptance screen showing base pay plus average recent tip data for that route type.</p><p>We ran a phased rollout: 10% of Bangalore orders, monitoring acceptance rate, checkout drop-off on the tip screen, CSAT, and driver app engagement. After two weeks we expanded to 50%, then full deployment.</p>` },
+      { title: "What I'd Do Differently", body: `<p>The post-delivery tip placement was too buried — shown only after the delivery confirmation screen, which most customers closed quickly. A better placement is immediately after the driver arrives or during the rating flow. We iterated on this post-launch.</p><p>We also underestimated how much driver communication mattered. The acceptance rate improvement was weaker in the first two weeks because drivers didn't know the feature existed. Direct in-app messaging about the new earnings component should have been part of the launch plan, not a follow-up.</p>` }
+    ]
+  },
+  scale: {
+    tag: "Marketplace Growth",
+    title: "0.5M to 4M MAUs: Scaling an Intracity Marketplace",
+    meta: "Delhivery · Intracity Marketplace · 2023–2024",
+    stats: [{ num: "8&#215;", lbl: "MAU Growth" }, { num: "&#8377;80Cr+", lbl: "ARR Generated" }, { num: "6", lbl: "Cities" }],
+    sections: [
+      { title: "Starting Point", body: `<p>When I joined Delhivery's intracity team in December 2023, Delhivery Direct had roughly 0.5M monthly active users, primarily using it for intercity courier — sending packages between cities. Hyperlocal delivery (same-city, same-day) was a nascent product with low supply and inconsistent reliability.</p><p>The mandate was broad: grow MAUs and ARR. The actual constraint was more specific — <strong>the marketplace had a supply problem masquerading as a demand problem.</strong> Users were trying the app, finding no available drivers or high ETAs, and churning. Adding more marketing to a broken supply-demand loop would accelerate churn, not fix it.</p>` },
+      { title: "The Framework: Fix Supply Before Scaling Demand", body: `<p>The first three months were entirely supply-side. Three levers:</p><ul><li><strong>Driver onboarding:</strong> The original flow took 4–7 days and required in-person document verification. We moved to async document upload with a 24-hour review SLA, cutting onboarding time to 1.2 days on average.</li><li><strong>Shift incentives:</strong> We introduced time-block incentives — drivers completing a minimum number of trips in a 4-hour window earned a bonus. This shifted supply from random availability to predictable coverage during peak hours.</li><li><strong>Routing algorithm:</strong> The original matching algorithm optimised purely for distance. We added a time-weighted component factoring in traffic, driver current location, and order complexity. P80 pickup time dropped from 28 minutes to 15 minutes over 6 months.</li></ul>` },
+      { title: "Then: Scaling Demand", body: `<p>Once P80 pickup time was consistently below 20 minutes, we shifted to demand-side growth. The highest-ROI move was <strong>intercity-to-hyperlocal conversion</strong>. We had 1.5M+ intercity users who had already trusted us for courier delivery. Targeted push and in-app campaigns showing them the hyperlocal product — once supply reliability hit a threshold in their city — converted at significantly higher rates than cold acquisition, because the trust barrier was already cleared.</p><p>A/B experiments on the checkout flow — primarily around price anchoring, ETA display, and real-time driver location — added incremental conversion across the funnel. The largest single experiment lifted intercity conversion by 14%, contributing &#8377;8 Cr in quarterly revenue.</p>` },
+      { title: "What the Numbers Don't Show", body: `<p>MAU growth from 0.5M to 4M looks clean on a chart. We had two cities where supply collapse caused NPS to drop below 20 during rapid demand scaling — we had grown demand faster than supply in those markets and created a negative experience loop. We paused growth campaigns in those cities and rebuilt supply coverage before resuming.</p><p>The lesson: in a marketplace, supply and demand must be managed as a ratio, not independently. A 10% MAU increase in a city with flat supply is worse than no MAU increase at all, because it trains users to expect poor reliability.</p>` }
+    ]
+  },
+  interiors: {
+    tag: "0 to 1",
+    title: "Launching UrbanInteriors from Zero",
+    meta: "Urbanladder · Reliance Retail Group · 2022–2023",
+    stats: [{ num: "&#8377;37.5L", lbl: "Monthly Revenue" }, { num: "10&#215;", lbl: "Project Volume" }, { num: "&#8377;7.5L", lbl: "Avg Order Value" }],
+    sections: [
+      { title: "The Opportunity", body: `<p>Urbanladder had tens of thousands of customers buying furniture online, but no structured way to help them with the full room — layout, design, coordination. Interior design services existed at the high end (&#8377;5L+ projects), but there was a large underserved segment of customers who had budget for a &#8377;3–10L interior project but no reliable way to find a designer or manage the process.</p><p>The brief: build a product connecting these customers to vetted designers, managing the project lifecycle. Revenue model: commission on completed projects. Starting state: zero designers, zero customers, no defined process.</p>` },
+      { title: "MVP Scoping: What's the Minimum That Can Close a Sale?", body: `<p>The temptation in 0-to-1 is to build everything at once. I kept asking: <strong>what is the minimum needed to close the first 10 sales?</strong></p><p>The MVP was deliberately thin: a lead capture form on the Urbanladder website, manual matching (I personally matched the first 15 customers to designers via WhatsApp), a simple contract template, and milestone-based payment via existing infrastructure. No designer dashboard, no customer portal, no automated matching.</p><p>This was intentional. We needed to learn what mattered before encoding assumptions in code. The first 15 projects taught us more than any upfront user research could have.</p>` },
+      { title: "What the First 15 Projects Taught Us", body: `<p>Key learnings from manual operations:</p><ul><li><strong>Designer-customer fit mattered more than designer quality:</strong> Projects with the highest CSAT were not with the highest-rated designers — they were with designers whose style matched the customer's brief. Matching needed to be style-based, not purely rating-based.</li><li><strong>Milestone payment reduced dropout significantly:</strong> Customers who paid everything upfront had a 35% project abandonment rate. Customers on milestone payment (30% upfront, 30% at design approval, 40% at completion) had 8% abandonment. We made milestone payment the default.</li><li><strong>The AOV was real but fragile:</strong> &#8377;7.5L average existed because our early customers were high-intent. Scaling required a wider funnel, which meant building for a lower AOV segment we hadn't yet designed for.</li></ul>` },
+      { title: "From 5 to 50+ Projects per Month", body: `<p>The growth levers that worked: integrating UrbanInteriors as a persistent upsell on high-cart furniture purchases (customers buying &#8377;2L+ of furniture were shown the design service), a designer acquisition campaign targeting freelancers active on Instagram and Houzz, and a Salesforce CRM workflow that automatically triggered follow-up at 3 and 7 days after form submission.</p><p>The lever that didn't work: paid acquisition. CAC from Google and Meta was too high given the long sales cycle (average 18 days from lead to first payment). Organic and referral remained our best channels throughout.</p>` }
+    ]
+  },
+  surge: {
+    tag: "Pricing & Algorithms",
+    title: "Designing Surge Pricing for Hyperlocal Delivery",
+    meta: "Delhivery · Intracity Marketplace · 2024",
+    stats: [{ num: "15min", lbl: "P80 Pickup Time" }, { num: "99.9%", lbl: "System Uptime" }, { num: "18K+", lbl: "Daily Orders" }],
+    sections: [
+      { title: "Why Surge Pricing is Hard", body: `<p>Surge pricing sounds straightforward: when demand exceeds supply, raise the price until equilibrium is restored. Hyperlocal delivery has three properties that make this genuinely difficult:</p><ul><li><strong>Demand is lumpy and predictable:</strong> Unlike ride-hailing where surge can appear anywhere, delivery demand spikes are highly correlated with time of day, day of week, and location. A naive real-time model often reacts too slowly.</li><li><strong>Customer price sensitivity is context-dependent:</strong> A customer sending a document urgently will absorb a 2x surge. A customer sending a birthday cake will abandon. We can't always predict which context we're in at order time.</li><li><strong>Driver supply response is delayed:</strong> There's a 10–20 minute lag between surge activation and meaningful supply increase. A surge that appears during that window and disappears before supply arrives creates a worse experience than no surge at all.</li></ul>` },
+      { title: "Version 1: What We Got Wrong", body: `<p>The first version was reactive and zone-based: a simple ratio of pending orders to available drivers within a defined geographic zone, a multiplier applied, and a higher price shown to customers.</p><p>Problems in production: zone boundaries were too rigid (a driver 200 metres outside a surge zone wouldn't be attracted to it), the multiplier function was linear and produced confusing rounded prices, and we had no dampening mechanism — prices oscillated rapidly as small supply changes crossed the threshold.</p><p>Customer complaints spiked. Drivers found the surge patterns unpredictable. NPS in affected cities dropped 11 points in 6 weeks.</p>` },
+      { title: "Version 2: Predictive Surge with Smoothing", body: `<p>The redesign had three changes:</p><ul><li><strong>Predictive instead of reactive:</strong> We trained a model on historical order patterns to predict demand 20 minutes out. Surge activates based on predicted demand, giving supply time to respond before the actual crunch arrives.</li><li><strong>Radial influence zones:</strong> Driver attraction is now modelled as a decaying probability based on distance from the surge centroid, not binary zone inclusion. Drivers 300 metres outside a surge area still see partial incentive.</li><li><strong>Price smoothing:</strong> Surge multipliers now move in steps of 0.1, with a minimum 8-minute hold before stepping up or down. This eliminated oscillation and made pricing feel stable.</li></ul><p>After v2 rollout, P80 pickup time in surge conditions dropped from 31 to 18 minutes. Customer complaints related to pricing fell 60%. Driver acceptance during surge conditions improved.</p>` },
+      { title: "The Ongoing Tension", body: `<p>Surge pricing creates a fundamental tension: the customers who need delivery most urgently are often the most price-sensitive. A 1.5x surge on a &#8377;40 residential delivery at 8 PM is not the same situation as a 1.5x surge on a &#8377;200 business document delivery.</p><p>We haven't fully solved this segmentation problem. The current approach uses order category and historical customer behaviour as signals, but it's imperfect. The right solution is probably explicit customer preference setting — which introduces its own UX complexity.</p>` }
+    ]
+  },
+  chatbot: {
+    tag: "Automation",
+    title: "Cutting Support Costs 47% Without Hurting CSAT",
+    meta: "Urbanladder · Reliance Retail Group · 2023",
+    stats: [{ num: "47%", lbl: "Cost Reduction" }, { num: "95%+", lbl: "CSAT Maintained" }, { num: "67%", lbl: "Ticket Reopening Drop" }],
+    sections: [
+      { title: "The Problem", body: `<p>By mid-2022, customer support at Urbanladder was the fastest-growing cost line — not because sales were growing proportionally, but because the support workflow was inefficient. A "where is my order" query took the same routing and handling time as a complex product defect claim. Ticket reopening rate was at 23% — nearly 1 in 4 resolved tickets was reopened within 7 days, usually because the resolution was incomplete or the customer hadn't understood it.</p><p>The hypothesis: a well-designed chatbot could handle high-volume, low-complexity queries (estimated at 55–60% of total ticket volume) without degrading satisfaction, freeing human agents for genuinely complex cases.</p>` },
+      { title: "The Risk Everyone Was Worried About", body: `<p>The internal concern: "What if customers hate it and CSAT drops?" This is a valid concern — most chatbots fail because they're designed to deflect customers, not solve their problems.</p><p>My position: the risk was manageable if we were disciplined about scope. The chatbot should only handle categories where we had high-confidence resolution paths. For everything else, route to human agents immediately — not try and fail.</p><div class="drawer-pull"><p>"A chatbot that says 'connecting you to an agent' in 10 seconds is a better experience than one that tries for 5 minutes and fails."</p></div><p>This meant the chatbot's scope at launch was deliberately narrow: order status, delivery ETA, return initiation for standard cases, and store location queries. These four categories covered 41% of total ticket volume.</p>` },
+      { title: "Rollout Strategy", body: `<p>We ran a phased rollout to contain risk:</p><ul><li><strong>Phase 1 (2 weeks, 10% of traffic):</strong> Monitor containment rate, CSAT on chatbot-resolved tickets vs. agent-resolved tickets, and false positive rate.</li><li><strong>Phase 2 (4 weeks, 40% of traffic):</strong> Expand to two additional query categories based on Phase 1 learnings. Added product availability queries and EMI handling.</li><li><strong>Phase 3:</strong> Full rollout with human escalation always one tap away.</li></ul><p>The metric we watched most carefully: <strong>containment rate vs. CSAT on contained tickets.</strong> A high containment rate with low CSAT means you're deflecting customers, not resolving them. Hard rule: if CSAT on chatbot-contained tickets dropped below 88%, we pause and investigate.</p>` },
+      { title: "What Almost Made Us Roll It Back", body: `<p>In week 3 of Phase 2, CSAT on chatbot-resolved return initiation tickets dropped to 84% — below our 88% threshold. We paused expansion and investigated.</p><p>Root cause: our return initiation flow required customers to upload a photo of the defective product. The chatbot was marking tickets as "resolved" after collecting the return request, before photo upload was confirmed as complete. Customers were receiving resolution messages for returns that hadn't actually been processed yet, and finding out days later.</p><p>The fix: tickets could only be marked resolved after photo upload confirmation and backend return order creation. CSAT recovered to 96% on return queries within 10 days. This incident shaped how we defined "resolved" across the entire chatbot — any query involving a downstream action required confirmation of that action before closure.</p>` },
+      { title: "Results", body: `<p>After full rollout, support costs reduced by 47%. CSAT moved from 91% to 95% — the improvement came from human agents having more time to handle complex cases well. Ticket reopening dropped from 23% to 8%, because chatbot-handled queries had cleaner resolution paths with less ambiguity.</p><p>The 67% ticket reopening reduction was a combined result of the chatbot and a separate Salesforce CRM workflow redesign that standardised resolution templates and required agents to confirm customer acknowledgement before closure. The two initiatives compounded each other.</p>` }
+    ]
+  }
+};
+
+function buildDrawer(key) {
+  const c = CASES[key];
+  if (!c) return '';
+  const stats = c.stats.map(s => `<div class="drawer-stat"><div class="drawer-stat-num">${s.num}</div><div class="drawer-stat-lbl">${s.lbl}</div></div>`).join('');
+  const sections = c.sections.map(s => `<div class="drawer-section-title">${s.title}</div><div class="drawer-body">${s.body}</div>`).join('');
+  return `<div class="drawer-close-wrap"><button class="drawer-close" id="drawerCloseBtn">&#10005; Close</button></div>
+    <div class="drawer-tag">${c.tag}</div>
+    <div class="drawer-title">${c.title}</div>
+    <div class="drawer-meta">${c.meta}</div>
+    <div class="drawer-stat-row">${stats}</div>
+    ${sections}
+    <div class="drawer-end">End of case study</div>`;
+}
+
+const overlay = document.getElementById('drawerOverlay');
+const drawer  = document.getElementById('caseDrawer');
+const content = document.getElementById('drawerContent');
+
+function openDrawer(key) {
+  content.innerHTML = buildDrawer(key);
+  overlay.classList.add('open');
+  drawer.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('drawerCloseBtn').addEventListener('click', closeDrawer);
+}
+function closeDrawer() {
+  drawer.classList.remove('open');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.case-card[data-case]').forEach(card => {
+  card.addEventListener('click', () => openDrawer(card.dataset.case));
+});
+overlay.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// Scroll reveals
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), parseInt(entry.target.dataset.delay) || 0);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.exp-item').forEach((el, i) => { el.dataset.delay = i * 120; observer.observe(el); });
+document.querySelectorAll('.case-card').forEach((el, i) => { el.dataset.delay = i * 70; observer.observe(el); });
+
+// Active nav
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav-links a');
+new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + e.target.id) l.classList.add('active'); });
+    }
+  });
+}, { threshold: 0.35 }).observe && sections.forEach(s => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) navLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + e.target.id) l.classList.add('active'); });
+    });
+  }, { threshold: 0.35 }).observe(s);
+});
+</script>
+</body>
+</html>
