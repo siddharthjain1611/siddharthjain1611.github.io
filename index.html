@@ -602,5 +602,127 @@ new IntersectionObserver(entries => {
   }, { threshold: 0.35 }).observe(s);
 });
 </script>
+
+<!-- GA4 Event Tracking -->
+<script>
+// GA4 Event Tracking
+const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+let caseStudyOpenTime = null;
+let currentOpenCaseKey = null;
+const viewedSections = new Set();
+
+// Helper: Send GA4 event
+function sendGAEvent(eventName, params = {}) {
+  if (typeof gtag !== 'undefined') {
+    gtag('event', eventName, params);
+  }
+}
+
+// 1. Case Study Opened
+const originalOpenDrawer = openDrawer;
+openDrawer = function(key) {
+  const caseData = CASES[key];
+  if (caseData) {
+    caseStudyOpenTime = Date.now();
+    currentOpenCaseKey = key;
+    sendGAEvent('case_study_opened', {
+      case_title: caseData.title,
+      case_tag: caseData.tag
+    });
+  }
+  originalOpenDrawer(key);
+};
+
+// 2. Case Study Closed
+const originalCloseDrawer = closeDrawer;
+closeDrawer = function() {
+  if (currentOpenCaseKey && caseStudyOpenTime) {
+    const caseData = CASES[currentOpenCaseKey];
+    const readDuration = Math.round((Date.now() - caseStudyOpenTime) / 1000);
+    sendGAEvent('case_study_closed', {
+      case_title: caseData.title,
+      read_duration_seconds: readDuration
+    });
+    caseStudyOpenTime = null;
+    currentOpenCaseKey = null;
+  }
+  originalCloseDrawer();
+};
+
+// Update overlay click to use new closeDrawer
+overlay.removeEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+
+// Update keydown to use new closeDrawer
+document.removeEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// 3. Resume Downloaded
+const resumeBtn = document.querySelector('.resume-btn');
+if (resumeBtn) {
+  resumeBtn.addEventListener('click', () => {
+    sendGAEvent('resume_downloaded', {});
+  });
+}
+
+// 4. Contact Clicked
+const contactLinks = document.querySelectorAll('#contact a');
+contactLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href');
+    let contactType = 'other';
+    if (href.startsWith('mailto:')) {
+      contactType = 'email';
+    } else if (href.includes('linkedin')) {
+      contactType = 'linkedin';
+    } else if (href.startsWith('tel:')) {
+      contactType = 'phone';
+    }
+    sendGAEvent('contact_clicked', {
+      contact_type: contactType
+    });
+  });
+});
+
+// 5. Section Viewed
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !viewedSections.has(entry.target.id)) {
+      viewedSections.add(entry.target.id);
+      sendGAEvent('section_viewed', {
+        section_name: entry.target.id
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('section[id]').forEach(section => {
+  sectionObserver.observe(section);
+});
+
+// 6. Nav Clicked
+const gaNavLinks = document.querySelectorAll('.nav-links a');
+gaNavLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href');
+    sendGAEvent('nav_clicked', {
+      nav_target: href
+    });
+  });
+});
+
+// 7. Outbound Link
+document.querySelectorAll('a[target="_blank"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const url = link.getAttribute('href');
+    const text = link.textContent;
+    sendGAEvent('outbound_link', {
+      link_url: url,
+      link_text: text
+    });
+  });
+});
+</script>
+
 </body>
 </html>
