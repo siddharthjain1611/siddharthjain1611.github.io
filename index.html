@@ -357,19 +357,9 @@ footer { padding: 2rem 3rem; display: flex; justify-content: space-between; alig
   <p class="cases-intro">Five write-ups on real product problems. Each covers the situation, the key decisions, what was built, and what the results were. Click any card to read the full case.</p>
   <div class="cases-grid">
 
-    <div class="case-card" data-case="tips">
-      <div>
-        <div class="case-num">01</div>
-        <div class="case-tag">Driver Product</div>
-        <div class="case-title">Building a Customer-Funded Driver Tips System</div>
-        <div class="case-subtitle">How 100+ earner interviews diagnosed an acceptance rate problem, and how we shipped an incentive product without adding ops cost.</div>
-      </div>
-      <div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">&#8594;</span></div>
-    </div>
-
     <div class="case-card" data-case="scale">
       <div>
-        <div class="case-num">02</div>
+        <div class="case-num">01</div>
         <div class="case-tag">Marketplace Growth</div>
         <div class="case-title">0.5M to 4M MAUs: Scaling an Intracity Marketplace</div>
         <div class="case-subtitle">The product decisions, experiments, and tradeoffs behind scaling Delhivery Direct from a small consumer app to India's largest intracity platform.</div>
@@ -379,7 +369,7 @@ footer { padding: 2rem 3rem; display: flex; justify-content: space-between; alig
 
     <div class="case-card" data-case="interiors">
       <div>
-        <div class="case-num">03</div>
+        <div class="case-num">02</div>
         <div class="case-tag">0 to 1</div>
         <div class="case-title">Launching UrbanInteriors from Zero</div>
         <div class="case-subtitle">Building a supply-side matching product for interior design — from MVP scoping to &#8377;37.5L in monthly revenue.</div>
@@ -389,7 +379,7 @@ footer { padding: 2rem 3rem; display: flex; justify-content: space-between; alig
 
     <div class="case-card" data-case="surge">
       <div>
-        <div class="case-num">04</div>
+        <div class="case-num">03</div>
         <div class="case-tag">Pricing &amp; Algorithms</div>
         <div class="case-title">Designing Surge Pricing for Hyperlocal Delivery</div>
         <div class="case-subtitle">How we built a dynamic pricing system that balances driver supply, order demand, and price sensitivity — and what we got wrong the first time.</div>
@@ -399,7 +389,7 @@ footer { padding: 2rem 3rem; display: flex; justify-content: space-between; alig
 
     <div class="case-card" data-case="chatbot">
       <div>
-        <div class="case-num">05</div>
+        <div class="case-num">04</div>
         <div class="case-tag">Automation</div>
         <div class="case-title">Cutting Support Costs 47% Without Hurting CSAT</div>
         <div class="case-subtitle">The rollout strategy, metric framework, and decisions behind deploying an AI support chatbot — including what almost made us roll it back.</div>
@@ -407,6 +397,40 @@ footer { padding: 2rem 3rem; display: flex; justify-content: space-between; alig
       <div class="case-footer"><span class="case-company">Urbanladder · 2023</span><span class="case-arrow">&#8594;</span></div>
     </div>
 
+    <!-- Card: Metric Diagnosis -->
+    <div class="case-card" data-case="metricdrop">
+      <div>
+        <div class="case-num">05</div>
+        <div class="case-tag">Metric Diagnosis</div>
+        <div class="case-title">Why Intercity Conversion Dropped 9% in Three Weeks</div>
+        <div class="case-subtitle">A structured root-cause investigation into a conversion drop that looked like a UX problem but turned out to be a pricing signal failure.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <!-- Card: Product Critique -->
+    <div class="case-card" data-case="critique">
+      <div>
+        <div class="case-num">06</div>
+        <div class="case-tag">Product Critique</div>
+        <div class="case-title">What Google Maps Gets Wrong About Delivery ETAs</div>
+        <div class="case-subtitle">A PM's view on why ETA accuracy is broken, who it hurts most, and what a better system would look like.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Personal · 2025</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <!-- Card: Mini PRD -->
+    <div class="case-card" data-case="scheduled">
+      <div>
+        <div class="case-num">07</div>
+        <div class="case-tag">Product Strategy</div>
+        <div class="case-title">The Next Feature for Delhivery Intracity: Scheduled Delivery Windows</div>
+        <div class="case-subtitle">A mini-PRD for a feature I believe should be on the roadmap — the problem it solves, how I'd measure success, and what I'd deliberately not build.</div>
+      </div>
+      <div class="case-footer"><span class="case-company">Delhivery · 2025</span><span class="case-arrow">&#8594;</span></div>
+    </div>
+
+    <!-- Empty placeholder -->
     <div class="case-card empty">
       <div class="case-placeholder">More Coming<br/>Soon</div>
     </div>
@@ -471,19 +495,6 @@ footer { padding: 2rem 3rem; display: flex; justify-content: space-between; alig
 
 <script>
 const CASES = {
-  tips: {
-    tag: "Driver Product",
-    title: "Building a Customer-Funded Driver Tips System",
-    meta: "Delhivery · Intracity Marketplace · 2024",
-    stats: [{ num: "100+", lbl: "Driver Interviews" }, { num: "&#8377;0", lbl: "Incremental Ops Cost" }, { num: "Driver", lbl: "Acceptance Improved" }],
-    sections: [
-      { title: "The Problem", body: `<p>In mid-2024, we noticed a steady decline in driver acceptance rates during evening peak hours in Bangalore and Hyderabad. The existing tool to address this was <strong>Boost</strong> — a company-funded incentive that paid drivers extra per trip during low-supply periods. Boost worked, but it was expensive, blunt, and created a dependency where drivers would wait for Boost conditions before accepting orders.</p><p>The core question: is this an incentive problem, a UX problem, or a supply problem? Before building anything, we needed to understand what was actually happening from the driver's perspective.</p>` },
-      { title: "Discovery: What the Interviews Revealed", body: `<p>I conducted 100+ structured interviews with drivers across Bangalore, Hyderabad, and Delhi over 3 weeks, across three cohorts: high-acceptance drivers, low-acceptance drivers, and recently churned drivers.</p><p>The findings were more nuanced than "drivers want more money." Key themes:</p><ul><li><strong>Tip expectation from food delivery experience:</strong> Many drivers had previously delivered for Swiggy or Zomato where tipping was common. They expected a similar mechanism on Delhivery Direct but found none — creating a perceived pay gap that wasn't reflected in actual payout data.</li><li><strong>Boost felt arbitrary:</strong> Drivers didn't understand when Boost would activate. The unpredictability made them hesitant to accept at regular rates, expecting a better offer might appear.</li><li><strong>Long-distance trips had no visible upside:</strong> For cross-zone intracity trips that took longer, drivers felt they were losing availability without proportional reward.</li></ul><p>The insight that unlocked the product direction: <strong>customers were already tipping informally</strong> — handing drivers cash or saying "keep the change." This happened in roughly 12% of deliveries based on driver reports. The product gap was that we weren't capturing or formalising this behaviour.</p>` },
-      { title: "The Product Decision", body: `<p>Three options were on the table:</p><ul><li><strong>Option A:</strong> Increase base payout for high-demand periods. Clean, but expensive and didn't address the tip expectation gap.</li><li><strong>Option B:</strong> Build a customer-funded tip flow post-delivery. Captures existing informal behaviour, zero incremental ops cost, creates a positive signal visible to drivers before accepting.</li><li><strong>Option C:</strong> Show estimated earnings including potential tip before acceptance. Informational only — doesn't change the actual incentive structure.</li></ul><p>We chose <strong>Option B with a pre-acceptance earnings estimate</strong> as a secondary feature. Tipping was already happening at ~12% informally — we were formalising behaviour, not creating new spend. Critical constraints: tips must be clearly optional, the default display must be zero (not a suggested amount that feels like pressure), and the feature must not inflate checkout drop-off.</p>` },
-      { title: "What We Shipped", body: `<p>The MVP: a post-delivery tip screen with three preset amounts and a custom option, a tip summary on the driver's earnings dashboard, and a small "estimated earnings" indicator on the acceptance screen showing base pay plus average recent tip data for that route type.</p><p>We ran a phased rollout: 10% of Bangalore orders, monitoring acceptance rate, checkout drop-off on the tip screen, CSAT, and driver app engagement. After two weeks we expanded to 50%, then full deployment.</p>` },
-      { title: "What I'd Do Differently", body: `<p>The post-delivery tip placement was too buried — shown only after the delivery confirmation screen, which most customers closed quickly. A better placement is immediately after the driver arrives or during the rating flow. We iterated on this post-launch.</p><p>We also underestimated how much driver communication mattered. The acceptance rate improvement was weaker in the first two weeks because drivers didn't know the feature existed. Direct in-app messaging about the new earnings component should have been part of the launch plan, not a follow-up.</p>` }
-    ]
-  },
   scale: {
     tag: "Marketplace Growth",
     title: "0.5M to 4M MAUs: Scaling an Intracity Marketplace",
@@ -531,6 +542,46 @@ const CASES = {
       { title: "Rollout Strategy", body: `<p>We ran a phased rollout to contain risk:</p><ul><li><strong>Phase 1 (2 weeks, 10% of traffic):</strong> Monitor containment rate, CSAT on chatbot-resolved tickets vs. agent-resolved tickets, and false positive rate.</li><li><strong>Phase 2 (4 weeks, 40% of traffic):</strong> Expand to two additional query categories based on Phase 1 learnings. Added product availability queries and EMI handling.</li><li><strong>Phase 3:</strong> Full rollout with human escalation always one tap away.</li></ul><p>The metric we watched most carefully: <strong>containment rate vs. CSAT on contained tickets.</strong> A high containment rate with low CSAT means you're deflecting customers, not resolving them. Hard rule: if CSAT on chatbot-contained tickets dropped below 88%, we pause and investigate.</p>` },
       { title: "What Almost Made Us Roll It Back", body: `<p>In week 3 of Phase 2, CSAT on chatbot-resolved return initiation tickets dropped to 84% — below our 88% threshold. We paused expansion and investigated.</p><p>Root cause: our return initiation flow required customers to upload a photo of the defective product. The chatbot was marking tickets as "resolved" after collecting the return request, before photo upload was confirmed as complete. Customers were receiving resolution messages for returns that hadn't actually been processed yet, and finding out days later.</p><p>The fix: tickets could only be marked resolved after photo upload confirmation and backend return order creation. CSAT recovered to 96% on return queries within 10 days. This incident shaped how we defined "resolved" across the entire chatbot — any query involving a downstream action required confirmation of that action before closure.</p>` },
       { title: "Results", body: `<p>After full rollout, support costs reduced by 47%. CSAT moved from 91% to 95% — the improvement came from human agents having more time to handle complex cases well. Ticket reopening dropped from 23% to 8%, because chatbot-handled queries had cleaner resolution paths with less ambiguity.</p><p>The 67% ticket reopening reduction was a combined result of the chatbot and a separate Salesforce CRM workflow redesign that standardised resolution templates and required agents to confirm customer acknowledgement before closure. The two initiatives compounded each other.</p>` }
+    ]
+  },
+  metricdrop: {
+    tag: "Metric Diagnosis",
+    title: "Why Intercity Conversion Dropped 9% in Three Weeks",
+    meta: "Delhivery · Intracity Marketplace · 2024",
+    stats: [{ num: "9%", lbl: "Conversion Drop" }, { num: "6", lbl: "Hypotheses Tested" }, { num: "14%", lbl: "Recovery Lift" }],
+    sections: [
+      { title: "The Alert", body: `<p>In Q3 2024, our weekly metrics review flagged a 9% drop in intercity courier conversion over a 3-week period. No major product changes had shipped in that window. The first instinct from the team was UX — something in the checkout flow had broken or regressed. My instinct was to slow down before jumping to that conclusion.</p><p>A 9% drop over 3 weeks with no product change is almost never a UX problem. UX regressions are sharp and immediate. A gradual 3-week slope usually means something external changed — pricing, competition, demand composition, or a cohort shift in who was using the product.</p>` },
+      { title: "Step 1: Rule Out Data and Tracking Issues", body: `<p>Before forming any hypothesis, I verified the data. Checked whether the conversion event tracking had changed, whether any new funnel steps had been added that might split the attribution, and whether the denominator (sessions entering checkout) had changed composition. Everything was clean. The drop was real.</p>` },
+      { title: "Step 2: Segment Before Hypothesising", body: `<p>I broke conversion down across every dimension available before forming a single hypothesis:</p><ul><li><strong>By city:</strong> The drop was concentrated in Tier 2 cities — Jaipur, Lucknow, Indore. Metros were flat.</li><li><strong>By order value:</strong> Drop was steepest in the ₹300–600 order value band. Below ₹300 and above ₹600 were flat.</li><li><strong>By device:</strong> Uniform across Android and iOS. Not a platform issue.</li><li><strong>By time of day:</strong> Slightly more pronounced in evenings, but not significantly.</li></ul><p>The segmentation gave me the real question: why were Tier 2 customers in the ₹300–600 band dropping off at checkout?</p>` },
+      { title: "The Hypotheses", body: `<p>With the segment defined, I listed every plausible explanation:</p><ul><li><strong>H1:</strong> A competitor had lowered prices in Tier 2 cities in that order value range.</li><li><strong>H2:</strong> Our dynamic pricing model had increased base fares in those cities during that period due to supply tightness.</li><li><strong>H3:</strong> The ₹300–600 band was price-sensitive, and a small absolute price increase crossed a psychological threshold.</li><li><strong>H4:</strong> Delivery time estimates had worsened in Tier 2 cities, making customers less willing to pay.</li><li><strong>H5:</strong> A new coupon or cashback campaign from a competitor had shifted price expectations.</li><li><strong>H6:</strong> Seasonal demand shift — the cohort using the product in that period was different from the prior period.</li></ul>` },
+      { title: "Finding the Root Cause", body: `<p>I pulled pricing logs for Tier 2 cities over the 3-week window. H2 was correct: our supply-side surge model had been running at 1.2–1.3x in Jaipur and Lucknow during evening hours due to a supply shortage. For a ₹400 order, that meant the displayed price was ₹480–520 — enough to push hesitant customers out.</p><p>The compounding factor: our price display showed the surged price without context. A customer who had sent a similar parcel two weeks ago for ₹400 now saw ₹490 with no explanation. The price hadn't crossed an absolute threshold — it had crossed a <strong>reference price</strong> threshold. The customer's mental model of what this delivery should cost was violated.</p><div class="drawer-pull"><p>"The problem wasn't the price. It was that the price changed without explanation."</p></div>` },
+      { title: "The Fix and the Result", body: `<p>Two changes shipped within the same sprint. First, we added a one-line contextual message on the price display when surge was active: "Current price reflects high demand in your area." Simple, honest, and it resets the reference price frame. Second, we introduced a "Send later at lower price" option for non-urgent shipments — letting price-sensitive customers opt into a 2-hour delay for the base rate.</p><p>Conversion recovered 14% above the pre-drop baseline within 4 weeks. The "Send later" option was taken up by 18% of customers shown it — a segment we hadn't explicitly designed for before.</p>` }
+    ]
+  },
+  critique: {
+    tag: "Product Critique",
+    title: "What Google Maps Gets Wrong About Delivery ETAs",
+    meta: "Personal · Product Thinking · 2025",
+    stats: [{ num: "ETA", lbl: "The Core Problem" }, { num: "3 Types", lbl: "Of ETA Users" }, { num: "1 Fix", lbl: "That Changes Everything" }],
+    sections: [
+      { title: "What Google Maps Is Optimising For", body: `<p>Google Maps ETA is optimised for navigation accuracy — getting a driver from point A to B with the best route in the current traffic conditions. It does this well. But delivery logistics uses ETAs for a fundamentally different purpose: managing recipient expectation, coordinating handoff, and reducing failed delivery attempts.</p><p>When Google Maps ETA is used as the ground truth for "when will my package arrive," it fails — not because the routing is wrong, but because the product is solving a different problem than the one being asked.</p>` },
+      { title: "The Three Types of ETA Users", body: `<p>In a delivery context, ETA is consumed by three different people with three different needs:</p><ul><li><strong>The recipient</strong> wants to know: will I be home? Should I ask a neighbour to receive it? Do I have a 10-minute window or a 2-hour window?</li><li><strong>The dispatcher</strong> wants to know: is this driver on schedule? Will they make the next pickup? Do I need to reroute?</li><li><strong>The driver</strong> wants to know: am I running late? Is the customer expecting me at the door or should I call?</li></ul><p>Google Maps gives a single number — a point estimate for navigation — and all three people try to interpret it for their different needs. The result is a coordination failure built into the product.</p>` },
+      { title: "The Specific Failure Modes", body: `<p>Three failures I've seen repeatedly while building delivery products:</p><ul><li><strong>Last-mile accuracy collapse:</strong> Google Maps ETA is reasonably accurate for highway segments and major roads. It degrades significantly in apartment complexes, gated communities, and areas with poor address data — exactly where last-mile delivery happens. An ETA that's accurate to within 3 minutes on the highway is often 15 minutes off at the final 500 metres.</li><li><strong>No dwell time model:</strong> Maps has no concept of the time a driver spends at a delivery location — parking, getting to the door, failed attempts, collecting signatures. For multi-stop routes, these dwell times compound and the ETA error grows with each stop.</li><li><strong>Static recipient assumption:</strong> The ETA is communicated once and not recalculated meaningfully for the recipient. If the driver hits traffic 10 minutes before arrival, the recipient gets no update — or gets one too late to act on.</li></ul>` },
+      { title: "What a Better System Looks Like", body: `<p>The fix isn't a better routing algorithm. It's a reframe of what ETA means for a delivery product.</p><p>A delivery ETA should be a <strong>window with confidence, not a point estimate</strong>. "Arriving between 3:45 and 4:10 PM" communicates more useful information than "arriving at 3:52 PM" — because it's honest about uncertainty and gives the recipient enough information to decide whether to be home.</p><p>The window should narrow as the driver gets closer. At 30 minutes out, a 25-minute window is honest. At 10 minutes out, a 5-minute window is achievable. This is how airline arrival boards work — and recipients understand it intuitively.</p><p>At Delhivery, we moved toward this model by surfacing a "driver nearby" notification at 10 minutes out rather than relying on the ETA number. The action-triggering signal — "be at your door now" — is more useful than a time that may already be wrong.</p>` },
+      { title: "Why Google Maps Won't Fix This", body: `<p>Google Maps serves navigation at scale. Its ETA model is optimised for the case where the driver is the same person as the recipient — they care about when they arrive, not when someone else arrives. The product isn't broken for its primary use case.</p><p>The takeaway for delivery PMs: don't inherit ETA as a concept from navigation products. Define what ETA means for your specific coordination problem, and build the model that serves that — even if it means displaying less precision than the underlying data technically allows.</p>` }
+    ]
+  },
+  scheduled: {
+    tag: "Product Strategy",
+    title: "The Next Feature for Delhivery Intracity: Scheduled Delivery Windows",
+    meta: "Delhivery · Forward-Looking · 2025",
+    stats: [{ num: "18%", lbl: "Customers Want This" }, { num: "↓ CAC", lbl: "Repeat Order Driver" }, { num: "Supply", lbl: "Efficiency Gain" }],
+    sections: [
+      { title: "The Problem This Solves", body: `<p>The current Delhivery Intracity product is on-demand: order now, delivered as fast as possible. This works for urgent shipments. It doesn't work well for a large segment of customers who don't need it urgently — they need it reliably, at a time they're available to receive it.</p><p>In building the Driver Tips feature, I ran 100+ earner interviews. A recurring theme from drivers was failed delivery attempts — arriving at a recipient's address when no one was home, waiting, leaving, and triggering a redelivery request. Each failed attempt costs the driver time and costs Delhivery operationally. Across 18,000 daily orders, even a 5% failed attempt rate is 900 orders a day being handled twice.</p><p>From the customer side, our post-delivery CSAT data showed that the lowest-rated experiences clustered around two scenarios: damage and missed delivery. Damage is a fulfilment problem. Missed delivery is a scheduling problem — and it's one we haven't addressed with a product.</p>` },
+      { title: "The Proposed Feature", body: `<p>Scheduled Delivery Windows: at checkout, customers can optionally select a 2-hour delivery window later in the day or next day, at a price slightly below the immediate delivery rate. The driver is assigned to the order at the start of that window rather than immediately.</p><p>This is not a new concept — Amazon, Swiggy Instamart, and Zepto all offer scheduled delivery. The question is whether it makes sense for Delhivery Intracity's specific supply and demand characteristics.</p>` },
+      { title: "Why It Makes Sense for Intracity Specifically", body: `<p>Three reasons this works better for intracity than for hyperlocal food:</p><ul><li><strong>Supply is lumpy:</strong> Intracity has predictable demand peaks (morning 9–11 AM, evening 6–9 PM) and troughs. Scheduled orders routed into troughs improve driver utilisation without adding supply — effectively increasing capacity without cost.</li><li><strong>Orders are higher value and less time-sensitive:</strong> A ₹500 intracity courier is not a cold biryani. The recipient is not expecting it in 30 minutes. A 2-hour window is a reasonable trade for a slightly lower price.</li><li><strong>Repeat order value:</strong> Customers who schedule deliveries are demonstrating planning behaviour — they're likely to use the product regularly. Scheduled delivery is a habit-forming feature, not a one-time use case. The repeat order rate among scheduling users is likely to be significantly higher than among on-demand users.</li></ul>` },
+      { title: "How I'd Measure Success", body: `<p>Primary metric: scheduled order rate — percentage of eligible orders (non-urgent, customer-selectable) that choose a window. Target: 15% in the first 90 days.</p><p>Secondary metrics: failed delivery attempt rate for scheduled vs. on-demand orders (hypothesis: scheduled orders fail less), driver utilisation during trough hours (hypothesis: improves 10–15%), and 90-day repeat order rate for customers who use scheduling vs. those who don't.</p><p>Guardrail metrics: immediate delivery conversion rate (scheduling option must not confuse or slow down customers who want on-demand), and average revenue per order (scheduled orders are priced lower — ensure the mix shift doesn't degrade overall revenue per order by more than 3%).</p>` },
+      { title: "What I'd Deliberately Not Build in V1", body: `<p>The temptation in a scheduling product is to build too much: real-time slot availability, dynamic pricing per slot, driver pre-assignment, customer rescheduling flows, and SMS reminders. All of these have value. None of them are needed to validate the core hypothesis.</p><p>V1 should answer one question: do customers choose scheduled delivery when offered it, and do those deliveries succeed at a higher rate? Everything else is a V2 decision contingent on a yes to that question.</p><p>Specifically, V1 should not include: per-slot dynamic pricing (use a flat discount), driver pre-assignment (assign at window start, same as on-demand), or customer rescheduling (cancel and rebook if needed). The complexity of these features is only justified if the core demand signal is strong.</p>` }
     ]
   }
 };
