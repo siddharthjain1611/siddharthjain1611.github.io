@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Multi-Agent Evaluation Frameworks | Siddharth Jain</title>
+<meta name="description" content="How we architected a shadow-evaluator agent to block 99% of primary LLM policy hallucinations in real-time without sacrificing latency."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#a78bfa;--accent2:#4f8ef7;--green:#22c55e;--red:#ef4444;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:60px;background:rgba(10,11,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:500;}
+.nav-logo{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-decoration:none;}
+.nav-back{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text3);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--text);}
+.case-hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.10) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;}
+.case-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(124,58,237,0.35);background:rgba(124,58,237,0.08);padding:0.35rem 0.8rem;border-radius:2px;display:inline-block;margin-bottom:1.5rem;}
+.case-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.case-subtitle{font-size:1.1rem;color:var(--text2);font-weight:300;max-width:680px;line-height:1.75;margin-bottom:3rem;}
+.case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
+.meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
+.metrics-bar{background:var(--bg2);border-bottom:1px solid var(--border);}
+.metrics-inner{max-width:860px;margin:0 auto;padding:2.5rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.metric-block{background:var(--bg2);padding:2rem 2.5rem;}
+.metric-num{font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:0.4rem;}
+.metric-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.metric-sub{font-size:0.82rem;color:var(--text2);margin-top:0.4rem;font-weight:300;}
+.case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
+.section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
+.case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
+.case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
+.case-body ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;}
+.case-body strong{color:var(--text);font-weight:500;}
+.callout{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.5rem 2rem;margin:2.5rem 0;border-radius:0 4px 4px 0;}
+.callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
+.diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
+.diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
+
+/* AGENT ARCHITECTURE DIAGRAM */
+.agent-arch{display:flex;flex-direction:column;gap:1.5rem;align-items:center;}
+.arch-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.arch-node{background:var(--bg3);border:1px solid var(--border2);padding:0.9rem 1.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);text-align:center;line-height:1.4;}
+.arch-node.primary{border-color:rgba(124,58,237,0.5);color:var(--accent);background:rgba(124,58,237,0.08);}
+.arch-node.evaluator{border-color:rgba(79,142,247,0.5);color:var(--accent2);background:rgba(79,142,247,0.08);}
+.arch-node.gate{border-color:rgba(34,197,94,0.5);color:var(--green);background:rgba(34,197,94,0.07);}
+.arch-node.block{border-color:rgba(239,68,68,0.5);color:var(--red);background:rgba(239,68,68,0.07);}
+.arch-arrow{color:var(--text3);font-size:1.1rem;flex-shrink:0;}
+.arch-label{font-family:var(--font-mono);font-size:0.58rem;color:var(--text3);text-align:center;margin-top:0.5rem;}
+.arch-parallel{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;width:100%;max-width:500px;}
+.arch-parallel-item{flex:1;padding:1.2rem;background:var(--bg2);text-align:center;}
+.arch-parallel-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:0.4rem;}
+.arch-parallel-val{font-family:var(--font-head);font-size:0.9rem;font-weight:700;color:var(--text);}
+
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.8rem;margin:2rem 0;overflow-x:auto;}
+.code-block pre{font-family:var(--font-mono);font-size:0.78rem;line-height:1.7;color:var(--text2);}
+.code-block .c-key{color:var(--accent);}
+.code-block .c-str{color:var(--green);}
+.code-block .c-val{color:#f59e0b;}
+.code-block .c-comment{color:var(--text3);}
+
+.phase-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.phase-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.phase-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.phase-table tr:last-child td{border-bottom:none;}
+.phase-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
+.btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
+.btn-back:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.metrics-inner{grid-template-columns:1fr;}.arch-row{flex-direction:column;}.arch-arrow{transform:rotate(90deg);}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">SJ.PM</a>
+  <a href="index.html" class="nav-back">← All Cases</a>
+</nav>
+
+<header class="case-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="case-tag">AI Infrastructure / LLM Systems</span>
+    <h1 class="case-title">Multi-Agent<br/>Evaluation Frameworks</h1>
+    <p class="case-subtitle">LLM chatbots confidently hallucinate policies, destroying CSAT. Prompt-stuffing fails at scale. We architected a parallel "shadow-evaluator" agent that intercepted and blocked 99% of policy violations before they ever reached the user.</p>
+    <div class="case-meta-row">
+      <div class="meta-item">Domain<span>AI / LLM Infrastructure</span></div>
+      <div class="meta-item">Scope<span>Customer Support Automation</span></div>
+      <div class="meta-item">Stack<span>MCP Server · Multi-Agent · Rules Engine API</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="metrics-bar">
+  <div class="metrics-inner">
+    <div class="metric-block">
+      <div class="metric-num">99%</div>
+      <div class="metric-label">Policy Violation Block Rate</div>
+      <div class="metric-sub">Pre-intercept before user sees response</div>
+    </div>
+    <div class="metric-block">
+      <div class="metric-num">&lt;2s</div>
+      <div class="metric-label">Perceived Latency</div>
+      <div class="metric-sub">Via parallel execution + chunk streaming</div>
+    </div>
+    <div class="metric-block">
+      <div class="metric-num">0</div>
+      <div class="metric-label">Prompt Rules Required</div>
+      <div class="metric-sub">Policy enforcement moved to architecture layer</div>
+    </div>
+  </div>
+</div>
+
+<main class="case-body">
+
+  <div class="section-label">01 / The Problem</div>
+  <h2>Prompt-Stuffing Fails. Always.</h2>
+  <p>The industry's default response to LLM hallucinations in enterprise support is to add more rules to the system prompt: <em>"Never promise refunds over $50. Do not discuss competitor pricing. Always escalate tier-2 complaints."</em></p>
+  <p>At small scale, this works. At production scale, it fails for a fundamental reason: <strong>attention degradation</strong>. As the system prompt grows, the model's effective attention to any single rule decreases. By the time your rules document hits 4,000 tokens, the model is probabilistically forgetting instructions buried in the middle.</p>
+  <p>The result: a support agent that confidently promises a customer a $200 refund that violates company policy, then apologizes when the human team reverses it — destroying trust in both directions.</p>
+
+  <div class="callout"><p>"Safe AI is not a prompting problem. It's an architectural problem. The policy layer should be as separate from the language layer as a database is from an API."</p></div>
+
+  <div class="section-label">02 / The Hacky V1</div>
+  <h2>Post-Hoc Asynchronous Auditing</h2>
+  <p>Our first attempt at safety was asynchronous. We piped all LLM-generated chat transcripts into a nightly batch job. A smaller, cheaper model flagged conversations that appeared to contain policy violations. A human team reviewed the flags the next morning.</p>
+  <p>This was excellent for analytics — we could precisely quantify the violation rate (17% of conversations in the first week) and identify which policy categories were most frequently violated (refund commitments: 61%, warranty interpretations: 28%).</p>
+  <p>But for the customer, the damage was already done. The violation had been made, the expectation set, the trust broken — or worse, the incorrect promise acted upon. Post-hoc auditing was a measurement tool, not a prevention tool.</p>
+
+  <div class="section-label">03 / The Wall</div>
+  <h2>Real-Time Evaluation = Latency Catastrophe</h2>
+  <p>The obvious next step: evaluate responses before they reach the user. We tried inserting a second LLM call into the response chain — User → Primary Agent → Evaluator Agent → User.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-title">Linear Chain Architecture (Rejected)</div>
+    <div class="agent-arch">
+      <div class="arch-row">
+        <div class="arch-node">User Message</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node primary">Primary Agent<br/><span style="font-size:0.55rem;color:var(--text3);">~900ms</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node evaluator">Evaluator Agent<br/><span style="font-size:0.55rem;color:var(--text3);">~1,100ms</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node gate">User Response<br/><span style="font-size:0.55rem;color:var(--text3);">P90: 2,800ms</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p>This pushed our P90 response latency to <strong>2.8 seconds</strong>. In live chat, anything above 2 seconds causes measurable drop-off. We were adding a safety mechanism that degraded the core product metric. Unacceptable.</p>
+
+  <div class="section-label">04 / The Real Solution</div>
+  <h2>The Parallel Shadow-Evaluator via MCP Server</h2>
+  <p>Instead of a linear chain, we rebuilt the architecture around a Model Context Protocol (MCP) server acting as an orchestration layer. The key insight: the Primary Agent and Evaluator Agent don't need to run sequentially — they can run in parallel on the same input context.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-title">Parallel Shadow-Evaluator Architecture (Final)</div>
+    <div class="agent-arch">
+      <div class="arch-row">
+        <div class="arch-node">User Message</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node primary" style="min-width:160px;">MCP Orchestrator</div>
+      </div>
+      <div class="arch-row" style="gap:2rem;">
+        <div>
+          <div class="arch-node primary" style="min-width:160px;">Primary Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Response Draft · 900ms</span></div>
+          <div class="arch-label">Tone + Fluency</div>
+        </div>
+        <div style="display:flex;align-items:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--text3);">parallel</div>
+        <div>
+          <div class="arch-node evaluator" style="min-width:160px;">Evaluator Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Policy Check · 950ms</span></div>
+          <div class="arch-label">→ Rules Engine API</div>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node gate">Score ≥ 0.95<br/>→ Release to User</div>
+        <div style="font-family:var(--font-mono);font-size:0.9rem;color:var(--text3);margin:0 0.5rem;">|</div>
+        <div class="arch-node block">Score &lt; 0.95<br/>→ Block + Fallback</div>
+      </div>
+    </div>
+  </div>
+
+  <p>The architecture had three key components:</p>
+  <ul>
+    <li><strong>The Primary Agent:</strong> A fast, lightweight model (optimized for tone and conversational fluency) generates the draft response. It has no awareness of policy rules — it only knows how to sound human and helpful.</li>
+    <li><strong>The Evaluator Agent (Shadow):</strong> A specialized model with strict JSON-schema output runs in parallel on the same conversation context. It has access to the company's internal Rules Engine API — a deterministic service that enforces refund limits, escalation thresholds, and regulatory requirements. It returns a structured confidence score for each policy category.</li>
+    <li><strong>The MCP Intercept Gate:</strong> Before the Primary Agent's response hits the websocket, the Orchestrator checks whether the Evaluator's aggregate confidence score meets the 0.95 threshold. Below threshold → the response is blocked and replaced by a pre-approved fallback template or routed to a human agent.</li>
+  </ul>
+
+  <div class="code-block">
+    <pre><span class="c-comment"># Evaluator response schema (simplified)</span>
+{
+  <span class="c-key">"policy_scores"</span>: {
+    <span class="c-key">"refund_compliance"</span>: <span class="c-val">0.98</span>,
+    <span class="c-key">"warranty_claims"</span>: <span class="c-val">0.96</span>,
+    <span class="c-key">"escalation_triggers"</span>: <span class="c-val">0.91</span>  <span class="c-comment">← BLOCKED</span>
+  },
+  <span class="c-key">"aggregate_score"</span>: <span class="c-val">0.93</span>,
+  <span class="c-key">"action"</span>: <span class="c-str">"BLOCK"</span>,
+  <span class="c-key">"reason"</span>: <span class="c-str">"Escalation trigger missed: complaint tier-2 detected"</span>
+}</pre>
+  </div>
+
+  <div class="section-label">05 / Results & Learnings</div>
+  <h2>Safe AI as Architecture, Not Prompting</h2>
+
+  <table class="phase-table">
+    <thead>
+      <tr><th>Approach</th><th>Violation Block Rate</th><th>P90 Latency</th><th>Verdict</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Prompt-stuffing</td><td>~40%</td><td>900ms</td><td>Fast, unsafe at scale</td></tr>
+      <tr><td>Post-hoc audit</td><td>100% detected, 0% prevented</td><td>No impact</td><td>Good for analytics, useless for safety</td></tr>
+      <tr><td>Linear chain</td><td>97%</td><td>2,800ms</td><td>Too slow for live chat</td></tr>
+      <tr><td>Parallel shadow evaluator</td><td>99%</td><td>1,050ms</td><td>✓ Shipped to production</td></tr>
+    </tbody>
+  </table>
+
+  <p>The core insight that made this work: <strong>separating the generation concern from the safety concern</strong>. The Primary Agent doesn't need to know about policy — it just needs to generate fluent language. The Evaluator doesn't need to be fluent — it just needs to be right. Specialization at the agent level is what made both fast and accurate.</p>
+  <p>This architecture is now the template for every new AI feature deployment. Before a new agent goes to production, it gets a bespoke Evaluator Agent with domain-specific policy schemas.</p>
+
+</main>
+
+<div class="case-footer-nav">
+  <a href="index.html" class="btn-back">← Back to Portfolio</a>
+</div>
+</body>
+</html>
