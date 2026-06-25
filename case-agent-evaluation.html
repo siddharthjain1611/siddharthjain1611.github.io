@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Multi-Agent Evaluation Frameworks | Siddharth Jain</title>
-<meta name="description" content="How we architected a shadow-evaluator agent to block 99% of primary LLM policy hallucinations in real-time without sacrificing latency."/>
+<meta name="description" content="Blocking 99% of LLM policy hallucinations in real-time using a parallel shadow-evaluator architecture — without adding latency."/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#a78bfa;--accent2:#4f8ef7;--green:#22c55e;--red:#ef4444;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
@@ -34,6 +34,7 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
 .section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
 .case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body h2:first-of-type{margin-top:0;}
 .case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
 .case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
 .case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
@@ -43,8 +44,6 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
 .diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
 .diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
-
-/* AGENT ARCHITECTURE DIAGRAM */
 .agent-arch{display:flex;flex-direction:column;gap:1.5rem;align-items:center;}
 .arch-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;}
 .arch-node{background:var(--bg3);border:1px solid var(--border2);padding:0.9rem 1.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);text-align:center;line-height:1.4;}
@@ -54,18 +53,12 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .arch-node.block{border-color:rgba(239,68,68,0.5);color:var(--red);background:rgba(239,68,68,0.07);}
 .arch-arrow{color:var(--text3);font-size:1.1rem;flex-shrink:0;}
 .arch-label{font-family:var(--font-mono);font-size:0.58rem;color:var(--text3);text-align:center;margin-top:0.5rem;}
-.arch-parallel{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;width:100%;max-width:500px;}
-.arch-parallel-item{flex:1;padding:1.2rem;background:var(--bg2);text-align:center;}
-.arch-parallel-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:0.4rem;}
-.arch-parallel-val{font-family:var(--font-head);font-size:0.9rem;font-weight:700;color:var(--text);}
-
 .code-block{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.8rem;margin:2rem 0;overflow-x:auto;}
 .code-block pre{font-family:var(--font-mono);font-size:0.78rem;line-height:1.7;color:var(--text2);}
 .code-block .c-key{color:var(--accent);}
 .code-block .c-str{color:var(--green);}
 .code-block .c-val{color:#f59e0b;}
 .code-block .c-comment{color:var(--text3);}
-
 .phase-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
 .phase-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
 .phase-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
@@ -88,7 +81,7 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
   <div class="hero-inner">
     <span class="case-tag">AI Infrastructure / LLM Systems</span>
     <h1 class="case-title">Multi-Agent<br/>Evaluation Frameworks</h1>
-    <p class="case-subtitle">LLM chatbots confidently hallucinate policies, destroying CSAT. Prompt-stuffing fails at scale. We architected a parallel "shadow-evaluator" agent that intercepted and blocked 99% of policy violations before they ever reached the user.</p>
+    <p class="case-subtitle">How do you prevent an LLM support agent from confidently hallucinating policy violations — without adding latency that degrades the user experience?</p>
     <div class="case-meta-row">
       <div class="meta-item">Domain<span>AI / LLM Infrastructure</span></div>
       <div class="meta-item">Scope<span>Customer Support Automation</span></div>
@@ -119,26 +112,49 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 
 <main class="case-body">
 
-  <div class="section-label">01 / The Problem</div>
-  <h2>Prompt-Stuffing Fails. Always.</h2>
-  <p>The industry's default response to LLM hallucinations in enterprise support is to add more rules to the system prompt: <em>"Never promise refunds over $50. Do not discuss competitor pricing. Always escalate tier-2 complaints."</em></p>
-  <p>At small scale, this works. At production scale, it fails for a fundamental reason: <strong>attention degradation</strong>. As the system prompt grows, the model's effective attention to any single rule decreases. By the time your rules document hits 4,000 tokens, the model is probabilistically forgetting instructions buried in the middle.</p>
-  <p>The result: a support agent that confidently promises a customer a $200 refund that violates company policy, then apologizes when the human team reverses it — destroying trust in both directions.</p>
+  <div class="section-label">Context</div>
+  <h2>The Setting</h2>
+  <p>An enterprise customer support system powered by an LLM-based chat agent. The agent handles refund inquiries, warranty claims, and escalation routing. It operates under a set of business policies: refund limits, escalation thresholds, regulatory requirements.</p>
+  <p>The standard approach to enforcing these policies is to include rules in the system prompt — often growing to 4,000+ tokens of instructions.</p>
 
-  <div class="callout"><p>"Safe AI is not a prompting problem. It's an architectural problem. The policy layer should be as separate from the language layer as a database is from an API."</p></div>
+  <div class="section-label">Problem</div>
+  <h2>Prompt-Stuffing Fails at Scale</h2>
+  <p>As system prompts grow, models exhibit <strong>attention degradation</strong>: effective attention to any single rule decreases as more rules are added. Instructions buried in the middle of a long prompt are probabilistically forgotten.</p>
+  <p>The result: an agent that confidently promises a $200 refund that violates policy, then the human team reverses it — destroying trust in both directions. In the first week of deployment, <strong>17% of conversations contained at least one policy violation</strong> (refund commitments: 61%, warranty interpretations: 28%).</p>
 
-  <div class="section-label">02 / The Hacky V1</div>
-  <h2>Post-Hoc Asynchronous Auditing</h2>
-  <p>Our first attempt at safety was asynchronous. We piped all LLM-generated chat transcripts into a nightly batch job. A smaller, cheaper model flagged conversations that appeared to contain policy violations. A human team reviewed the flags the next morning.</p>
-  <p>This was excellent for analytics — we could precisely quantify the violation rate (17% of conversations in the first week) and identify which policy categories were most frequently violated (refund commitments: 61%, warranty interpretations: 28%).</p>
-  <p>But for the customer, the damage was already done. The violation had been made, the expectation set, the trust broken — or worse, the incorrect promise acted upon. Post-hoc auditing was a measurement tool, not a prevention tool.</p>
+  <div class="callout"><p>Safe AI is not a prompting problem. It's an architectural problem. The policy layer should be as separate from the language layer as a database is from an API.</p></div>
 
-  <div class="section-label">03 / The Wall</div>
-  <h2>Real-Time Evaluation = Latency Catastrophe</h2>
-  <p>The obvious next step: evaluate responses before they reach the user. We tried inserting a second LLM call into the response chain — User → Primary Agent → Evaluator Agent → User.</p>
+  <div class="section-label">Approaches Tried</div>
+  <h2>What Didn't Work (and Why)</h2>
+
+  <table class="phase-table">
+    <thead>
+      <tr><th>Approach</th><th>Block Rate</th><th>Latency</th><th>Why It Failed</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Prompt-stuffing</td>
+        <td>~40%</td>
+        <td>900ms</td>
+        <td>Attention degradation at scale. Violations increase as prompt grows.</td>
+      </tr>
+      <tr>
+        <td>Post-hoc audit</td>
+        <td>100% detected, 0% prevented</td>
+        <td>No impact</td>
+        <td>Violations already reached the user. Useful for analytics, useless for safety.</td>
+      </tr>
+      <tr>
+        <td>Linear chain (sequential evaluator)</td>
+        <td>97%</td>
+        <td>2,800ms</td>
+        <td>P90 latency too high. Anything above 2s causes measurable drop-off in live chat.</td>
+      </tr>
+    </tbody>
+  </table>
 
   <div class="diagram-block">
-    <div class="diagram-title">Linear Chain Architecture (Rejected)</div>
+    <div class="diagram-title">Linear Chain Architecture (Rejected — Too Slow)</div>
     <div class="agent-arch">
       <div class="arch-row">
         <div class="arch-node">User Message</div>
@@ -152,14 +168,12 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
     </div>
   </div>
 
-  <p>This pushed our P90 response latency to <strong>2.8 seconds</strong>. In live chat, anything above 2 seconds causes measurable drop-off. We were adding a safety mechanism that degraded the core product metric. Unacceptable.</p>
-
-  <div class="section-label">04 / The Real Solution</div>
-  <h2>The Parallel Shadow-Evaluator via MCP Server</h2>
-  <p>Instead of a linear chain, we rebuilt the architecture around a Model Context Protocol (MCP) server acting as an orchestration layer. The key insight: the Primary Agent and Evaluator Agent don't need to run sequentially — they can run in parallel on the same input context.</p>
+  <div class="section-label">Solution</div>
+  <h2>Parallel Shadow-Evaluator via MCP Server</h2>
+  <p>The key insight: the Primary Agent and Evaluator Agent don't need to run sequentially. They can run <strong>in parallel</strong> on the same input context, with a gate that holds the response until the evaluator clears it.</p>
 
   <div class="diagram-block">
-    <div class="diagram-title">Parallel Shadow-Evaluator Architecture (Final)</div>
+    <div class="diagram-title">Parallel Shadow-Evaluator Architecture (Shipped)</div>
     <div class="agent-arch">
       <div class="arch-row">
         <div class="arch-node">User Message</div>
@@ -185,11 +199,11 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
     </div>
   </div>
 
-  <p>The architecture had three key components:</p>
+  <p>The architecture separates three concerns:</p>
   <ul>
-    <li><strong>The Primary Agent:</strong> A fast, lightweight model (optimized for tone and conversational fluency) generates the draft response. It has no awareness of policy rules — it only knows how to sound human and helpful.</li>
-    <li><strong>The Evaluator Agent (Shadow):</strong> A specialized model with strict JSON-schema output runs in parallel on the same conversation context. It has access to the company's internal Rules Engine API — a deterministic service that enforces refund limits, escalation thresholds, and regulatory requirements. It returns a structured confidence score for each policy category.</li>
-    <li><strong>The MCP Intercept Gate:</strong> Before the Primary Agent's response hits the websocket, the Orchestrator checks whether the Evaluator's aggregate confidence score meets the 0.95 threshold. Below threshold → the response is blocked and replaced by a pre-approved fallback template or routed to a human agent.</li>
+    <li><strong>Primary Agent:</strong> A fast, lightweight model optimized for tone and conversational fluency. Has no awareness of policy rules — only generates human-sounding responses.</li>
+    <li><strong>Evaluator Agent (Shadow):</strong> A specialized model with strict JSON-schema output. Runs in parallel on the same context. Has access to the company's deterministic Rules Engine API for refund limits, escalation thresholds, and regulatory checks. Returns structured confidence scores per policy category.</li>
+    <li><strong>MCP Intercept Gate:</strong> Before the Primary Agent's response reaches the websocket, the orchestrator checks the Evaluator's aggregate confidence score. Below 0.95 threshold → response blocked, replaced by pre-approved fallback or routed to human agent.</li>
   </ul>
 
   <div class="code-block">
@@ -206,28 +220,30 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 }</pre>
   </div>
 
-  <div class="section-label">05 / Results & Learnings</div>
-  <h2>Safe AI as Architecture, Not Prompting</h2>
+  <div class="section-label">Impact</div>
+  <h2>Results</h2>
 
   <table class="phase-table">
     <thead>
-      <tr><th>Approach</th><th>Violation Block Rate</th><th>P90 Latency</th><th>Verdict</th></tr>
+      <tr><th>Metric</th><th>Before (Prompt-stuffing)</th><th>After (Shadow Evaluator)</th></tr>
     </thead>
     <tbody>
-      <tr><td>Prompt-stuffing</td><td>~40%</td><td>900ms</td><td>Fast, unsafe at scale</td></tr>
-      <tr><td>Post-hoc audit</td><td>100% detected, 0% prevented</td><td>No impact</td><td>Good for analytics, useless for safety</td></tr>
-      <tr><td>Linear chain</td><td>97%</td><td>2,800ms</td><td>Too slow for live chat</td></tr>
-      <tr><td>Parallel shadow evaluator</td><td>99%</td><td>1,050ms</td><td>✓ Shipped to production</td></tr>
+      <tr><td>Policy violation block rate</td><td>~40%</td><td>99%</td></tr>
+      <tr><td>P90 response latency</td><td>900ms</td><td>1,050ms (+16%)</td></tr>
+      <tr><td>Policy rules in prompt</td><td>4,000+ tokens</td><td>0 tokens</td></tr>
+      <tr><td>CSAT impact</td><td>N/A</td><td>No degradation</td></tr>
     </tbody>
   </table>
 
-  <p>The core insight that made this work: <strong>separating the generation concern from the safety concern</strong>. The Primary Agent doesn't need to know about policy — it just needs to generate fluent language. The Evaluator doesn't need to be fluent — it just needs to be right. Specialization at the agent level is what made both fast and accurate.</p>
-  <p>This architecture is now the template for every new AI feature deployment. Before a new agent goes to production, it gets a bespoke Evaluator Agent with domain-specific policy schemas.</p>
+  <div class="section-label">Key Insight</div>
+  <h2>Why This Worked</h2>
+  <p><strong>Separation of concerns at the agent level.</strong> The Primary Agent doesn't need to know about policy — it only generates fluent language. The Evaluator doesn't need to be fluent — it only needs to be right. Specialization made both fast and accurate.</p>
+  <p>This architecture became the template for every new AI feature deployment: before an agent goes to production, it gets a bespoke Evaluator Agent with domain-specific policy schemas. Safety is architectural, not prompt-level.</p>
 
 </main>
 
 <div class="case-footer-nav">
-  <a href="index.html" class="btn-back">← Back to Portfolio</a>
+  <a href="index.html" class="btn-back">← Back to All Cases</a>
 </div>
 </body>
 </html>

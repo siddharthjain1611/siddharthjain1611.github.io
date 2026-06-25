@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Dynamic Geofencing & Pre-emptive Routing | Siddharth Jain</title>
-<meta name="description" content="How we built a predictive geofencing model that pre-emptively routed idle drivers to high-probability demand zones, reducing zero-dispatch rates by 18%."/>
+<meta name="description" content="Reducing zero-dispatch rates by 18% through predictive geofencing that pre-positions idle drivers in high-probability demand zones before orders arrive."/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -19,14 +19,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:60px;background:rgba(10,11,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:500;}
 .nav-logo{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-decoration:none;}
 .nav-back{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text3);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
 .nav-back:hover{color:var(--text);}
-
-/* HERO */
 .case-hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
 .hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(79,142,247,0.09) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;}
 .hero-inner{max-width:860px;margin:0 auto;position:relative;}
@@ -36,30 +32,23 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
 .meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
 .meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
-
-/* METRICS BAR */
 .metrics-bar{background:var(--bg2);border-bottom:1px solid var(--border);}
 .metrics-inner{max-width:860px;margin:0 auto;padding:2.5rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
 .metric-block{background:var(--bg2);padding:2rem 2.5rem;}
 .metric-num{font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:0.4rem;}
 .metric-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
 .metric-sub{font-size:0.82rem;color:var(--text2);margin-top:0.4rem;font-weight:300;}
-
-/* CONTENT */
 .case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
 .section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
 .case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body h2:first-of-type{margin-top:0;}
 .case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
 .case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
 .case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
 .case-body ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;}
 .case-body strong{color:var(--text);font-weight:500;}
-
-/* CALLOUT */
 .callout{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.5rem 2rem;margin:2.5rem 0;border-radius:0 4px 4px 0;}
 .callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
-
-/* DIAGRAM */
 .diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
 .diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
 .flow-nodes{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;}
@@ -77,19 +66,14 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .hex-legend{display:flex;gap:1.5rem;justify-content:center;margin-top:1rem;flex-wrap:wrap;}
 .hex-legend-item{display:flex;align-items:center;gap:0.4rem;font-family:var(--font-mono);font-size:0.58rem;color:var(--text3);}
 .hex-legend-dot{width:10px;height:10px;border-radius:2px;}
-
-/* PHASE TABLE */
 .phase-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
 .phase-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
 .phase-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
 .phase-table tr:last-child td{border-bottom:none;}
 .phase-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
-
-/* FOOTER */
 .case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
 .btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
 .btn-back:hover{border-color:var(--accent);color:var(--accent);}
-
 @media(max-width:768px){
   .case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}
   nav{padding:0 1.5rem;}
@@ -110,7 +94,7 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
   <div class="hero-inner">
     <span class="case-tag">Logistics & Marketplace Operations</span>
     <h1 class="case-title">Dynamic Geofencing &<br/>Pre-emptive Routing</h1>
-    <p class="case-subtitle">Reacting to demand spikes with surge pricing is too slow. We built a predictive geofencing model that pre-emptively routed idle drivers to high-probability demand zones using external signals — before the first order was even placed.</p>
+    <p class="case-subtitle">How do you reduce failed deliveries when the problem isn't driver supply — but spatial mismatch between where drivers are and where demand is about to appear?</p>
     <div class="case-meta-row">
       <div class="meta-item">Domain<span>Marketplace / Logistics</span></div>
       <div class="meta-item">Scope<span>Supply-side Operations</span></div>
@@ -122,18 +106,18 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 <div class="metrics-bar">
   <div class="metrics-inner">
     <div class="metric-block">
-      <div class="metric-num">18%</div>
-      <div class="metric-label">Zero-Dispatch Rate Reduction</div>
+      <div class="metric-num">-18%</div>
+      <div class="metric-label">Zero-Dispatch Rate</div>
       <div class="metric-sub">Across metropolitan peak hours</div>
     </div>
     <div class="metric-block">
       <div class="metric-num">16min</div>
-      <div class="metric-label">P80 Pickup in Volatile Zones</div>
+      <div class="metric-label">P80 Pickup Time</div>
       <div class="metric-sub">Down from 24 min pre-intervention</div>
     </div>
     <div class="metric-block">
-      <div class="metric-num">12%</div>
-      <div class="metric-label">Empty-Leg Trip Reduction</div>
+      <div class="metric-num">-12%</div>
+      <div class="metric-label">Empty-Leg Trips</div>
       <div class="metric-sub">Directly improving driver earnings</div>
     </div>
   </div>
@@ -141,28 +125,43 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 
 <main class="case-body">
 
-  <div class="section-label">01 / The Problem</div>
-  <h2>Surge Pricing Is Fundamentally Too Late</h2>
-  <p>In intracity logistics, surge pricing is reactive by design. By the time a demand spike is detected — enough orders queuing without driver accepts — and a 1.5x multiplier is applied, the local supply of drivers is already depleted. Drivers sitting 3km away need 15-20 minutes to reach the surge zone.</p>
-  <p>By then, the demand spike has often passed. Customers have churned. Drivers who moved got no trips. The surge mechanism — designed to solve scarcity — created a lag-induced scarcity-frustration loop.</p>
-  <p>At 18,000+ daily orders, this was responsible for a <strong>22% zero-dispatch rate during peak evening hours</strong>. That's 4,000 failed deliveries a day not because we lacked drivers — but because they were in the wrong place at the wrong time.</p>
+  <div class="section-label">Context</div>
+  <h2>The Setting</h2>
+  <p>An intracity delivery network processing 18,000+ daily orders across multiple metropolitan zones. Drivers are independent contractors who choose when and where to work. Demand is highly spatio-temporal — concentrated in specific zones during predictable windows (lunch, evening grocery, office dispersal).</p>
+  <p>The platform uses surge pricing as its primary mechanism to balance supply and demand in real time.</p>
 
-  <div class="callout"><p>"The problem wasn't supply. It was spatial mismatch. We had drivers — we just couldn't see where demand was going before it arrived."</p></div>
+  <div class="section-label">Problem</div>
+  <h2>Surge Pricing Is Fundamentally Reactive</h2>
+  <p>Surge pricing only activates <em>after</em> demand has already spiked and orders are queuing without driver accepts. By the time a 1.5x multiplier is applied, the local driver pool is already depleted. Drivers 3km away need 15-20 minutes to reach the surge zone — by which point, the demand spike has often passed.</p>
+  <p>The result: a <strong>22% zero-dispatch rate during peak evening hours</strong>. That's ~4,000 failed deliveries per day — not because of insufficient total supply, but because drivers were consistently in the wrong place at the wrong time.</p>
 
-  <div class="section-label">02 / The Hacky V1</div>
-  <h2>Manual Dispatch Hints via Push Notifications</h2>
-  <p>Before building the ML pipeline, we tested the hypothesis manually. Operations leads would review historical data on Monday mornings, identify predictable high-demand events for the week (tech park dispersals, evening grocery windows, major residential towers), and schedule manual push notifications to idle nearby drivers 30 minutes prior.</p>
-  <p>The message was blunt: <em>"High demand expected in Koramangala. Move there to earn more."</em></p>
-  <p>This worked. A 5% increase in local supply before the surge started was measurable and statistically significant. The hypothesis was validated: if drivers know demand is coming, they will move.</p>
-  <p>But manual scheduling couldn't scale beyond 3 cities or adapt in real time to unexpected spikes.</p>
+  <div class="callout"><p>The problem wasn't supply. It was spatial mismatch. Drivers existed — but the system couldn't see where demand was going before it arrived.</p></div>
 
-  <div class="section-label">03 / The Wall</div>
-  <h2>Supply Cannibalization</h2>
-  <p>When we automated the pre-emptive dispatch nudges using a simple demand forecast model, we hit an immediate unintended consequence: <strong>Supply Cannibalization</strong>.</p>
-  <p>By aggressively drawing drivers toward Zone A (predicted high demand), we drained adjacent Zone B. Zone B would then trigger its own surge. Drivers would move from Zone A to Zone B. Zone A would surge again. The supply oscillated between zones like a pendulum.</p>
+  <div class="section-label">Approaches Tried</div>
+  <h2>What Didn't Work (and Why)</h2>
+
+  <table class="phase-table">
+    <thead>
+      <tr><th>Approach</th><th>What It Did</th><th>Why It Failed</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Manual Nudges</td>
+        <td>Ops leads identified predictable demand events and pushed notifications to idle drivers 30 min before</td>
+        <td>+5% local supply pre-spike. Validated the hypothesis but couldn't scale beyond 3 cities or adapt to unexpected spikes.</td>
+      </tr>
+      <tr>
+        <td>Naive Auto-Forecast</td>
+        <td>Simple demand forecast model optimized supply for a single zone at a time</td>
+        <td>Supply cannibalization — drawing drivers to Zone A drained Zone B, causing oscillating surges between adjacent zones.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The core failure of the naive approach: optimizing supply for individual zones creates global inefficiency. Solving one zone's scarcity by pulling from neighbors just moves the problem.</p>
 
   <div class="diagram-block">
-    <div class="diagram-title">H3 Hexagonal Demand Heatmap — Simulated State</div>
+    <div class="diagram-title">H3 Hexagonal Demand Heatmap — Supply Oscillation Problem</div>
     <div class="hex-grid">
       <div class="hex-row">
         <div class="hex cool">LOW</div>
@@ -194,15 +193,14 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
     </div>
   </div>
 
-  <p>We needed a model that didn't maximize supply in a single zone — it had to optimize the <strong>global distribution of supply</strong> across all overlapping geofences simultaneously, respecting driver trajectory and minimum earn guarantees.</p>
-
-  <div class="section-label">04 / The Real Solution</div>
+  <div class="section-label">Solution</div>
   <h2>Predictive Geofencing with Global Supply Optimization</h2>
-  <p>We rebuilt the dispatch system around three core architectural changes:</p>
+  <p>The solution required three architectural changes that worked together:</p>
+
   <ul>
-    <li><strong>H3 Hexagonal Grid (Resolution 8):</strong> Instead of rigid neighborhood polygons, we shifted to Uber's H3 library to generate dynamic, overlapping hexagonal grids. Each hex is ~460m across — small enough to be actionable, large enough to aggregate meaningful signal.</li>
-    <li><strong>Multi-Signal Demand Forecast:</strong> The demand model ingested historical order density (by hour, day, and location), real-time traffic anomalies from the Maps API, and weather signals. A gradient-boosted tree predicted demand 25 minutes forward for each H3 hex.</li>
-    <li><strong>Global Supply Optimization:</strong> Instead of nudging individual drivers, the system ran a global assignment problem every 90 seconds — treating idle drivers as resources and predicted demand centroids as "soft assignments," minimizing total system travel time while respecting driver constraints.</li>
+    <li><strong>H3 Hexagonal Grid (Resolution 8):</strong> Replaced rigid neighborhood polygons with Uber's H3 library — dynamic, overlapping hexagonal cells ~460m across. Small enough for actionable precision, large enough to aggregate meaningful signal.</li>
+    <li><strong>Multi-Signal Demand Forecast (T+25 min):</strong> A gradient-boosted tree model ingesting historical order density (hour/day/location), real-time traffic anomalies from Maps API, and weather signals. Predicts demand 25 minutes forward per H3 hex.</li>
+    <li><strong>Global Supply Optimizer:</strong> Instead of nudging individual drivers toward individual zones, the system runs a global assignment problem every 90 seconds — treating all idle drivers as resources and all predicted demand centroids as soft assignments, minimizing total system travel time while respecting driver constraints.</li>
   </ul>
 
   <div class="diagram-block">
@@ -218,41 +216,32 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
     </div>
   </div>
 
-  <p>Critically, the nudge to drivers was incentive-based, not mandatory. Drivers heading toward a predicted high-demand zone received a "Demand Preview" card in the app: <em>"High orders likely in X area in 20 mins. Route there to maximize earnings."</em> Accept rate of the nudge was tracked as a secondary metric.</p>
+  <p>A critical design choice: nudges are <strong>incentive-based, not mandatory</strong>. Drivers receive a "Demand Preview" card: <em>"High orders likely in X area in 20 mins. Route there to maximize earnings."</em> This preserves driver autonomy — mandatory routing in prior tests reduced satisfaction and increased churn.</p>
 
-  <div class="section-label">05 / Results & Learnings</div>
-  <h2>The Impact Compounded</h2>
+  <div class="section-label">Impact</div>
+  <h2>Results</h2>
 
   <table class="phase-table">
     <thead>
-      <tr><th>Phase</th><th>Change</th><th>Outcome</th></tr>
+      <tr><th>Metric</th><th>Before</th><th>After</th><th>Delta</th></tr>
     </thead>
     <tbody>
-      <tr>
-        <td>V1 (Manual)</td>
-        <td>Manual push notifications for 3 predictable demand patterns</td>
-        <td>+5% local supply pre-spike. Hypothesis validated.</td>
-      </tr>
-      <tr>
-        <td>V2 (Naive Auto)</td>
-        <td>Simple forecast model → single-zone optimization</td>
-        <td>Supply cannibalization. NPS dropped 8 pts in affected cities.</td>
-      </tr>
-      <tr>
-        <td>V3 (Final)</td>
-        <td>H3 grid + global optimizer + incentive nudge</td>
-        <td>−18% zero-dispatch rate. P80 pickup 24→16 min. −12% empty legs.</td>
-      </tr>
+      <tr><td>Zero-dispatch rate (peak)</td><td>22%</td><td>~4%</td><td>-18 pts</td></tr>
+      <tr><td>P80 pickup time (volatile zones)</td><td>24 min</td><td>16 min</td><td>-33%</td></tr>
+      <tr><td>Empty-leg trips</td><td>Baseline</td><td>-12%</td><td>Driver earnings up</td></tr>
+      <tr><td>Nudge acceptance rate</td><td>N/A</td><td>73%</td><td>No CSAT impact</td></tr>
     </tbody>
   </table>
 
-  <p>The most important learning: <strong>supply optimization at the individual-driver level always produces global inefficiency.</strong> The only correct level of abstraction is the full supply graph — treating every idle driver simultaneously, not greedily reassigning each one.</p>
-  <p>We also learned that driver autonomy matters. Mandatory routing reduced driver satisfaction and increased churn. Incentive-based nudges with full transparency (showing the driver why and what they'd earn) had a 73% acceptance rate with no meaningful CSAT impact.</p>
+  <div class="section-label">Key Insight</div>
+  <h2>Why This Worked</h2>
+  <p><strong>Supply optimization at the individual-driver level always produces global inefficiency.</strong> The only correct level of abstraction is the full supply graph — treating every idle driver simultaneously, not greedily reassigning each one.</p>
+  <p>The second insight: driver autonomy matters more than optimal positioning. Incentive-based nudges with full transparency (showing why and expected earnings) achieved 73% acceptance — close enough to optimal routing without the trust erosion of mandatory dispatch.</p>
 
 </main>
 
 <div class="case-footer-nav">
-  <a href="index.html" class="btn-back">← Back to Portfolio</a>
+  <a href="index.html" class="btn-back">← Back to All Cases</a>
 </div>
 </body>
 </html>
