@@ -335,7 +335,7 @@ background: var(--bg3);
 /* ── CASE STUDIES ── */
 #cases { background: var(--bg); }
 .cases-intro { font-size: 0.95rem; font-weight: 300; color: var(--text2); max-width: 580px; margin-bottom: 3rem; line-height: 1.8; }
-.cases-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.cases-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
 .case-card {
 background: var(--bg); padding: 2rem; position: relative;
 cursor: pointer; min-height: 280px; display: flex;
@@ -692,88 +692,48 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 <div class="container">
 <div class="section-eyebrow"><span class="eyebrow-num">03</span><div class="eyebrow-rule"></div></div>
 <h2 class="section-title">Case Studies</h2>
-<p class="cases-intro">Eight write-ups on real and analytical product problems — covering things I shipped, things I diagnosed, and things I believe should exist. Click any card to read the full case.</p>
+<p class="cases-intro">Four structured case studies. Each follows the same format: context, problem, approaches tried, solution, and measurable impact.</p>
 <div class="cases-grid">
 
-<div class="case-card" data-case="scale">
+<a href="case-predictive-routing.html" class="case-card" style="text-decoration:none; color:inherit;">
 <div>
 <div class="case-num">01</div>
-<span class="case-tag blue">Marketplace Growth</span>
-<div class="case-title">0.5M to 4M MAUs: Scaling an Intracity Marketplace</div>
-<div class="case-subtitle">The product decisions, experiments, and tradeoffs behind scaling Delhivery Direct from a small consumer app to India's largest intracity platform.</div>
+<span class="case-tag blue">Logistics & Operations</span>
+<div class="case-title">Dynamic Geofencing & Pre-emptive Routing</div>
+<div class="case-subtitle">Predicting demand spikes to reallocate idle drivers, reducing zero-dispatch rates by 18%.</div>
 </div>
-<div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">→</span></div>
-</div>
+<div class="case-footer"><span class="case-company">Abstracted Logistics Case</span><span class="case-arrow">→</span></div>
+</a>
 
-<div class="case-card" data-case="interiors">
+<a href="case-agent-evaluation.html" class="case-card" style="text-decoration:none; color:inherit;">
 <div>
 <div class="case-num">02</div>
-<span class="case-tag green">0 to 1</span>
-<div class="case-title">Launching UrbanInteriors from Zero</div>
-<div class="case-subtitle">Building a supply-side matching product for interior design — from MVP scoping to ₹37.5L in monthly revenue without a single line of matching code in month one.</div>
+<span class="case-tag purple">AI Infrastructure</span>
+<div class="case-title">Multi-Agent Evaluation Frameworks</div>
+<div class="case-subtitle">Architecting a shadow-evaluator agent to block 99% of primary LLM policy hallucinations in real-time.</div>
 </div>
-<div class="case-footer"><span class="case-company">Urbanladder · 2022</span><span class="case-arrow">→</span></div>
-</div>
+<div class="case-footer"><span class="case-company">Abstracted AI Infra Case</span><span class="case-arrow">→</span></div>
+</a>
 
-<div class="case-card" data-case="surge">
+<a href="case-propensity-ad-tech.html" class="case-card" style="text-decoration:none; color:inherit;">
 <div>
 <div class="case-num">03</div>
-<span class="case-tag purple">Pricing &amp; Algorithms</span>
-<div class="case-title">Designing Surge Pricing for Hyperlocal Delivery</div>
-<div class="case-subtitle">How we built a dynamic pricing system that balances driver supply, order demand, and price sensitivity — and what we got wrong the first time.</div>
+<span class="case-tag amber">Ad-Tech / Data</span>
+<div class="case-title">Privacy-Preserving Propensity Scoring</div>
+<div class="case-subtitle">Replacing third-party cookies with in-session clickstream interactions to re-rank retail media search ads dynamically.</div>
 </div>
-<div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">→</span></div>
-</div>
+<div class="case-footer"><span class="case-company">Abstracted Ad-Tech Case</span><span class="case-arrow">→</span></div>
+</a>
 
-<div class="case-card" data-case="chatbot">
+<a href="case-omnichannel-intent.html" class="case-card" style="text-decoration:none; color:inherit;">
 <div>
 <div class="case-num">04</div>
-<span class="case-tag amber">Automation</span>
-<div class="case-title">Cutting Support Costs 47% Without Hurting CSAT</div>
-<div class="case-subtitle">The rollout strategy, metric framework, and the incident that almost made us roll it back — deploying an AI support chatbot at Urbanladder.</div>
+<span class="case-tag green">Consumer 0-to-1</span>
+<div class="case-title">Bridging the Offline-Online Intent Gap</div>
+<div class="case-subtitle">A unified state-machine transferring 3D cart context from digital sessions to physical salesperson tablets via QR.</div>
 </div>
-<div class="case-footer"><span class="case-company">Urbanladder · 2023</span><span class="case-arrow">→</span></div>
-</div>
-
-<div class="case-card" data-case="metricdrop">
-<div>
-<div class="case-num">05</div>
-<span class="case-tag red">Metric Diagnosis</span>
-<div class="case-title">Why Intercity Conversion Dropped 9% in Three Weeks</div>
-<div class="case-subtitle">A structured root-cause investigation into a conversion drop that looked like a UX problem but turned out to be a reference-price failure.</div>
-</div>
-<div class="case-footer"><span class="case-company">Delhivery · 2024</span><span class="case-arrow">→</span></div>
-</div>
-
-<div class="case-card" data-case="swiggy">
-<div>
-<div class="case-num">06</div>
-<span class="case-tag blue">Product Critique</span>
-<div class="case-title">Swiggy's Reuse Bag Programme: What Worked, What Didn't, What's Missing</div>
-<div class="case-subtitle">A PM teardown of Swiggy's sustainability initiative — the incentive design, the adoption curve problem, and how I'd redesign it to actually change user behaviour.</div>
-</div>
-<div class="case-footer"><span class="case-company">Product Critique · 2025</span><span class="case-arrow">→</span></div>
-</div>
-
-<div class="case-card" data-case="critique">
-<div>
-<div class="case-num">07</div>
-<span class="case-tag amber">Product Critique</span>
-<div class="case-title">What Google Maps Gets Wrong About Delivery ETAs</div>
-<div class="case-subtitle">A PM's view on why ETA accuracy is broken at last-mile, who it hurts most, and what a better system would look like for delivery-specific contexts.</div>
-</div>
-<div class="case-footer"><span class="case-company">Personal · 2025</span><span class="case-arrow">→</span></div>
-</div>
-
-<div class="case-card" data-case="scheduled">
-<div>
-<div class="case-num">08</div>
-<span class="case-tag green">Product Strategy</span>
-<div class="case-title">The Next Feature for Delhivery Intracity: Scheduled Delivery Windows</div>
-<div class="case-subtitle">A mini-PRD — the problem it solves, how I'd measure success, and what I'd deliberately not build in V1.</div>
-</div>
-<div class="case-footer"><span class="case-company">Delhivery · 2025</span><span class="case-arrow">→</span></div>
-</div>
+<div class="case-footer"><span class="case-company">Abstracted Consumer Case</span><span class="case-arrow">→</span></div>
+</a>
 
 </div>
 </div>
@@ -830,171 +790,15 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 <div class="footer-txt">siddharthjain1611@gmail.com</div>
 </footer>
 
-<!-- DRAWER -->
-<div class="drawer-overlay" id="drawerOverlay"></div>
-<div class="case-drawer" id="caseDrawer">
-<div class="drawer-inner" id="drawerContent"></div>
-</div>
-
 <script>
-const CASES = {
-scale: {
-tag: "Marketplace Growth", tagClass: "blue",
-title: "0.5M to 4M MAUs: Scaling an Intracity Marketplace",
-meta: "Delhivery · Intracity Marketplace · 2023–2024",
-stats: [{ num: "8×", lbl: "MAU Growth" }, { num: "₹80Cr+", lbl: "ARR Generated" }, { num: "15min", lbl: "P80 Pickup" }],
-sections: [
-{ title: "Starting Point", body: `<p>When I joined Delhivery's intracity team in December 2023, Delhivery Direct had roughly 0.5M monthly active users, primarily using it for intercity courier. Hyperlocal delivery was nascent — low supply, inconsistent reliability.</p><p>The mandate was broad: grow MAUs and ARR. The actual constraint was more specific — <strong>the marketplace had a supply problem masquerading as a demand problem.</strong> Users tried the app, found no available drivers or high ETAs, and churned. Adding more marketing to a broken supply-demand loop would accelerate churn, not fix it.</p>` },
-{ title: "The Framework: Fix Supply Before Scaling Demand", body: `<p>The first three months were entirely supply-side. Three levers:</p><ul><li><strong>Driver onboarding:</strong> Original flow took 4–7 days with in-person verification. Moved to async document upload with 24-hour review SLA — onboarding time dropped to 1.2 days on average.</li><li><strong>Shift incentives:</strong> Time-block incentives for drivers completing a minimum trip count in a 4-hour window. Shifted supply from random availability to predictable peak-hour coverage.</li><li><strong>Routing algorithm:</strong> Original matching optimised purely for distance. Added a time-weighted component factoring in traffic, driver location, and order complexity. P80 pickup dropped from 28 to 15 minutes over 6 months.</li></ul>` },
-{ title: "Then: Scaling Demand", body: `<p>Once P80 pickup was consistently below 20 minutes, we shifted to demand-side growth. The highest-ROI move was <strong>intercity-to-hyperlocal conversion</strong>. We had 1.5M+ intercity users who had already trusted us for courier. Targeted campaigns showing them the hyperlocal product — once supply reliability hit threshold in their city — converted far better than cold acquisition because the trust barrier was already cleared.</p><p>A/B experiments on checkout — price anchoring, ETA display, real-time driver location — added incremental conversion across the funnel. The largest experiment lifted intercity conversion by 14%, contributing ₹8 Cr in quarterly revenue.</p>` },
-{ title: "What the Numbers Don't Show", body: `<p>We had two cities where supply collapse caused NPS to drop below 20 during rapid demand scaling — we had grown demand faster than supply and created a negative experience loop. We paused growth campaigns and rebuilt supply coverage before resuming.</p><p>The lesson: in a marketplace, supply and demand must be managed as a ratio, not independently. A 10% MAU increase in a city with flat supply is worse than no MAU increase at all — it trains users to expect poor reliability.</p>` }
-]
-},
-interiors: {
-tag: "0 to 1", tagClass: "green",
-title: "Launching UrbanInteriors from Zero",
-meta: "Urbanladder · Reliance Retail Group · 2022–2023",
-stats: [{ num: "₹37.5L", lbl: "Monthly Revenue" }, { num: "10×", lbl: "Project Volume" }, { num: "₹7.5L", lbl: "Avg Order Value" }],
-sections: [
-{ title: "The Opportunity", body: `<p>Urbanladder had tens of thousands of customers buying furniture online, but no structured way to help them with the full room. Interior design services existed at the high end (₹5L+ projects), but a large underserved segment had budget for ₹3–10L projects and no reliable way to manage the process.</p><p>The brief: build a product connecting these customers to vetted designers. Revenue model: commission on completed projects. Starting state: zero designers, zero customers, no defined process.</p>` },
-{ title: "MVP Scoping: What's the Minimum That Can Close a Sale?", body: `<p>The temptation in 0-to-1 is to build everything at once. I kept asking: <strong>what is the minimum needed to close the first 10 sales?</strong></p><p>The MVP was deliberately thin: a lead capture form on the Urbanladder website, manual matching (I personally matched the first 15 customers to designers via WhatsApp), a simple contract template, and milestone-based payment via existing infrastructure. No designer dashboard, no customer portal, no automated matching.</p>` },
-{ title: "What the First 15 Projects Taught Us", body: `<ul><li><strong>Style fit mattered more than designer quality:</strong> Highest CSAT projects weren't with the highest-rated designers — they were with designers whose style matched the customer's brief. Matching needed to be style-based, not purely rating-based.</li><li><strong>Milestone payment reduced dropout significantly:</strong> Customers who paid upfront had a 35% abandonment rate. Customers on milestone payment had 8%. We made it the default.</li><li><strong>AOV was real but fragile:</strong> ₹7.5L average existed because early customers were high-intent. Scaling required a wider funnel — lower AOV customers we hadn't yet designed for.</li></ul>` },
-{ title: "From 5 to 50+ Projects per Month", body: `<p>Growth levers that worked: integrating UrbanInteriors as a persistent upsell on high-cart furniture purchases, a designer acquisition campaign targeting freelancers on Instagram and Houzz, and a Salesforce CRM workflow triggering follow-up at 3 and 7 days after form submission.</p><p>What didn't work: paid acquisition. CAC from Google and Meta was too high given the 18-day average sales cycle. Organic and referral remained our best channels throughout.</p>` }
-]
-},
-surge: {
-tag: "Pricing & Algorithms", tagClass: "purple",
-title: "Designing Surge Pricing for Hyperlocal Delivery",
-meta: "Delhivery · Intracity Marketplace · 2024",
-stats: [{ num: "15min", lbl: "P80 Pickup" }, { num: "99.9%", lbl: "System Uptime" }, { num: "−60%", lbl: "Price Complaints" }],
-sections: [
-{ title: "Why Surge Pricing is Hard in Delivery", body: `<p>Surge pricing sounds straightforward: when demand exceeds supply, raise the price. Hyperlocal delivery has three properties that make this genuinely difficult:</p><ul><li><strong>Demand is lumpy and predictable:</strong> Unlike ride-hailing, delivery demand spikes are highly correlated with time of day and location. A naive real-time model reacts too slowly.</li><li><strong>Customer price sensitivity is context-dependent:</strong> A customer sending a document urgently will absorb 2x surge. A birthday cake sender will abandon. We can't always predict which context we're in.</li><li><strong>Driver supply response is delayed:</strong> There's a 10–20 minute lag between surge activation and meaningful supply increase. A surge that appears and disappears before supply arrives creates a worse experience than no surge at all.</li></ul>` },
-{ title: "Version 1: What We Got Wrong", body: `<p>The first version was reactive and zone-based: a simple ratio of pending orders to available drivers within a defined zone, a multiplier applied, higher price shown to customers.</p><p>Problems: zone boundaries were too rigid, the multiplier function was linear and produced confusing prices, and we had no dampening mechanism — prices oscillated rapidly. Customer complaints spiked. NPS in affected cities dropped 11 points in 6 weeks.</p>` },
-{ title: "Version 2: Predictive Surge with Smoothing", body: `<p>Three changes:</p><ul><li><strong>Predictive instead of reactive:</strong> Trained a model on historical order patterns to predict demand 20 minutes out. Surge activates based on predicted demand — giving supply time to respond.</li><li><strong>Radial influence zones:</strong> Driver attraction modelled as a decaying probability based on distance from the surge centroid, not binary zone inclusion. Drivers 300 metres outside a surge area still see partial incentive.</li><li><strong>Price smoothing:</strong> Surge multipliers now move in steps of 0.1, with a minimum 8-minute hold before stepping up or down. Eliminated oscillation.</li></ul><p>After V2 rollout, P80 pickup in surge conditions dropped from 31 to 18 minutes. Pricing complaints fell 60%.</p>` },
-{ title: "The Ongoing Tension", body: `<p>Surge pricing creates a fundamental tension: customers who need delivery most urgently are often the most price-sensitive. A 1.5x surge on a ₹40 residential delivery at 8 PM is not the same as a 1.5x surge on a ₹200 business document. We haven't fully solved this segmentation problem. The right solution is probably explicit customer preference setting — which introduces its own UX complexity.</p>` }
-]
-},
-chatbot: {
-tag: "Automation", tagClass: "amber",
-title: "Cutting Support Costs 47% Without Hurting CSAT",
-meta: "Urbanladder · Reliance Retail Group · 2023",
-stats: [{ num: "47%", lbl: "Cost Reduction" }, { num: "95%+", lbl: "CSAT Maintained" }, { num: "67%", lbl: "Ticket Reopening Drop" }],
-sections: [
-{ title: "The Problem", body: `<p>By mid-2022, customer support at Urbanladder was the fastest-growing cost line — not because sales were growing proportionally, but because the workflow was inefficient. A "where is my order" query took the same handling time as a complex product defect claim. Ticket reopening rate was 23% — nearly 1 in 4 resolved tickets was reopened within 7 days.</p><p>Hypothesis: a well-designed chatbot could handle high-volume, low-complexity queries (estimated at 55–60% of total volume) without degrading satisfaction.</p>` },
-{ title: "The Risk Everyone Was Worried About", body: `<p>Internal concern: "What if customers hate it and CSAT drops?" My position: the risk was manageable if we were disciplined about scope. The chatbot should only handle categories where we had high-confidence resolution paths. For everything else, route to human agents immediately — not try and fail.</p><div class="drawer-callout"><p>"A chatbot that says 'connecting you to an agent' in 10 seconds is a better experience than one that tries for 5 minutes and fails."</p></div><p>Launch scope was deliberately narrow: order status, delivery ETA, return initiation for standard cases, store location queries. These four categories covered 41% of total ticket volume.</p>` },
-{ title: "Rollout Strategy", body: `<p>Phased rollout: Phase 1 (2 weeks, 10% of traffic) — monitor containment rate and CSAT on chatbot-resolved tickets. Phase 2 (4 weeks, 40% of traffic) — expand to two additional categories. Phase 3 — full rollout with human escalation always one tap away.</p><p>Hard rule: if CSAT on chatbot-contained tickets dropped below 88%, pause and investigate.</p>` },
-{ title: "What Almost Made Us Roll It Back", body: `<p>In week 3 of Phase 2, CSAT on chatbot-resolved return tickets dropped to 84% — below threshold. We paused and investigated.</p><p>Root cause: our return initiation flow required a photo upload of the defective product. The chatbot was marking tickets as "resolved" after collecting the return request, before photo upload was confirmed as complete. Customers received resolution messages for returns that hadn't been processed.</p><p>Fix: tickets could only be marked resolved after photo upload confirmation and backend return order creation. CSAT recovered to 96% on return queries within 10 days. This incident defined how we scoped "resolved" across the entire chatbot.</p>` },
-{ title: "Results", body: `<p>Support costs reduced 47%. CSAT moved from 91% to 95% — the improvement came from human agents having more time to handle complex cases well. Ticket reopening dropped from 23% to 8%. The chatbot and the parallel Salesforce CRM workflow redesign compounded each other.</p>` }
-]
-},
-metricdrop: {
-tag: "Metric Diagnosis", tagClass: "red",
-title: "Why Intercity Conversion Dropped 9% in Three Weeks",
-meta: "Delhivery · Intracity Marketplace · 2024",
-stats: [{ num: "9%", lbl: "Conversion Drop" }, { num: "6", lbl: "Hypotheses Tested" }, { num: "14%", lbl: "Recovery Lift" }],
-sections: [
-{ title: "The Alert", body: `<p>Our weekly metrics review flagged a 9% drop in intercity courier conversion over 3 weeks. No major product changes had shipped in that window. First instinct from the team: UX regression. My instinct: slow down before jumping there.</p><p>A 9% drop over 3 weeks with no product change is almost never a UX problem. UX regressions are sharp and immediate. A gradual 3-week slope usually means something external changed.</p>` },
-{ title: "Step 1: Verify the Data", body: `<p>Before forming any hypothesis, I verified the data. Checked whether the conversion event tracking had changed, whether any new funnel steps had been added, and whether the denominator had changed composition. Everything was clean. The drop was real.</p>` },
-{ title: "Step 2: Segment Before Hypothesising", body: `<p>Broke conversion down across every dimension before forming a single hypothesis:</p><ul><li><strong>By city:</strong> Drop concentrated in Tier 2 cities — Jaipur, Lucknow, Indore. Metros were flat.</li><li><strong>By order value:</strong> Steepest in the ₹300–600 band. Below ₹300 and above ₹600 were flat.</li><li><strong>By device:</strong> Uniform across Android and iOS. Not a platform issue.</li></ul><p>The real question: why were Tier 2 customers in the ₹300–600 band dropping off at checkout?</p>` },
-{ title: "Finding the Root Cause", body: `<p>Pulled pricing logs for Tier 2 cities over the 3-week window. Our supply-side surge model had been running at 1.2–1.3x in Jaipur and Lucknow during evening hours due to supply shortage. For a ₹400 order, displayed price was ₹480–520 — enough to push hesitant customers out.</p><p>The compounding factor: our price display showed the surged price without context. A customer who had sent a similar parcel two weeks ago for ₹400 now saw ₹490 with no explanation.</p><div class="drawer-callout"><p>"The problem wasn't the price. It was that the price changed without explanation."</p></div>` },
-{ title: "The Fix and the Result", body: `<p>Two changes in the same sprint. First, added a one-line contextual message when surge was active: "Current price reflects high demand in your area." Simple, honest, resets the reference price frame. Second, introduced a "Send later at lower price" option — letting price-sensitive customers opt into a 2-hour delay for the base rate.</p><p>Conversion recovered 14% above the pre-drop baseline within 4 weeks. The "Send later" option was taken by 18% of customers shown it — a segment we hadn't explicitly designed for before.</p>` }
-]
-},
-swiggy: {
-tag: "Product Critique", tagClass: "blue",
-title: "Swiggy's Reuse Bag Programme: What Worked, What Didn't, What's Missing",
-meta: "Product Critique · Personal · 2025",
-stats: [{ num: "Behaviour", lbl: "Design Problem" }, { num: "3 Gaps", lbl: "Identified" }, { num: "1 Fix", lbl: "That Changes It" }],
-sections: [
-{ title: "What Swiggy Built", body: `<p>Swiggy's Reuse Bag programme lets customers opt in to receive their order in a reusable bag, which a delivery partner collects on the next order. The goal: reduce single-use packaging waste. The framing: sustainability as a consumer feature, not just an operational change.</p><p>It's a good idea. The execution has three structural problems that limit adoption and long-term behaviour change.</p>` },
-{ title: "Problem 1: The Opt-In Moment is Wrong", body: `<p>The programme is presented as an opt-in during checkout — at the moment the customer is already committed to an order and focused on completing the transaction, not making a sustainability decision.</p><p>Checkout is the worst moment to introduce friction that requires a new mental model. The user has to understand what a reuse bag is, what returning it means, and whether they can reliably do so — all under the time pressure of "just complete this order."</p><p>The right moment is not at checkout. It's either at account setup (one-time preference) or at a moment of high customer engagement — after a positive delivery experience, when trust and goodwill are at their peak.</p>` },
-{ title: "Problem 2: The Incentive Design Is Backwards", body: `<p>Swiggy offers a small discount for using the reuse bag. Discounts work for price-sensitive customers. But the customers most likely to care about sustainability are often not price-sensitive — they're value-driven. A discount frames sustainability as a transaction, not a value.</p><p>The better incentive: <strong>social and identity-based rewards</strong>. A "Green Streak" — tracking how many consecutive orders used reusable bags — taps into loss aversion and identity ("I am someone who does this"). A visible stat on the profile page ("You've saved X bags this year") creates social proof and self-image reinforcement.</p><p>The discount should be secondary, not primary. Lead with identity, follow with economics.</p>` },
-{ title: "Problem 3: The Return Mechanism Is Too Dependent on Memory", body: `<p>The current model requires the customer to remember to keep the bag accessible for the next delivery partner to collect. This is asking for a behaviour change — keeping a bag near the door, remembering to hand it over — without supporting that behaviour with any system prompt or reminder.</p><p>Uber Eats' equivalent programmes send a "Don't forget to leave your bag out" push notification when a new order is placed. This tiny intervention dramatically increases return rates because it removes the memory dependency.</p><p>Swiggy's delivery partner app could also show a "Collect reuse bag" prompt on orders from customers in the programme — making the return an explicit step in the delivery flow, not an optional courtesy.</p>` },
-{ title: "How I'd Redesign It", body: `<p>Three changes:</p><ul><li><strong>Move opt-in to account preferences, not checkout.</strong> Add a "Sustainability" tab in the profile. Let customers set a standing preference. Prompt them to set it once, at a high-engagement moment (post-delivery rating flow).</li><li><strong>Replace the discount with a Green Streak mechanic.</strong> Track consecutive orders with reuse bag. Show progress in the app. Offer a meaningful reward (a free delivery, not a ₹5 discount) at streak milestones. Make it visible to friends via social sharing.</li><li><strong>Close the return loop in the delivery partner flow.</strong> Surface a "Collect bag" prompt in the Swiggy delivery app for relevant orders. Send customers a "leave your bag out" notification when a new order is placed. Make the return behaviour automatic, not intentional.</li></ul><p>None of these are technically complex. They are product and incentive design changes — which is precisely why they're worth doing.</p>` },
-{ title: "The Broader Point", body: `<p>Sustainability features fail when they're designed as features — opt-in additions to a product that doesn't change around them. They succeed when they're designed as behaviour change programmes: with the right trigger, the right identity hook, and the right system support to make the new behaviour easy to repeat.</p><p>Swiggy has the distribution and data to do this well. The current implementation is a start — it needs a second design pass grounded in behavioural economics, not just good intentions.</p>` }
-]
-},
-critique: {
-tag: "Product Critique", tagClass: "amber",
-title: "What Google Maps Gets Wrong About Delivery ETAs",
-meta: "Personal · Product Thinking · 2025",
-stats: [{ num: "ETA", lbl: "The Core Problem" }, { num: "3", lbl: "Failure Modes" }, { num: "1 Fix", lbl: "That Changes It" }],
-sections: [
-{ title: "What Google Maps Is Optimising For", body: `<p>Google Maps ETA is optimised for navigation accuracy — getting a driver from A to B with the best route in current traffic. It does this well. But delivery logistics uses ETAs for a fundamentally different purpose: managing recipient expectation, coordinating handoff, and reducing failed delivery attempts.</p><p>When Google Maps ETA is used as ground truth for "when will my package arrive," it fails — not because the routing is wrong, but because the product is solving a different problem than the one being asked.</p>` },
-{ title: "The Three Failure Modes", body: `<ul><li><strong>Last-mile accuracy collapse:</strong> Maps ETA degrades significantly in apartment complexes, gated communities, and areas with poor address data — exactly where last-mile delivery happens. An ETA accurate to 3 minutes on the highway is often 15 minutes off at the final 500 metres.</li><li><strong>No dwell time model:</strong> Maps has no concept of time a driver spends at a delivery location — parking, getting to the door, failed attempts, signatures. For multi-stop routes, dwell times compound and ETA error grows.</li><li><strong>Static recipient assumption:</strong> The ETA is communicated once and not recalculated meaningfully for the recipient. If the driver hits traffic 10 minutes before arrival, the recipient gets no update — or gets one too late to act on.</li></ul>` },
-{ title: "What a Better System Looks Like", body: `<p>The fix isn't a better routing algorithm. It's a reframe of what ETA means for a delivery product.</p><p>A delivery ETA should be a <strong>window with confidence, not a point estimate</strong>. "Arriving between 3:45 and 4:10 PM" is more useful than "arriving at 3:52 PM" — honest about uncertainty and actionable for the recipient.</p><p>The window should narrow as the driver gets closer. At 30 minutes out, a 25-minute window is honest. At 10 minutes out, a 5-minute window is achievable. At Delhivery, we moved toward this by surfacing a "driver nearby" notification at 10 minutes out rather than relying on the ETA number.</p>` }
-]
-},
-scheduled: {
-tag: "Product Strategy", tagClass: "green",
-title: "The Next Feature for Delhivery Intracity: Scheduled Delivery Windows",
-meta: "Delhivery · Forward-Looking · 2025",
-stats: [{ num: "18%", lbl: "Customer Signal" }, { num: "↓ CAC", lbl: "Repeat Driver" }, { num: "Supply", lbl: "Efficiency Gain" }],
-sections: [
-{ title: "The Problem This Solves", body: `<p>The current Delhivery Intracity product is on-demand: order now, delivered as fast as possible. This works for urgent shipments. It doesn't work for a large segment who don't need it urgently — they need it reliably, at a time they're available to receive it.</p><p>From driver interviews: a recurring theme was failed delivery attempts — arriving when no one was home. Across 18,000 daily orders, even a 5% failed attempt rate is 900 orders a day being handled twice. From customer CSAT: lowest-rated experiences clustered around missed delivery, not damage. Missed delivery is a scheduling problem.</p>` },
-{ title: "The Proposed Feature", body: `<p>Scheduled Delivery Windows: at checkout, customers can optionally select a 2-hour delivery window later in the day or next day, at a price slightly below the immediate delivery rate. The driver is assigned at the start of that window rather than immediately.</p>` },
-{ title: "Why It Makes Sense for Intracity Specifically", body: `<ul><li><strong>Supply is lumpy:</strong> Intracity has predictable peaks (morning 9–11 AM, evening 6–9 PM) and troughs. Scheduled orders routed into troughs improve driver utilisation without adding supply — increasing capacity without cost.</li><li><strong>Orders are higher value, less time-sensitive:</strong> A ₹500 intracity courier is not a cold biryani. A 2-hour window is a reasonable trade for a slightly lower price.</li><li><strong>Repeat order value:</strong> Customers who schedule deliveries demonstrate planning behaviour — likely to use the product regularly. Scheduling is a habit-forming feature.</li></ul>` },
-{ title: "How I'd Measure Success", body: `<p>Primary metric: scheduled order rate — percentage of eligible orders that choose a window. Target: 15% in first 90 days.</p><p>Secondary: failed delivery attempt rate for scheduled vs. on-demand (hypothesis: scheduled fail less), driver utilisation during trough hours (hypothesis: improves 10–15%), 90-day repeat order rate for scheduling users vs. non-users.</p><p>Guardrail: immediate delivery conversion rate must not drop, and revenue per order must not degrade by more than 3% due to the mix shift.</p>` },
-{ title: "What I'd Deliberately Not Build in V1", body: `<p>V1 should answer one question: do customers choose scheduled delivery when offered it, and do those deliveries succeed at a higher rate?</p><p>What V1 should not include: per-slot dynamic pricing (use a flat discount), driver pre-assignment (assign at window start), or customer rescheduling (cancel and rebook if needed). The complexity of these is only justified if the core demand signal is strong.</p>` }
-]
-}
-};
-
-function buildDrawer(key) {
-const c = CASES[key];
-if (!c) return '';
-const stats = c.stats.map(s => `<div class="drawer-stat"><div class="drawer-stat-num">${s.num}</div><div class="drawer-stat-lbl">${s.lbl}</div></div>`).join('');
-const secs = c.sections.map(s => `<div class="drawer-section-label">${s.title}</div><div class="drawer-body">${s.body}</div>`).join('');
-return `<div class="drawer-close-row"><button class="drawer-close" id="drawerCloseBtn">✕ Close</button></div>
-<span class="drawer-tag ${c.tagClass}">${c.tag}</span>
-<div class="drawer-title">${c.title}</div>
-<div class="drawer-meta">${c.meta}</div>
-<div class="drawer-stats">${stats}</div>
-${secs}
-<div class="drawer-end">— End of case study</div>`;
-}
-
-const overlay = document.getElementById('drawerOverlay');
-const drawer  = document.getElementById('caseDrawer');
-const content = document.getElementById('drawerContent');
-let openTime = null, openKey = null;
-
-function openDrawer(key) {
-content.innerHTML = buildDrawer(key);
-overlay.classList.add('open');
-drawer.classList.add('open');
-document.body.style.overflow = 'hidden';
-openTime = Date.now(); openKey = key;
-document.getElementById('drawerCloseBtn').addEventListener('click', closeDrawer);
-if (typeof gtag !== 'undefined' && CASES[key]) {
-gtag('event', 'case_study_opened', { case_title: CASES[key].title, case_tag: CASES[key].tag });
-}
-}
-
-function closeDrawer() {
-if (openKey && openTime && typeof gtag !== 'undefined') {
-gtag('event', 'case_study_closed', { case_title: CASES[openKey].title, read_duration_seconds: Math.round((Date.now() - openTime) / 1000) });
-}
-drawer.classList.remove('open');
-overlay.classList.remove('open');
-document.body.style.overflow = '';
-openTime = null; openKey = null;
-}
-
-document.querySelectorAll('.case-card[data-case]').forEach(card => {
-card.addEventListener('click', () => openDrawer(card.dataset.case));
-});
-overlay.addEventListener('click', closeDrawer);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-
 // Scroll reveals
 const observer = new IntersectionObserver(entries => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-setTimeout(() => entry.target.classList.add('visible'), parseInt(entry.target.dataset.delay) || 0);
-observer.unobserve(entry.target);
-}
-});
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), parseInt(entry.target.dataset.delay) || 0);
+      observer.unobserve(entry.target);
+    }
+  });
 }, { threshold: 0.1 });
 document.querySelectorAll('.exp-item').forEach((el, i) => { el.dataset.delay = i * 100; observer.observe(el); });
 document.querySelectorAll('.case-card:not(.empty)').forEach((el, i) => { el.dataset.delay = i * 60; observer.observe(el); });
@@ -1002,35 +806,35 @@ document.querySelectorAll('.case-card:not(.empty)').forEach((el, i) => { el.data
 // Active nav
 const sections = document.querySelectorAll('section[id]');
 sections.forEach(s => {
-new IntersectionObserver(entries => {
-entries.forEach(e => {
-if (e.isIntersecting) {
-document.querySelectorAll('.nav-links a').forEach(l => {
-l.classList.remove('active');
-if (l.getAttribute('href') === '#' + e.target.id) l.classList.add('active');
-});
-}
-});
-}, { threshold: 0.35 }).observe(s);
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.nav-links a').forEach(l => {
+          l.classList.remove('active');
+          if (l.getAttribute('href') === '#' + e.target.id) l.classList.add('active');
+        });
+      }
+    });
+  }, { threshold: 0.35 }).observe(s);
 });
 
 // GA4
 document.querySelector('.btn-primary[download]')?.addEventListener('click', () => { if (typeof gtag !== 'undefined') gtag('event', 'resume_downloaded', {}); });
 
 document.querySelectorAll('#contact a').forEach(link => {
-link.addEventListener('click', () => {
-if (typeof gtag === 'undefined') return;
-const href = link.getAttribute('href') || '';
-gtag('event', 'contact_clicked', { contact_type: href.startsWith('mailto:') ? 'email' : href.includes('linkedin') ? 'linkedin' : href.startsWith('tel:') ? 'phone' : 'other' });
-});
+  link.addEventListener('click', () => {
+    if (typeof gtag === 'undefined') return;
+    const href = link.getAttribute('href') || '';
+    gtag('event', 'contact_clicked', { contact_type: href.startsWith('mailto:') ? 'email' : href.includes('linkedin') ? 'linkedin' : href.startsWith('tel:') ? 'phone' : 'other' });
+  });
 });
 
 document.querySelectorAll('.nav-links a').forEach(link => {
-link.addEventListener('click', () => { if (typeof gtag !== 'undefined') gtag('event', 'nav_clicked', { nav_target: link.getAttribute('href') }); });
+  link.addEventListener('click', () => { if (typeof gtag !== 'undefined') gtag('event', 'nav_clicked', { nav_target: link.getAttribute('href') }); });
 });
 
 const sectionObs = new IntersectionObserver(entries => {
-entries.forEach(e => { if (e.isIntersecting && typeof gtag !== 'undefined') gtag('event', 'section_viewed', { section_name: e.target.id }); });
+  entries.forEach(e => { if (e.isIntersecting && typeof gtag !== 'undefined') gtag('event', 'section_viewed', { section_name: e.target.id }); });
 }, { threshold: 0.4 });
 sections.forEach(s => sectionObs.observe(s));
 </script>

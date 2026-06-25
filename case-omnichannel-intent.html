@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bridging the Offline-Online Intent Gap | Siddharth Jain</title>
+<meta name="description" content="Transferring a customer's full digital session context to a physical salesperson's tablet via QR — increasing in-store close rates by 34%."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#22c55e;--accent2:#4f8ef7;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:60px;background:rgba(10,11,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:500;}
+.nav-logo{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-decoration:none;}
+.nav-back{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text3);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--text);}
+.case-hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.08) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;}
+.case-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,197,94,0.3);background:rgba(34,197,94,0.06);padding:0.35rem 0.8rem;border-radius:2px;display:inline-block;margin-bottom:1.5rem;}
+.case-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.case-subtitle{font-size:1.1rem;color:var(--text2);font-weight:300;max-width:680px;line-height:1.75;margin-bottom:3rem;}
+.case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
+.meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
+.metrics-bar{background:var(--bg2);border-bottom:1px solid var(--border);}
+.metrics-inner{max-width:860px;margin:0 auto;padding:2.5rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.metric-block{background:var(--bg2);padding:2rem 2.5rem;}
+.metric-num{font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:0.4rem;}
+.metric-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.metric-sub{font-size:0.82rem;color:var(--text2);margin-top:0.4rem;font-weight:300;}
+.case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
+.section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body h2:first-of-type{margin-top:0;}
+.case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
+.case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
+.case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
+.case-body ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;}
+.case-body strong{color:var(--text);font-weight:500;}
+.callout{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.5rem 2rem;margin:2.5rem 0;border-radius:0 4px 4px 0;}
+.callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
+.diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
+.diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
+.journey{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:start;margin-top:1rem;}
+.journey-side{display:flex;flex-direction:column;gap:0.8rem;}
+.journey-step{background:var(--bg3);border:1px solid var(--border);padding:1rem 1.2rem;border-radius:3px;}
+.journey-step-label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:0.3rem;}
+.journey-step-val{font-size:0.88rem;color:var(--text2);font-weight:300;}
+.journey-step.active{border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.05);}
+.journey-step.active .journey-step-val{color:var(--text);}
+.journey-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem;padding-top:2rem;}
+.journey-bridge{font-family:var(--font-mono);font-size:0.58rem;color:var(--accent);text-align:center;letter-spacing:0.08em;line-height:1.5;}
+.state-machine{display:flex;flex-direction:column;gap:0;}
+.sm-state{display:flex;gap:0;margin-bottom:1px;}
+.sm-state-name{background:var(--bg3);border:1px solid var(--border);padding:0.9rem 1.2rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--text2);min-width:160px;display:flex;align-items:center;}
+.sm-state-desc{background:var(--bg2);border:1px solid var(--border);border-left:none;padding:0.9rem 1.5rem;flex:1;font-size:0.85rem;color:var(--text2);font-weight:300;line-height:1.5;display:flex;align-items:center;}
+.sm-state.active .sm-state-name{color:var(--accent);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.06);}
+.sm-state.active .sm-state-desc{border-color:rgba(34,197,94,0.2);}
+.phase-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.phase-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.phase-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.phase-table tr:last-child td{border-bottom:none;}
+.phase-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
+.btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
+.btn-back:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.metrics-inner{grid-template-columns:1fr;}.journey{grid-template-columns:1fr;}.sm-state{flex-direction:column;}.sm-state-name{min-width:unset;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">SJ.PM</a>
+  <a href="index.html" class="nav-back">← All Cases</a>
+</nav>
+
+<header class="case-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="case-tag">Consumer 0-to-1 / Omnichannel</span>
+    <h1 class="case-title">Bridging the<br/>Offline-Online Intent Gap</h1>
+    <p class="case-subtitle">When a high-intent digital customer walks into a physical store, how do you transfer 45 minutes of online research to the salesperson — instantly, without friction?</p>
+    <div class="case-meta-row">
+      <div class="meta-item">Domain<span>Consumer / Omnichannel</span></div>
+      <div class="meta-item">Scope<span>High-AOV Retail Conversion</span></div>
+      <div class="meta-item">Stack<span>Session State-Machine · QR Handshake · CRM Integration</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="metrics-bar">
+  <div class="metrics-inner">
+    <div class="metric-block">
+      <div class="metric-num">+34%</div>
+      <div class="metric-label">In-Store Close Rate</div>
+      <div class="metric-sub">For customers using QR handshake</div>
+    </div>
+    <div class="metric-block">
+      <div class="metric-num">+18%</div>
+      <div class="metric-label">AOV Premium</div>
+      <div class="metric-sub">Omnichannel vs single-channel buyers</div>
+    </div>
+    <div class="metric-block">
+      <div class="metric-num">1.5s</div>
+      <div class="metric-label">Session Transfer Latency</div>
+      <div class="metric-sub">QR scan to full context on tablet</div>
+    </div>
+  </div>
+</div>
+
+<main class="case-body">
+
+  <div class="section-label">Context</div>
+  <h2>The Setting</h2>
+  <p>High-ticket consumer retail — custom furniture and full room interiors. Average order value above ₹2L. Buyer journeys don't follow clean funnels: a customer spends 45 minutes configuring a living room in a 3D editor online, saves a layout worth ₹3.8L, then stops at checkout.</p>
+  <p>This isn't abandonment. For purchases above ₹2L, <strong>63% of customers want to see materials, touch fabrics, and talk to someone before committing.</strong> They walk into the physical store.</p>
+
+  <div class="section-label">Problem</div>
+  <h2>The Cold Start in Physical Retail</h2>
+  <p>When the customer arrives in-store, the salesperson asks: <em>"How can I help you today?"</em></p>
+  <p>45 minutes of intent signal — a fully configured 3D layout, fabric preferences, style filters, a considered cart — all invisible. The customer starts from zero. The digital high-intent context is completely lost in the channel transition.</p>
+
+  <div class="callout"><p>The customer walked in knowing exactly what they wanted. The failure was that the salesperson had no idea the customer had already done the work.</p></div>
+
+  <div class="diagram-block">
+    <div class="diagram-title">The Fragmented Journey (Before)</div>
+    <div class="journey">
+      <div class="journey-side">
+        <div class="journey-step active">
+          <div class="journey-step-label">Digital Session</div>
+          <div class="journey-step-val">3D room configured · ₹3.8L cart · 45 min dwell time</div>
+        </div>
+        <div class="journey-step active">
+          <div class="journey-step-label">Intent Signals</div>
+          <div class="journey-step-val">Fabric preferences · Style filters · Saved designs</div>
+        </div>
+        <div class="journey-step active">
+          <div class="journey-step-label">Decision Point</div>
+          <div class="journey-step-val">Stops at checkout → Goes to physical store</div>
+        </div>
+      </div>
+      <div class="journey-center">
+        <div style="width:2px;height:60px;background:var(--border);"></div>
+        <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);text-align:center;">CONTEXT<br/>LOST</div>
+        <div style="width:2px;height:60px;background:var(--border);"></div>
+      </div>
+      <div class="journey-side">
+        <div class="journey-step">
+          <div class="journey-step-label">Physical Store</div>
+          <div class="journey-step-val">Salesperson: "How can I help you today?"</div>
+        </div>
+        <div class="journey-step">
+          <div class="journey-step-label">Cold Start</div>
+          <div class="journey-step-val">Customer explains from scratch. Context lost.</div>
+        </div>
+        <div class="journey-step">
+          <div class="journey-step-label">Outcome</div>
+          <div class="journey-step-val">Longer close cycle. Lower conversion. Frustrated customer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Approaches Tried</div>
+  <h2>What Didn't Work (and Why)</h2>
+
+  <table class="phase-table">
+    <thead>
+      <tr><th>Approach</th><th>Adoption</th><th>Why It Failed</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Cart ID Dictation</td>
+        <td>2.3%</td>
+        <td>6-character alphanumeric code emailed to customer. Felt transactional, not premium. Salespeople found POS lookup tedious and often skipped it. Email frequently unopened before store visit.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The MVP validated the problem — customers who did use the code converted at 2x the rate. But <strong>friction in identity resolution killed adoption</strong>. The handoff needed to be as effortless as muscle memory, not a process.</p>
+
+  <div class="section-label">Solution</div>
+  <h2>The Contextual QR Handshake</h2>
+  <p>A unified session state-machine that detects high-intent digital sessions and generates an encrypted, time-limited QR token. The salesperson scans it on their tablet, and the customer's full digital context loads in 1.5 seconds — zero dictation, zero login required.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-title">QR Session Handshake — State Machine</div>
+    <div class="state-machine">
+      <div class="sm-state">
+        <div class="sm-state-name">BROWSING</div>
+        <div class="sm-state-desc">Customer configures 3D room on mobile. Session graph builds in real-time.</div>
+      </div>
+      <div class="sm-state active">
+        <div class="sm-state-name">INTENT_DETECTED</div>
+        <div class="sm-state-desc">Cart > ₹1.5L + 20+ min dwell → Encrypted QR token generated. "See this in store" CTA surfaced.</div>
+      </div>
+      <div class="sm-state active">
+        <div class="sm-state-name">HANDSHAKE</div>
+        <div class="sm-state-desc">Salesperson scans QR on tablet. Token resolved in 1.5s via session API. Full context transferred.</div>
+      </div>
+      <div class="sm-state active">
+        <div class="sm-state-name">CONTEXT_LOADED</div>
+        <div class="sm-state-desc">Tablet shows 3D layout, cart items, fabric filters, dwell patterns. Salesperson starts from customer's endpoint.</div>
+      </div>
+      <div class="sm-state">
+        <div class="sm-state-name">CLOSED</div>
+        <div class="sm-state-desc">Offline sale recorded. Session linked to customer account for future personalization.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Three design decisions that made this work:</p>
+  <ul>
+    <li><strong>Encrypted, time-limited tokens:</strong> QR encodes a JWT signed with a session key, valid for 4 hours. No personally identifiable data in the QR itself — just a session reference. Privacy-safe by design.</li>
+    <li><strong>Anonymous sessions with opt-in identity:</strong> Customers browse anonymously. The QR handshake works without login. Account linking is optional — the conversion benefit doesn't require identity resolution.</li>
+    <li><strong>Salesperson UI designed for closing, not browsing:</strong> The tablet view doesn't replicate the website. It surfaces the configured layout, top 3 items by dwell time, and two pre-loaded fabric samples to have ready. Built to arm the salesperson, not overwhelm them.</li>
+  </ul>
+
+  <div class="section-label">Impact</div>
+  <h2>Results</h2>
+
+  <table class="phase-table">
+    <thead>
+      <tr><th>Customer Segment</th><th>Close Rate</th><th>Avg AOV</th><th>Sales Cycle</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Pure Online</td><td>18%</td><td>₹2.1L</td><td>1 session</td></tr>
+      <tr><td>Pure Offline</td><td>31%</td><td>₹3.2L</td><td>1.8 visits</td></tr>
+      <tr><td>Omnichannel (QR)</td><td>52%</td><td>₹3.9L</td><td>1.2 visits</td></tr>
+    </tbody>
+  </table>
+
+  <p>The omnichannel QR segment had both the highest close rate and highest AOV. These were customers who had already done the research — they weren't exploring, they were deciding. The QR handshake removed the last friction: the cold start in the physical environment.</p>
+
+  <div class="section-label">Key Insight</div>
+  <h2>Why This Worked</h2>
+  <p><strong>Intent doesn't disappear when a customer changes channels. It just needs a bridge.</strong> The insight that friction in identity resolution kills omnichannel conversion — not lack of intent — reframed the entire problem from "how do we get online users to convert online" to "how do we make channel transitions invisible."</p>
+  <p>Salesperson feedback confirmed the shift: <em>"This is the first tool that makes me feel like I know the customer before they tell me anything."</em> Informed preparation changed the sales dynamic from reactive to consultative — the kind of experience that justifies a premium purchase.</p>
+
+</main>
+
+<div class="case-footer-nav">
+  <a href="index.html" class="btn-back">← Back to All Cases</a>
+</div>
+</body>
+</html>
