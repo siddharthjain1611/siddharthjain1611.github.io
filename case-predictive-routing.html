@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pre-emptive Supply Positioning | Siddharth Jain</title>
+<meta name="description" content="Product thinking exercise: Why failed deliveries aren't a supply problem — they're a spatial mismatch problem. How to pre-position drivers before demand arrives."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;
+  --text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#4f8ef7;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;
+  --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:60px;background:rgba(10,11,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:500;}
+.nav-logo{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-decoration:none;}
+.nav-back{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text3);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--text);}
+.case-hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(79,142,247,0.09) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;}
+.case-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(79,142,247,0.3);background:rgba(79,142,247,0.07);padding:0.35rem 0.8rem;border-radius:2px;display:inline-block;margin-bottom:1.5rem;}
+.case-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.case-subtitle{font-size:1.1rem;color:var(--text2);font-weight:300;max-width:680px;line-height:1.75;margin-bottom:3rem;}
+.case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
+.meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
+/* Summary strip instead of hero metrics */
+.summary-strip{background:var(--bg2);border-bottom:1px solid var(--border);padding:2rem 3rem;}
+.summary-inner{max-width:860px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;}
+.summary-item{display:flex;flex-direction:column;gap:0.2rem;}
+.summary-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.summary-val{font-size:0.92rem;color:var(--text);font-weight:500;}
+.case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
+.section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body h2:first-of-type{margin-top:0;}
+.case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
+.case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
+.case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
+.case-body ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;}
+.case-body strong{color:var(--text);font-weight:500;}
+.callout{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.5rem 2rem;margin:2.5rem 0;border-radius:0 4px 4px 0;}
+.callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
+.diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
+.diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
+.flow-nodes{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;}
+.flow-node{background:var(--bg3);border:1px solid var(--border2);padding:0.8rem 1.2rem;border-radius:3px;font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);text-align:center;min-width:130px;}
+.flow-node.highlight{border-color:rgba(79,142,247,0.5);color:var(--accent);background:rgba(79,142,247,0.07);}
+.flow-node.green{border-color:rgba(34,197,94,0.4);color:var(--green);background:rgba(34,197,94,0.06);}
+.flow-arrow{color:var(--text3);font-size:1.1rem;margin:0 0.5rem;flex-shrink:0;}
+.decision-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.decision-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.decision-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.decision-table tr:last-child td{border-bottom:none;}
+.decision-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table tr.selected{background:rgba(79,142,247,0.04);}
+.decision-table tr.selected td:first-child{color:var(--green);}
+.constraints-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1.5rem 0;}
+.constraint{font-family:var(--font-mono);font-size:0.68rem;padding:0.4rem 0.85rem;border-radius:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:2rem 0;}
+.metrics-grid-item{background:var(--bg2);padding:1.4rem;}
+.metrics-grid-label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.metrics-grid-label.leading{color:var(--green);}
+.metrics-grid-label.lagging{color:var(--accent);}
+.metrics-grid-label.guardrail{color:var(--amber);}
+.metrics-grid-val{font-size:0.88rem;color:var(--text2);font-weight:300;line-height:1.6;}
+.open-q{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.5rem 2rem;margin:1rem 0;}
+.open-q p{color:var(--text2);font-size:0.92rem;font-weight:300;line-height:1.7;margin:0;}
+.open-q p + p{margin-top:0.8rem;}
+.case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
+.btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
+.btn-back:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:768px){
+  .case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}
+  nav{padding:0 1.5rem;}
+  .summary-inner{flex-direction:column;gap:1.5rem;}
+  .flow-nodes{flex-direction:column;}
+  .flow-arrow{transform:rotate(90deg);}
+  .metrics-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">SJ.PM</a>
+  <a href="index.html" class="nav-back">← All Cases</a>
+</nav>
+
+<header class="case-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="case-tag">Logistics & Marketplace</span>
+    <h1 class="case-title">Pre-emptive Supply<br/>Positioning</h1>
+    <p class="case-subtitle">Everyone assumes failed deliveries = not enough drivers. The real problem is spatial mismatch — drivers exist, but they're in the wrong place when demand arrives.</p>
+    <div class="case-meta-row">
+      <div class="meta-item">Domain<span>Marketplace / Logistics</span></div>
+      <div class="meta-item">Primary Metric<span>Zero-Dispatch Rate</span></div>
+      <div class="meta-item">Constraint<span>Driver Autonomy · No Mandatory Routing</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="summary-strip">
+  <div class="summary-inner">
+    <div class="summary-item">
+      <span class="summary-label">Scale</span>
+      <span class="summary-val">18,000+ daily orders, 6 metros</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Core Metric</span>
+      <span class="summary-val">Zero-dispatch rate (peak hours)</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Key Constraint</span>
+      <span class="summary-val">Drivers are contractors — can't mandate movement</span>
+    </div>
+  </div>
+</div>
+
+<main class="case-body">
+
+  <div class="section-label">The Situation</div>
+  <h2>An intracity delivery network at scale</h2>
+  <p>18,000+ daily orders across multiple metros. Drivers are independent contractors who choose when and where to work. Demand is highly spatio-temporal — concentrated in specific zones during predictable windows. The platform uses surge pricing as the primary supply-demand balancing mechanism.</p>
+
+  <div class="section-label">The Reframe</div>
+  <h2>This isn't a supply problem. It's a timing problem.</h2>
+  <p>The default assumption: "failed deliveries happen because there aren't enough drivers." But total active drivers during peak hours is sufficient — the issue is that surge pricing only activates <em>after</em> orders are already queuing. By the time drivers 3km away respond, the demand window has passed.</p>
+  <p>The real problem: <strong>the system can only react to demand that already exists. It can't act on demand that's about to exist.</strong></p>
+
+  <div class="callout"><p>Surge pricing solves scarcity by making it expensive. But if scarcity is caused by lag, not shortage, the answer isn't price — it's prediction.</p></div>
+
+  <div class="section-label">Constraints</div>
+  <h2>What can't change</h2>
+  <div class="constraints-list">
+    <span class="constraint">Drivers are contractors — no mandatory routing</span>
+    <span class="constraint">Nudge must feel like an opportunity, not a directive</span>
+    <span class="constraint">Can't drain adjacent zones to fill one zone</span>
+    <span class="constraint">Must work across 6+ cities with different demand patterns</span>
+    <span class="constraint">Any intervention must preserve driver earnings fairness</span>
+  </div>
+
+  <div class="section-label">Options Considered</div>
+  <h2>Three paths, one choice</h2>
+
+  <table class="decision-table">
+    <thead>
+      <tr><th>Option</th><th>Mechanism</th><th>Solves core problem?</th><th>Within constraints?</th><th>Tradeoff</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A: Manual nudges</td>
+        <td>Ops team pushes notifications 30 min before known demand events</td>
+        <td>Partially — only predictable spikes</td>
+        <td>Yes</td>
+        <td>Can't scale past 3 cities. Can't handle unexpected spikes.</td>
+      </tr>
+      <tr>
+        <td>B: Single-zone forecast</td>
+        <td>ML model predicts demand per zone, nudges drivers toward highest-demand zone</td>
+        <td>Yes for one zone</td>
+        <td>No — drains adjacent zones</td>
+        <td>Causes supply oscillation between zones (cannibalization).</td>
+      </tr>
+      <tr class="selected">
+        <td>C: Global optimizer</td>
+        <td>Predict demand across all zones simultaneously, solve global assignment every 90s</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Higher system complexity. Requires multi-signal demand model.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Why Option C:</strong> Individual-zone optimization always creates neighboring problems. The only way to avoid supply cannibalization is to treat the entire city's idle driver pool as a single optimization problem — not N independent problems.</p>
+
+  <div class="section-label">The Bet</div>
+  <h2>Predictive geofencing with global supply optimization</h2>
+  <p>The bet is that you can predict where demand will be in 25 minutes with enough confidence to pre-position drivers — and that incentive-based nudges will get enough acceptance to meaningfully shift local supply.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-title">Architecture</div>
+    <div class="flow-nodes">
+      <div class="flow-node">Historical Demand<br/>+ Traffic + Weather</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight">Demand Forecast<br/>(T+25 min, per H3 hex)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node highlight">Global Assignment<br/>(all idle drivers, every 90s)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node green">Incentive Nudge<br/>("High demand likely in X")</div>
+    </div>
+  </div>
+
+  <p>Three design choices that define this bet:</p>
+  <ul>
+    <li><strong>H3 hexagonal grid (res 8, ~460m):</strong> Small enough for actionable positioning, large enough to aggregate meaningful signal. Replaces rigid neighborhood polygons.</li>
+    <li><strong>Global assignment, not greedy individual nudges:</strong> Every 90 seconds, treat all idle drivers as resources and all demand centroids as soft targets. Minimize total system travel while respecting zone balance constraints.</li>
+    <li><strong>Incentive-based, never mandatory:</strong> Drivers see a "Demand Preview" card with expected earnings. They choose. Mandatory routing was tested and killed driver satisfaction. Trading ~5% positioning efficiency for retention is the right call at scale.</li>
+  </ul>
+
+  <div class="section-label">Metrics You'd Track</div>
+  <h2>Measurement plan</h2>
+
+  <div class="metrics-grid">
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label leading">Leading</div>
+      <div class="metrics-grid-val">Nudge acceptance rate (target >60%)<br/>Driver density delta in predicted zones at T+20 min</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label lagging">Lagging</div>
+      <div class="metrics-grid-val">Zero-dispatch rate (peak hours)<br/>P80 pickup time in volatile zones<br/>Empty-leg trip %</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label guardrail">Guardrail</div>
+      <div class="metrics-grid-val">Adjacent zone supply drop &lt;5%<br/>Driver NPS (no degradation)<br/>Earnings fairness across zones</div>
+    </div>
+  </div>
+
+  <div class="section-label">Key Tradeoffs</div>
+  <h2>The hard calls</h2>
+  <ul>
+    <li><strong>Incentive nudges vs mandatory routing:</strong> Mandatory routing gets ~95% positioning accuracy but damages driver trust and increases churn. Incentive-based nudges get ~73% acceptance — close enough to optimal without the retention cost. At 18K orders/day, driver retention matters more than marginal positioning.</li>
+    <li><strong>Global optimization vs per-zone optimization:</strong> Global is significantly more complex to build and debug. But per-zone optimization provably causes oscillation — each zone's optimizer is unaware of its effect on neighbors. This isn't a "nice to have" architectural choice, it's a correctness requirement.</li>
+    <li><strong>25-minute forecast horizon vs longer:</strong> Longer horizons (45 min) have lower accuracy. Shorter horizons (10 min) don't give drivers enough time to reposition. 25 min is the sweet spot where prediction confidence is still >70% and travel time from adjacent zones is feasible.</li>
+  </ul>
+
+  <div class="section-label">Open Questions</div>
+  <h2>What could go wrong</h2>
+  <div class="open-q">
+    <p><strong>Forecast accuracy in novel events:</strong> The model trains on historical patterns. What happens during a cricket match, a sudden downpour, or a new restaurant launch? The system has no prior for these. A fallback to reactive surge for "low-confidence" predictions might be necessary.</p>
+    <p><strong>Driver gaming:</strong> If drivers learn that positioning in certain zones earns better nudge bonuses, they might cluster there preemptively — creating artificial supply gluts. The optimizer needs to account for organic driver movement, not just nudge-driven movement.</p>
+    <p><strong>Fairness across driver cohorts:</strong> Drivers who accept nudges earn more. Drivers who don't accept (perhaps because they can't move easily) earn less. Does this create a two-tier driver economy? Need to monitor earnings distribution, not just average.</p>
+  </div>
+
+</main>
+
+<div class="case-footer-nav">
+  <a href="index.html" class="btn-back">← Back to All Cases</a>
+</div>
+</body>
+</html>

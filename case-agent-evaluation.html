@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Real-Time LLM Policy Enforcement | Siddharth Jain</title>
+<meta name="description" content="Product thinking exercise: LLM safety isn't a prompting problem — it's an architectural one. How to enforce policy without adding latency."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#a78bfa;--accent2:#4f8ef7;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:60px;background:rgba(10,11,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:500;}
+.nav-logo{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-decoration:none;}
+.nav-back{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text3);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--text);}
+.case-hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.10) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;}
+.case-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(124,58,237,0.35);background:rgba(124,58,237,0.08);padding:0.35rem 0.8rem;border-radius:2px;display:inline-block;margin-bottom:1.5rem;}
+.case-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.case-subtitle{font-size:1.1rem;color:var(--text2);font-weight:300;max-width:680px;line-height:1.75;margin-bottom:3rem;}
+.case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
+.meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
+.summary-strip{background:var(--bg2);border-bottom:1px solid var(--border);padding:2rem 3rem;}
+.summary-inner{max-width:860px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;}
+.summary-item{display:flex;flex-direction:column;gap:0.2rem;}
+.summary-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.summary-val{font-size:0.92rem;color:var(--text);font-weight:500;}
+.case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
+.section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body h2:first-of-type{margin-top:0;}
+.case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
+.case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
+.case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
+.case-body ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;}
+.case-body strong{color:var(--text);font-weight:500;}
+.callout{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.5rem 2rem;margin:2.5rem 0;border-radius:0 4px 4px 0;}
+.callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
+.diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
+.diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
+.agent-arch{display:flex;flex-direction:column;gap:1.5rem;align-items:center;}
+.arch-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.arch-node{background:var(--bg3);border:1px solid var(--border2);padding:0.9rem 1.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.68rem;color:var(--text2);text-align:center;line-height:1.4;}
+.arch-node.primary{border-color:rgba(124,58,237,0.5);color:var(--accent);background:rgba(124,58,237,0.08);}
+.arch-node.evaluator{border-color:rgba(79,142,247,0.5);color:var(--accent2);background:rgba(79,142,247,0.08);}
+.arch-node.gate{border-color:rgba(34,197,94,0.5);color:var(--green);background:rgba(34,197,94,0.07);}
+.arch-node.block{border-color:rgba(239,68,68,0.5);color:var(--red);background:rgba(239,68,68,0.07);}
+.arch-arrow{color:var(--text3);font-size:1.1rem;flex-shrink:0;}
+.arch-label{font-family:var(--font-mono);font-size:0.58rem;color:var(--text3);text-align:center;margin-top:0.5rem;}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.8rem;margin:2rem 0;overflow-x:auto;}
+.code-block pre{font-family:var(--font-mono);font-size:0.78rem;line-height:1.7;color:var(--text2);}
+.code-block .c-key{color:var(--accent);}
+.code-block .c-str{color:var(--green);}
+.code-block .c-val{color:#f59e0b;}
+.code-block .c-comment{color:var(--text3);}
+.decision-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.decision-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.decision-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.decision-table tr:last-child td{border-bottom:none;}
+.decision-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table tr.selected{background:rgba(124,58,237,0.04);}
+.decision-table tr.selected td:first-child{color:var(--green);}
+.constraints-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1.5rem 0;}
+.constraint{font-family:var(--font-mono);font-size:0.68rem;padding:0.4rem 0.85rem;border-radius:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:2rem 0;}
+.metrics-grid-item{background:var(--bg2);padding:1.4rem;}
+.metrics-grid-label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.metrics-grid-label.leading{color:var(--green);}
+.metrics-grid-label.lagging{color:var(--accent);}
+.metrics-grid-label.guardrail{color:var(--amber);}
+.metrics-grid-val{font-size:0.88rem;color:var(--text2);font-weight:300;line-height:1.6;}
+.open-q{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.5rem 2rem;margin:1rem 0;}
+.open-q p{color:var(--text2);font-size:0.92rem;font-weight:300;line-height:1.7;margin:0;}
+.open-q p + p{margin-top:0.8rem;}
+.case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
+.btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
+.btn-back:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.summary-inner{flex-direction:column;gap:1.5rem;}.arch-row{flex-direction:column;}.arch-arrow{transform:rotate(90deg);}.metrics-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">SJ.PM</a>
+  <a href="index.html" class="nav-back">← All Cases</a>
+</nav>
+
+<header class="case-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="case-tag">AI Infrastructure / LLM Systems</span>
+    <h1 class="case-title">Real-Time LLM<br/>Policy Enforcement</h1>
+    <p class="case-subtitle">Everyone treats LLM hallucinations as a prompting problem. The real issue is architectural — policy enforcement doesn't belong in the same layer as language generation.</p>
+    <div class="case-meta-row">
+      <div class="meta-item">Domain<span>AI / Enterprise Support</span></div>
+      <div class="meta-item">Primary Metric<span>Policy Violation Rate (pre-user)</span></div>
+      <div class="meta-item">Constraint<span>P90 Latency &lt; 2s · No CSAT degradation</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="summary-strip">
+  <div class="summary-inner">
+    <div class="summary-item">
+      <span class="summary-label">Scale</span>
+      <span class="summary-val">Enterprise support chat, thousands of daily conversations</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Core Metric</span>
+      <span class="summary-val">Policy violations reaching the end user</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Key Constraint</span>
+      <span class="summary-val">Can't add perceptible latency to live chat</span>
+    </div>
+  </div>
+</div>
+
+<main class="case-body">
+
+  <div class="section-label">The Situation</div>
+  <h2>An LLM-powered support agent with business rules</h2>
+  <p>An enterprise support chatbot handles refund inquiries, warranty claims, and escalation routing. It operates under a set of business policies — refund limits, escalation thresholds, regulatory requirements. These rules are currently stuffed into the system prompt (~4,000 tokens of instructions).</p>
+
+  <div class="section-label">The Reframe</div>
+  <h2>This isn't a prompting problem. It's a separation-of-concerns problem.</h2>
+  <p>The default approach: add more rules to the system prompt. <em>"Never promise refunds over $50. Always escalate tier-2 complaints."</em></p>
+  <p>This fails at scale due to <strong>attention degradation</strong> — as the prompt grows, the model's effective attention to any single rule decreases. Instructions buried in the middle are probabilistically forgotten. The result: an agent that confidently makes promises that violate policy.</p>
+  <p>The real problem: <strong>asking a language model to simultaneously be fluent AND be compliant is asking one system to optimize for two conflicting objectives.</strong> Fluency and policy compliance are separate concerns and should live in separate components.</p>
+
+  <div class="callout"><p>The policy layer should be as separate from the language layer as a database is from an API. You wouldn't put validation logic inside the response serializer.</p></div>
+
+  <div class="section-label">Constraints</div>
+  <h2>What can't change</h2>
+  <div class="constraints-list">
+    <span class="constraint">P90 latency must stay under 2 seconds (live chat)</span>
+    <span class="constraint">Violations must be blocked before reaching the user</span>
+    <span class="constraint">No CSAT degradation from safety mechanism</span>
+    <span class="constraint">Policy rules change frequently — can't retrain per change</span>
+    <span class="constraint">Must scale to new domains without rewriting architecture</span>
+  </div>
+
+  <div class="section-label">Options Considered</div>
+  <h2>Four architectures, one viable</h2>
+
+  <table class="decision-table">
+    <thead>
+      <tr><th>Option</th><th>Mechanism</th><th>Prevents violations?</th><th>Within latency?</th><th>Tradeoff</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A: Prompt-stuffing</td>
+        <td>All rules in system prompt</td>
+        <td>Partially (~40% block)</td>
+        <td>Yes (900ms)</td>
+        <td>Degrades as rules grow. Fundamentally unreliable.</td>
+      </tr>
+      <tr>
+        <td>B: Post-hoc audit</td>
+        <td>Async batch review of transcripts</td>
+        <td>No — detects but doesn't prevent</td>
+        <td>N/A</td>
+        <td>Useful for analytics. Useless for safety.</td>
+      </tr>
+      <tr>
+        <td>C: Sequential evaluator</td>
+        <td>Primary → Evaluator → User (linear chain)</td>
+        <td>Yes (~97%)</td>
+        <td>No (P90: 2,800ms)</td>
+        <td>Adds a full LLM call to the critical path.</td>
+      </tr>
+      <tr class="selected">
+        <td>D: Parallel evaluator</td>
+        <td>Primary and Evaluator run simultaneously; gate holds release</td>
+        <td>Yes (~99%)</td>
+        <td>Yes (~1,050ms)</td>
+        <td>Higher infra cost (2x compute). More complex orchestration.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Why Option D:</strong> The Primary and Evaluator don't have a data dependency — they both operate on the same input (user message + conversation context). Running them in parallel means total latency ≈ max(primary, evaluator) rather than sum(primary, evaluator).</p>
+
+  <div class="section-label">The Bet</div>
+  <h2>Parallel shadow-evaluator via MCP orchestration</h2>
+  <p>The bet: separate generation from compliance entirely. The Primary Agent only optimizes for fluency. The Evaluator only optimizes for correctness. An orchestration layer (MCP server) runs both in parallel and gates the response on the Evaluator's score.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-title">Architecture</div>
+    <div class="agent-arch">
+      <div class="arch-row">
+        <div class="arch-node">User Message + Context</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node primary" style="min-width:160px;">MCP Orchestrator</div>
+      </div>
+      <div class="arch-row" style="gap:2rem;">
+        <div>
+          <div class="arch-node primary" style="min-width:160px;">Primary Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Fluency · ~900ms</span></div>
+          <div class="arch-label">Optimizes: tone, helpfulness</div>
+        </div>
+        <div style="display:flex;align-items:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--text3);">parallel</div>
+        <div>
+          <div class="arch-node evaluator" style="min-width:160px;">Evaluator Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Compliance · ~950ms</span></div>
+          <div class="arch-label">Optimizes: policy correctness</div>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node gate">Score ≥ 0.95 → Release</div>
+        <div style="font-family:var(--font-mono);font-size:0.9rem;color:var(--text3);margin:0 0.5rem;">|</div>
+        <div class="arch-node block">Score &lt; 0.95 → Block + Fallback</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Three components, three separate concerns:</p>
+  <ul>
+    <li><strong>Primary Agent:</strong> Lightweight model optimized for conversational fluency. Has zero knowledge of policy rules. Only job: sound helpful and human.</li>
+    <li><strong>Evaluator Agent:</strong> Specialized model with strict JSON output schema. Calls a deterministic Rules Engine API for refund limits, escalation thresholds, regulatory checks. Returns confidence scores per policy category.</li>
+    <li><strong>Intercept Gate:</strong> Holds the Primary's response in buffer. If Evaluator's aggregate score ≥ 0.95, releases to user. If below, blocks and substitutes a pre-approved fallback or routes to human.</li>
+  </ul>
+
+  <div class="code-block">
+    <pre><span class="c-comment"># Evaluator output schema</span>
+{
+  <span class="c-key">"policy_scores"</span>: {
+    <span class="c-key">"refund_compliance"</span>: <span class="c-val">0.98</span>,
+    <span class="c-key">"warranty_claims"</span>: <span class="c-val">0.96</span>,
+    <span class="c-key">"escalation_triggers"</span>: <span class="c-val">0.91</span>  <span class="c-comment">← below threshold</span>
+  },
+  <span class="c-key">"aggregate_score"</span>: <span class="c-val">0.93</span>,
+  <span class="c-key">"action"</span>: <span class="c-str">"BLOCK"</span>,
+  <span class="c-key">"reason"</span>: <span class="c-str">"Tier-2 escalation trigger missed"</span>
+}</pre>
+  </div>
+
+  <div class="section-label">Metrics You'd Track</div>
+  <h2>Measurement plan</h2>
+
+  <div class="metrics-grid">
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label leading">Leading</div>
+      <div class="metrics-grid-val">Evaluator block rate<br/>False positive rate (correct responses blocked)<br/>Evaluator latency P90</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label lagging">Lagging</div>
+      <div class="metrics-grid-val">Policy violations reaching users<br/>Manual reversal rate<br/>Escalation accuracy</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label guardrail">Guardrail</div>
+      <div class="metrics-grid-val">CSAT (no degradation)<br/>End-to-end P90 latency &lt; 2s<br/>Fallback trigger rate &lt; 5%</div>
+    </div>
+  </div>
+
+  <div class="section-label">Key Tradeoffs</div>
+  <h2>The hard calls</h2>
+  <ul>
+    <li><strong>Parallel execution vs streaming-then-gating:</strong> An alternative is to stream the Primary's response token-by-token and evaluate on-the-fly. This gives lower perceived latency (user sees typing indicator immediately). But partial responses that get blocked mid-sentence create a worse UX than a slightly delayed complete response. Chose parallel with full-response gating.</li>
+    <li><strong>2x compute cost vs single-model safety:</strong> Running two models costs roughly double the inference budget. But the alternative (prompt-stuffing) has a ~40% miss rate at scale. The cost of one policy violation reaching a customer (reversal cost + trust damage) far exceeds the marginal compute cost.</li>
+    <li><strong>0.95 threshold vs lower/higher:</strong> Lower threshold (0.90) lets more borderline responses through — lower false positive rate but higher violation risk. Higher threshold (0.99) blocks too aggressively — good responses get caught and users see too many fallbacks. 0.95 is calibrated to the domain's risk tolerance.</li>
+  </ul>
+
+  <div class="section-label">Open Questions</div>
+  <h2>What could go wrong</h2>
+  <div class="open-q">
+    <p><strong>Evaluator drift:</strong> If the Rules Engine API changes (new policy added, threshold updated) but the Evaluator's training data doesn't reflect this, the Evaluator might not catch new violation types. Need a feedback loop where blocked/unblocked decisions are periodically audited against current policy state.</p>
+    <p><strong>Adversarial users:</strong> What happens when a user deliberately tries to elicit policy violations — e.g., framing a request so the Primary is likely to comply and the violation is subtle enough to pass the Evaluator? Need red-team testing specifically targeting the parallel architecture's blind spots.</p>
+    <p><strong>Fallback fatigue:</strong> If the block rate is too high, users repeatedly hit generic fallback responses and lose trust in the system's competence. The fallback itself needs to feel helpful, not robotic — perhaps routing to human immediately rather than a canned response.</p>
+  </div>
+
+</main>
+
+<div class="case-footer-nav">
+  <a href="index.html" class="btn-back">← Back to All Cases</a>
+</div>
+</body>
+</html>

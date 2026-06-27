@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Omnichannel Intent Transfer | Siddharth Jain</title>
+<meta name="description" content="Product thinking exercise: Cart abandonment in high-AOV retail isn't abandonment — it's a channel switch. The intent doesn't disappear, it just needs a bridge."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#22c55e;--accent2:#4f8ef7;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:60px;background:rgba(10,11,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:500;}
+.nav-logo{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-decoration:none;}
+.nav-back{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text3);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
+.nav-back:hover{color:var(--text);}
+.case-hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.08) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;}
+.case-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,197,94,0.3);background:rgba(34,197,94,0.06);padding:0.35rem 0.8rem;border-radius:2px;display:inline-block;margin-bottom:1.5rem;}
+.case-title{font-family:var(--font-head);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.case-subtitle{font-size:1.1rem;color:var(--text2);font-weight:300;max-width:680px;line-height:1.75;margin-bottom:3rem;}
+.case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
+.meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
+.summary-strip{background:var(--bg2);border-bottom:1px solid var(--border);padding:2rem 3rem;}
+.summary-inner{max-width:860px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;}
+.summary-item{display:flex;flex-direction:column;gap:0.2rem;}
+.summary-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.summary-val{font-size:0.92rem;color:var(--text);font-weight:500;}
+.case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
+.section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+.case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
+.case-body h2:first-of-type{margin-top:0;}
+.case-body p{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;margin-bottom:1.4rem;}
+.case-body ul{color:var(--text2);font-weight:300;font-size:1.0rem;line-height:1.85;padding-left:0;list-style:none;margin-bottom:1.4rem;}
+.case-body ul li{padding-left:1.4rem;margin-bottom:0.75rem;position:relative;}
+.case-body ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--font-mono);font-size:0.8rem;}
+.case-body strong{color:var(--text);font-weight:500;}
+.callout{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.5rem 2rem;margin:2.5rem 0;border-radius:0 4px 4px 0;}
+.callout p{font-family:var(--font-head);font-size:1.05rem;font-style:italic;color:var(--text);line-height:1.5;margin:0;}
+.diagram-block{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2.5rem;margin:2.5rem 0;}
+.diagram-title{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem;text-align:center;}
+.state-machine{display:flex;flex-direction:column;gap:0;}
+.sm-state{display:flex;gap:0;margin-bottom:1px;}
+.sm-state-name{background:var(--bg3);border:1px solid var(--border);padding:0.9rem 1.2rem;font-family:var(--font-mono);font-size:0.65rem;color:var(--text2);min-width:160px;display:flex;align-items:center;}
+.sm-state-desc{background:var(--bg2);border:1px solid var(--border);border-left:none;padding:0.9rem 1.5rem;flex:1;font-size:0.85rem;color:var(--text2);font-weight:300;line-height:1.5;display:flex;align-items:center;}
+.sm-state.active .sm-state-name{color:var(--accent);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.06);}
+.sm-state.active .sm-state-desc{border-color:rgba(34,197,94,0.2);}
+.decision-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.decision-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.decision-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.decision-table tr:last-child td{border-bottom:none;}
+.decision-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table tr.selected{background:rgba(34,197,94,0.04);}
+.decision-table tr.selected td:first-child{color:var(--green);}
+.constraints-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1.5rem 0;}
+.constraint{font-family:var(--font-mono);font-size:0.68rem;padding:0.4rem 0.85rem;border-radius:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:2rem 0;}
+.metrics-grid-item{background:var(--bg2);padding:1.4rem;}
+.metrics-grid-label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.metrics-grid-label.leading{color:var(--green);}
+.metrics-grid-label.lagging{color:var(--accent);}
+.metrics-grid-label.guardrail{color:var(--amber);}
+.metrics-grid-val{font-size:0.88rem;color:var(--text2);font-weight:300;line-height:1.6;}
+.open-q{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.5rem 2rem;margin:1rem 0;}
+.open-q p{color:var(--text2);font-size:0.92rem;font-weight:300;line-height:1.7;margin:0;}
+.open-q p + p{margin-top:0.8rem;}
+.case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
+.btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
+.btn-back:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.summary-inner{flex-direction:column;gap:1.5rem;}.sm-state{flex-direction:column;}.sm-state-name{min-width:unset;}.metrics-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">SJ.PM</a>
+  <a href="index.html" class="nav-back">← All Cases</a>
+</nav>
+
+<header class="case-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="case-tag">Consumer 0-to-1 / Omnichannel</span>
+    <h1 class="case-title">Omnichannel<br/>Intent Transfer</h1>
+    <p class="case-subtitle">High-AOV "cart abandonment" isn't abandonment at all — it's a channel switch. The customer doesn't lose intent when they walk into a store. The store loses context.</p>
+    <div class="case-meta-row">
+      <div class="meta-item">Domain<span>Consumer / High-AOV Retail</span></div>
+      <div class="meta-item">Primary Metric<span>In-Store Close Rate (digital-origin)</span></div>
+      <div class="meta-item">Constraint<span>Zero friction · No login required · Privacy-safe</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="summary-strip">
+  <div class="summary-inner">
+    <div class="summary-item">
+      <span class="summary-label">Scale</span>
+      <span class="summary-val">High-AOV retail (₹2L+ purchases), 30+ stores</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Core Metric</span>
+      <span class="summary-val">Close rate for customers who researched online then visited store</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Key Constraint</span>
+      <span class="summary-val">Handoff must feel invisible — not like a process</span>
+    </div>
+  </div>
+</div>
+
+<main class="case-body">
+
+  <div class="section-label">The Situation</div>
+  <h2>High-ticket retail with a split journey</h2>
+  <p>Custom furniture and interior design. Average order value above ₹2L. Customers spend 30-45 minutes online configuring rooms in a 3D editor, saving layouts, filtering fabric swatches. Then they stop at checkout — not because they've lost interest, but because for purchases at this price point, 63% of buyers want to see materials in person before committing.</p>
+  <p>They walk into the physical store. The salesperson has no idea any of this happened.</p>
+
+  <div class="section-label">The Reframe</div>
+  <h2>This isn't a "conversion optimization" problem. It's a context transfer problem.</h2>
+  <p>The default assumption: "these users are abandoning their cart — we should retarget them with emails and push notifications to bring them back online." This treats the channel switch as a failure to convert digitally.</p>
+  <p>The actual insight: <strong>the customer has already decided to buy. They just want to do the final step in person.</strong> The problem isn't getting them back online — it's making sure the physical store knows what they've already done. The gap isn't in intent. It's in context.</p>
+
+  <div class="callout"><p>The customer walked in knowing exactly what they wanted. The failure is that the salesperson has no idea the customer already did the work.</p></div>
+
+  <div class="section-label">Constraints</div>
+  <h2>What can't change</h2>
+  <div class="constraints-list">
+    <span class="constraint">Handoff must feel effortless — no codes, no login, no "process"</span>
+    <span class="constraint">Must work for anonymous/logged-out users</span>
+    <span class="constraint">No PII in the transfer mechanism</span>
+    <span class="constraint">Salesperson UI must arm them, not overwhelm them</span>
+    <span class="constraint">Must work on existing store tablets (no new hardware)</span>
+  </div>
+
+  <div class="section-label">Options Considered</div>
+  <h2>Three handoff mechanisms</h2>
+
+  <table class="decision-table">
+    <thead>
+      <tr><th>Option</th><th>Mechanism</th><th>Friction Level</th><th>Privacy-safe?</th><th>Tradeoff</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A: Cart ID dictation</td>
+        <td>Email a 6-char code. Customer dictates to salesperson who looks it up in POS.</td>
+        <td>High (dictation + lookup)</td>
+        <td>Yes</td>
+        <td>2.3% adoption. Feels transactional. Salespeople skip it.</td>
+      </tr>
+      <tr>
+        <td>B: Account-linked sync</td>
+        <td>Require login. Salesperson pulls up account by email/phone.</td>
+        <td>Medium (requires identity)</td>
+        <td>No (requires login)</td>
+        <td>Excludes anonymous users (majority). Login friction at wrong moment.</td>
+      </tr>
+      <tr class="selected">
+        <td>C: QR session handshake</td>
+        <td>Encrypted QR on mobile. Salesperson scans. Full context loads in 1.5s.</td>
+        <td>Near-zero (one scan)</td>
+        <td>Yes (token-based, no PII)</td>
+        <td>Requires customer to show phone. QR expires after 4 hours.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Why Option C:</strong> The Cart ID MVP proved that customers who DO get context transferred convert at 2x the rate. The problem was purely friction-based — not value-based. The mechanism that wins is the one with the lowest activation energy. QR scan is one physical gesture, zero cognitive load.</p>
+
+  <div class="section-label">The Bet</div>
+  <h2>A session state-machine with QR-based context transfer</h2>
+  <p>The bet: if you can transfer the full digital session context (3D layout, cart, interaction patterns) to a salesperson's tablet in under 2 seconds with zero friction, the close rate for channel-switching customers should converge with pure-offline close rates — or exceed them, because these customers arrive with more preparation.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-title">Session State Machine</div>
+    <div class="state-machine">
+      <div class="sm-state">
+        <div class="sm-state-name">BROWSING</div>
+        <div class="sm-state-desc">Customer configures 3D room on mobile. Session graph builds in real-time.</div>
+      </div>
+      <div class="sm-state active">
+        <div class="sm-state-name">INTENT_DETECTED</div>
+        <div class="sm-state-desc">Cart > ₹1.5L + 20+ min dwell → Encrypted QR generated. "See this in store" CTA surfaced.</div>
+      </div>
+      <div class="sm-state active">
+        <div class="sm-state-name">HANDSHAKE</div>
+        <div class="sm-state-desc">Salesperson scans QR on tablet. JWT token resolved via session API. Full context loads (1.5s).</div>
+      </div>
+      <div class="sm-state active">
+        <div class="sm-state-name">CONTEXT_LOADED</div>
+        <div class="sm-state-desc">Tablet shows: configured layout, top items by dwell time, fabric preferences, suggested samples to pull.</div>
+      </div>
+      <div class="sm-state">
+        <div class="sm-state-name">CLOSED / EXPIRED</div>
+        <div class="sm-state-desc">Sale recorded and linked, or token expires after 4 hours unused.</div>
+      </div>
+    </div>
+  </div>
+
+  <p>Three design choices that define this bet:</p>
+  <ul>
+    <li><strong>Encrypted, time-limited JWT:</strong> The QR contains no PII — just an opaque session reference. Valid for 4 hours. If intercepted, it reveals nothing about the customer and expires quickly. Privacy-safe by construction.</li>
+    <li><strong>Anonymous-first, identity optional:</strong> The handshake works without any account or login. If the customer wants to link their account (for future personalization), they can — but it's not required for the core value to work.</li>
+    <li><strong>Salesperson UI designed for closing, not browsing:</strong> The tablet doesn't show the full website. It shows: (1) the configured layout, (2) top 3 items by engagement time, (3) two fabric samples to physically pull before the conversation starts. It's a sales prep tool, not a browsing tool.</li>
+  </ul>
+
+  <div class="section-label">Metrics You'd Track</div>
+  <h2>Measurement plan</h2>
+
+  <div class="metrics-grid">
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label leading">Leading</div>
+      <div class="metrics-grid-val">QR generation rate (high-intent sessions)<br/>QR scan rate (store visits)<br/>Time-to-context-load (target &lt;2s)</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label lagging">Lagging</div>
+      <div class="metrics-grid-val">Close rate (QR users vs walk-ins)<br/>AOV delta (omnichannel vs single-channel)<br/>Sales cycle length (visits to close)</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label guardrail">Guardrail</div>
+      <div class="metrics-grid-val">Salesperson adoption (don't skip it)<br/>Customer comfort (survey: "felt creepy?")<br/>Token security (zero data leakage)</div>
+    </div>
+  </div>
+
+  <div class="section-label">Key Tradeoffs</div>
+  <h2>The hard calls</h2>
+  <ul>
+    <li><strong>Anonymous sessions vs login-required:</strong> Login-required would give richer cross-session data (past visits, wish lists). But requiring login introduces friction at the highest-intent moment — and excludes first-time visitors entirely. Chose anonymous. The single-session context (what they configured today) is sufficient to transform the salesperson interaction.</li>
+    <li><strong>Show everything vs curated view:</strong> Could mirror the full online experience on the tablet. But salespeople don't need to browse — they need to prepare for a 5-minute conversation. A curated view (layout + top items + fabric suggestions) has higher action density. Chose aggressive curation at the cost of salesperson flexibility.</li>
+    <li><strong>4-hour token expiry vs longer:</strong> Longer expiry (24h, 7d) would catch customers who visit days later. But it increases security surface and token storage cost. 63% of store visits happen within 4 hours of the last online session. Chose 4h as the 80/20 cut — most value captured with minimal complexity.</li>
+  </ul>
+
+  <div class="section-label">Open Questions</div>
+  <h2>What could go wrong</h2>
+  <div class="open-q">
+    <p><strong>Salesperson resistance:</strong> If salespeople feel the tool is surveilling their interactions (tracking which QR sessions they scan, close rates per salesperson), they'll avoid using it. The tool needs to feel like a superpower, not a performance tracker. Positioning and incentives matter as much as the product.</p>
+    <p><strong>"Creepiness" threshold:</strong> Some customers might feel uncomfortable that the salesperson "already knows" what they were looking at online. The line between "helpful preparation" and "surveillance" is subjective. Need to test the reveal UX carefully — maybe the salesperson asks "I see you were looking at a living room layout — want me to pull those fabrics?" vs silently having everything ready.</p>
+    <p><strong>Multi-device sessions:</strong> Customer configures on laptop at home, visits store from mobile. The QR is generated on the active session device. If the high-intent session was on desktop and they show up with just their phone, there's no QR to scan. Need a way to surface the QR on any device linked to the session (push notification to mobile?).</p>
+  </div>
+
+</main>
+
+<div class="case-footer-nav">
+  <a href="index.html" class="btn-back">← Back to All Cases</a>
+</div>
+</body>
+</html>
