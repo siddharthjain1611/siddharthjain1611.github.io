@@ -655,7 +655,7 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
     <h1 class="hero-name">Siddharth<br/><span class="accent">Jain.</span></h1>
     <p class="hero-tagline">PM who builds. Marketplace logistics, AI infrastructure, and 0-to-1 consumer products. I treat agentic coding as a PM skill.</p>
     <div class="hero-ctas">
-      <a href="#cases" class="btn-primary">View Case Studies →</a>
+      <a href="#cases" class="btn-primary">View Product Cases →</a>
       <a href="#contact" class="btn-outline">Get in Touch</a>
     </div>
   </div>
@@ -759,7 +759,7 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 </div>
 <div class="terminal-commands-hint">
 <span class="terminal-cmd-hint"><kbd>stats</kbd> Key metrics</span>
-<span class="terminal-cmd-hint"><kbd>cases</kbd> Case studies</span>
+<span class="terminal-cmd-hint"><kbd>cases</kbd> Product thinking</span>
 <span class="terminal-cmd-hint"><kbd>stack</kbd> AI toolkit</span>
 <span class="terminal-cmd-hint"><kbd>philosophy</kbd> My approach</span>
 <span class="terminal-cmd-hint"><kbd>contact</kbd> Get in touch</span>
@@ -985,8 +985,8 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 <section id="cases">
 <div class="container">
 <div class="section-eyebrow"><span class="eyebrow-num">03</span><div class="eyebrow-rule"></div></div>
-<h2 class="section-title">Case Studies</h2>
-<p class="cases-intro">Four structured case studies. Each follows the same format: context, problem, approaches tried, solution, and measurable impact.</p>
+<h2 class="section-title">Product Thinking</h2>
+<p class="cases-intro">How I decompose ambiguous problems into structured bets. Each case follows the same format: situation, reframe, constraints, options considered, the bet, metrics to track, and open questions.</p>
 <div class="cases-grid">
 
 <a href="case-predictive-routing.html" class="case-card" style="text-decoration:none; color:inherit;">
@@ -1245,83 +1245,83 @@ B.Tech (CS) + MBA, Integrated — IIITM Gwalior · 2017–2022
 ## Internships | 2020–2022
 Jupiter (Data Science) · Rakuten Viber (AI/Healthcare) · Xiaomi (Product & Data) · Policybazaar (PM)`,
 
-    'case-1': `# Case Study 01: Dynamic Geofencing & Pre-emptive Routing
+    'case-1': `# 01: Pre-emptive Supply Positioning
 
-**Tag:** Logistics & Operations
+**Tag:** Logistics & Marketplace
 
-## Problem
+## The Reframe
 
-Surge pricing is fundamentally reactive — it only responds after demand has already spiked. Result: 22% zero-dispatch rate during peak hours.
+Everyone assumes failed deliveries = not enough drivers. The real problem is spatial mismatch — drivers exist, but they're in the wrong place when demand arrives.
 
-## Solution
+## The Bet
 
-H3 hexagonal grid (Uber's library) + gradient-boosted demand forecast (T+25 min) + Global Supply Optimizer running every 90 seconds.
+Predict demand 25 min forward using H3 hexagonal grid + multi-signal forecast. Solve global supply assignment every 90s across all zones simultaneously. Nudge drivers via incentives, never mandatory routing.
 
-## Impact
+## Metrics Targeted
 
-- −18% zero-dispatch rate
-- P80 pickup improved from 24min to 16min
-- −12% empty-leg trips
+- Zero-dispatch rate (peak hours)
+- P80 pickup time in volatile zones
+- Guardrail: adjacent zone supply drop <5%
 
 → View full case: case-predictive-routing.html`,
 
-    'case-2': `# Case Study 02: Multi-Agent Evaluation Frameworks
+    'case-2': `# 02: Real-Time LLM Policy Enforcement
 
 **Tag:** AI Infrastructure
 
-## Problem
+## The Reframe
 
-LLM support agents hallucinated policy violations — 17% of conversations contained violations with prompt-stuffing approach.
+LLM safety isn't a prompting problem — it's an architectural one. Asking one model to be fluent AND compliant is asking one system to optimize for two conflicting objectives.
 
-## Solution
+## The Bet
 
-Parallel Shadow-Evaluator architecture via MCP Server: Primary Agent (fluency) + Evaluator Agent (policy checking via Rules Engine API) run simultaneously with an intercept gate.
+Separate generation from compliance. Primary Agent (fluency) and Evaluator Agent (policy) run in parallel via MCP orchestrator. Gate holds response until Evaluator clears it. Latency ≈ max(both), not sum(both).
 
-## Impact
+## Metrics Targeted
 
-- 99% policy violation block rate
-- P90 latency only +16% (1,050ms)
-- 0 policy rules in prompts
+- Policy violations reaching end users
+- P90 response latency (<2s)
+- Guardrail: CSAT (no degradation), fallback rate <5%
 
 → View full case: case-agent-evaluation.html`,
 
-    'case-3': `# Case Study 03: Privacy-Preserving Propensity Scoring
+    'case-3': `# 03: In-Session Propensity for Ad Targeting
 
-**Tag:** Ad-Tech / Data
+**Tag:** Ad-Tech / Retail Media
 
-## Problem
+## The Reframe
 
-Third-party cookie deprecation + stale purchase history signals.
+The problem isn't "cookies are dying." It's that the industry is using the wrong signal class. Recency dominates history — what a user does in the last 90 seconds predicts intent better than what they bought last month.
 
-## Solution
+## The Bet
 
-In-session behavioral DNN with velocity features (scroll depth, dwell time, interaction patterns) — zero persistent identifiers, fully cookie-free.
+Build a behavioral DNN that reads session physics (velocity features: scroll depth/sec, dwell vs content length, interaction sequences) to score propensity per SKU cluster. Zero identity required. Fits within 40ms bid auction SLA.
 
-## Impact
+## Metrics Targeted
 
-- +22% CTR lift
-- +9% ROAS
-- Zero privacy risk (GDPR/CCPA compliant)
+- CTR on re-ranked sponsored ads
+- ROAS for participating advertisers
+- Guardrail: bid latency P99 <40ms, zero persistent identifiers
 
 → View full case: case-propensity-ad-tech.html`,
 
-    'case-4': `# Case Study 04: Bridging the Offline-Online Intent Gap
+    'case-4': `# 04: Omnichannel Intent Transfer
 
 **Tag:** Consumer 0-to-1
 
-## Problem
+## The Reframe
 
-63% of high-AOV customers research online then visit stores, but salespeople start cold with no context.
+High-AOV "cart abandonment" isn't abandonment — it's a channel switch. The customer doesn't lose intent when they walk into a store. The store loses context.
 
-## Solution
+## The Bet
 
-Encrypted QR handshake that transfers full digital session context (3D layout, cart, fabric preferences) to a salesperson's tablet in 1.5 seconds.
+A session state-machine with QR-based context transfer. Encrypted JWT token (no PII) transfers full digital session to salesperson's tablet in 1.5s. Anonymous-first, zero login required. Salesperson UI is a closing tool, not a browsing tool.
 
-## Impact
+## Metrics Targeted
 
-- +34% in-store close rate (52% vs 31% offline-only)
-- +18% AOV premium (₹3.9L vs ₹3.2L)
-- Omnichannel customers had highest close rate and AOV
+- Close rate (QR users vs cold walk-ins)
+- AOV delta (omnichannel vs single-channel)
+- Guardrail: customer comfort ("felt creepy?"), salesperson adoption
 
 → View full case: case-omnichannel-intent.html`,
 
@@ -1419,10 +1419,10 @@ Open to senior PM roles at companies building marketplace, fintech, consumer, or
   window.__saveTerminalState = saveState;
 
   const caseLinks = {
-    '01': { url: 'case-predictive-routing.html', name: 'Dynamic Geofencing & Pre-emptive Routing' },
-    '02': { url: 'case-agent-evaluation.html', name: 'Multi-Agent Evaluation Frameworks' },
-    '03': { url: 'case-propensity-ad-tech.html', name: 'Privacy-Preserving Propensity Scoring' },
-    '04': { url: 'case-omnichannel-intent.html', name: 'Bridging the Offline-Online Intent Gap' }
+    '01': { url: 'case-predictive-routing.html', name: 'Pre-emptive Supply Positioning' },
+    '02': { url: 'case-agent-evaluation.html', name: 'Real-Time LLM Policy Enforcement' },
+    '03': { url: 'case-propensity-ad-tech.html', name: 'In-Session Propensity for Ad Targeting' },
+    '04': { url: 'case-omnichannel-intent.html', name: 'Omnichannel Intent Transfer' }
   };
 
   const responses = {
@@ -1437,11 +1437,11 @@ Open to senior PM roles at companies building marketplace, fintech, consumer, or
       { type: 'stat', name: 'Policy Block', val: '99%', note: 'shadow-evaluator architecture' }
     ],
     cases: [
-      { type: 'sep', text: 'Case Studies' },
-      { type: 'link', num: '01', label: 'Dynamic Geofencing & Pre-emptive Routing' },
-      { type: 'link', num: '02', label: 'Multi-Agent Evaluation Frameworks' },
-      { type: 'link', num: '03', label: 'Privacy-Preserving Propensity Scoring' },
-      { type: 'link', num: '04', label: 'Bridging the Offline-Online Intent Gap' },
+      { type: 'sep', text: 'Product Thinking Exercises' },
+      { type: 'link', num: '01', label: 'Pre-emptive Supply Positioning' },
+      { type: 'link', num: '02', label: 'Real-Time LLM Policy Enforcement' },
+      { type: 'link', num: '03', label: 'In-Session Propensity for Ad Targeting' },
+      { type: 'link', num: '04', label: 'Omnichannel Intent Transfer' },
       { type: 'text', text: '→ Try: open 1  ·  open 2  ·  open 3  ·  open 4' }
     ],
     stack: [
@@ -1463,7 +1463,7 @@ Open to senior PM roles at companies building marketplace, fintech, consumer, or
     help: [
       { type: 'sep', text: 'Available Commands' },
       { type: 'cmd', name: 'stats', desc: 'Key metrics & impact numbers' },
-      { type: 'cmd', name: 'cases', desc: 'Case study overview (clickable)' },
+      { type: 'cmd', name: 'cases', desc: 'Product thinking exercises (clickable)' },
       { type: 'cmd', name: 'open 1-4', desc: 'Open a case study (e.g. open 3)' },
       { type: 'cmd', name: 'stack', desc: 'AI tools & capabilities' },
       { type: 'cmd', name: 'philosophy', desc: 'My product philosophy' },

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Privacy-Preserving Propensity Scoring | Siddharth Jain</title>
-<meta name="description" content="Replacing third-party cookies with in-session behavioral signals to re-rank retail media ads — achieving a 22% CTR lift with zero persistent identifiers."/>
+<title>In-Session Propensity for Ad Targeting | Siddharth Jain</title>
+<meta name="description" content="Product thinking exercise: When cookies die and purchase history goes stale, the strongest targeting signal is what a user is doing right now — not what they bought last month."/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#f59e0b;--accent2:#4f8ef7;--green:#22c55e;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#f59e0b;--accent2:#4f8ef7;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
@@ -25,12 +25,11 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
 .meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
 .meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
-.metrics-bar{background:var(--bg2);border-bottom:1px solid var(--border);}
-.metrics-inner{max-width:860px;margin:0 auto;padding:2.5rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
-.metric-block{background:var(--bg2);padding:2rem 2.5rem;}
-.metric-num{font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:0.4rem;}
-.metric-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
-.metric-sub{font-size:0.82rem;color:var(--text2);margin-top:0.4rem;font-weight:300;}
+.summary-strip{background:var(--bg2);border-bottom:1px solid var(--border);padding:2rem 3rem;}
+.summary-inner{max-width:860px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;}
+.summary-item{display:flex;flex-direction:column;gap:0.2rem;}
+.summary-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.summary-val{font-size:0.92rem;color:var(--text);font-weight:500;}
 .case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
 .section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
 .case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
@@ -52,22 +51,29 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .pipe-step-desc{font-family:var(--font-mono);font-size:0.58rem;color:var(--text3);line-height:1.5;}
 .pipe-step.active{background:rgba(245,158,11,0.08);border-right-color:rgba(245,158,11,0.25);}
 .pipe-step.active .pipe-step-name{color:var(--accent);}
-.feature-compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:2rem 0;}
-.fc-col{background:var(--bg2);padding:0;}
-.fc-header{padding:1rem 1.5rem;font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--border);}
-.fc-header.old{color:var(--text3);}
-.fc-header.new{color:var(--accent);}
-.fc-item{padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);font-size:0.88rem;color:var(--text2);font-weight:300;line-height:1.5;}
-.fc-item:last-child{border-bottom:none;}
-.phase-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
-.phase-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
-.phase-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
-.phase-table tr:last-child td{border-bottom:none;}
-.phase-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.decision-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.decision-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.decision-table tr:last-child td{border-bottom:none;}
+.decision-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table tr.selected{background:rgba(245,158,11,0.04);}
+.decision-table tr.selected td:first-child{color:var(--green);}
+.constraints-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1.5rem 0;}
+.constraint{font-family:var(--font-mono);font-size:0.68rem;padding:0.4rem 0.85rem;border-radius:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:2rem 0;}
+.metrics-grid-item{background:var(--bg2);padding:1.4rem;}
+.metrics-grid-label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.metrics-grid-label.leading{color:var(--green);}
+.metrics-grid-label.lagging{color:var(--accent);}
+.metrics-grid-label.guardrail{color:var(--amber);}
+.metrics-grid-val{font-size:0.88rem;color:var(--text2);font-weight:300;line-height:1.6;}
+.open-q{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.5rem 2rem;margin:1rem 0;}
+.open-q p{color:var(--text2);font-size:0.92rem;font-weight:300;line-height:1.7;margin:0;}
+.open-q p + p{margin-top:0.8rem;}
 .case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
 .btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
 .btn-back:hover{border-color:var(--accent);color:var(--accent);}
-@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.metrics-inner{grid-template-columns:1fr;}.pipeline{flex-direction:column;}.feature-compare{grid-template-columns:1fr;}}
+@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.summary-inner{flex-direction:column;gap:1.5rem;}.pipeline{flex-direction:column;}.metrics-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -80,85 +86,94 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
   <div class="hero-glow"></div>
   <div class="hero-inner">
     <span class="case-tag">Ad-Tech / Retail Media</span>
-    <h1 class="case-title">Privacy-Preserving<br/>Propensity Scoring</h1>
-    <p class="case-subtitle">When third-party cookies disappear and purchase history goes stale, how do you target retail media ads effectively — without any persistent user identity?</p>
+    <h1 class="case-title">In-Session Propensity<br/>for Ad Targeting</h1>
+    <p class="case-subtitle">The ad industry is scrambling to replace cookies. But the strongest targeting signal was never purchase history — it's what a user is doing right now, in this session, in the last 90 seconds.</p>
     <div class="case-meta-row">
       <div class="meta-item">Domain<span>Ad-Tech / Retail Media</span></div>
-      <div class="meta-item">Scope<span>Search Ad Re-ranking</span></div>
-      <div class="meta-item">Stack<span>Clickstream · DNN · Real-time Bid Engine</span></div>
+      <div class="meta-item">Primary Metric<span>CTR on Sponsored Search Ads</span></div>
+      <div class="meta-item">Constraint<span>Zero persistent identifiers · &lt;40ms bid SLA</span></div>
     </div>
   </div>
 </header>
 
-<div class="metrics-bar">
-  <div class="metrics-inner">
-    <div class="metric-block">
-      <div class="metric-num">+22%</div>
-      <div class="metric-label">Click-Through Rate Lift</div>
-      <div class="metric-sub">Across sponsored search inventory</div>
+<div class="summary-strip">
+  <div class="summary-inner">
+    <div class="summary-item">
+      <span class="summary-label">Scale</span>
+      <span class="summary-val">Retail media network, sponsored search ads</span>
     </div>
-    <div class="metric-block">
-      <div class="metric-num">+9%</div>
-      <div class="metric-label">Return on Ad Spend</div>
-      <div class="metric-sub">For participating advertisers</div>
+    <div class="summary-item">
+      <span class="summary-label">Core Metric</span>
+      <span class="summary-val">CTR and ROAS for sponsored inventory</span>
     </div>
-    <div class="metric-block">
-      <div class="metric-num">0 IDs</div>
-      <div class="metric-label">Persistent Identifiers Used</div>
-      <div class="metric-sub">100% cookie-free, GDPR/CCPA compliant</div>
+    <div class="summary-item">
+      <span class="summary-label">Key Constraint</span>
+      <span class="summary-val">No cookies, no user IDs, no persistent identity</span>
     </div>
   </div>
 </div>
 
 <main class="case-body">
 
-  <div class="section-label">Context</div>
-  <h2>The Setting</h2>
-  <p>A retail media network — one of the fastest-growing ad channels — built on sponsored search ads within an e-commerce platform. Historically, ad targeting relied on two signals: third-party cookies for cross-site tracking, and purchase history data to build audience segments.</p>
-  <p>The targeting logic was intuitive: if a user bought running shoes last month, show them running gear ads today.</p>
+  <div class="section-label">The Situation</div>
+  <h2>A retail media network losing its targeting signal</h2>
+  <p>Sponsored search ads within an e-commerce platform. Targeting historically relied on two signals: third-party cookies (cross-site behavior) and purchase history (audience segments built from what users bought in the last 30 days).</p>
+  <p>Both signals are simultaneously dying — cookies are being deprecated by browsers, and purchase history is stale by the time it's used (what someone bought 3 weeks ago is a weak predictor of what they want right now).</p>
 
-  <div class="section-label">Problem</div>
-  <h2>Two Simultaneous Structural Shifts</h2>
-  <p>Two things broke this model at the same time:</p>
-  <ul>
-    <li><strong>Cookie deprecation:</strong> Chrome followed Firefox and Safari in stripping third-party cookies, eliminating cross-site tracking.</li>
-    <li><strong>Signal staleness:</strong> Purchase history ages poorly. What a user bought 3 weeks ago predicts their current intent far less reliably than what they clicked on in the last 90 seconds.</li>
-  </ul>
-  <p>Advertisers were watching CTR fall quarter-over-quarter. The ad product wasn't broken — the <strong>targeting signal was stale</strong>.</p>
+  <div class="section-label">The Reframe</div>
+  <h2>The targeting problem isn't "cookies are dying." It's that the industry is using the wrong signal class entirely.</h2>
+  <p>The default assumption: "we need to find a cookie replacement — some other way to persistently identify users across sessions." This frames the problem as identity resolution.</p>
+  <p>The actual insight: <strong>recency dominates history.</strong> A user's behavior in the current session — what they're clicking, scrolling, dwelling on right now — is a stronger predictor of purchase intent than what they bought last month. The signal doesn't need to be persistent. It needs to be fresh.</p>
 
   <div class="callout"><p>Purchase history tells you what someone wanted. Session behavior tells you what they want right now. The gap between those two is where ad dollars go to die.</p></div>
 
-  <div class="section-label">Approaches Tried</div>
-  <h2>What Didn't Work (and Why)</h2>
+  <div class="section-label">Constraints</div>
+  <h2>What can't change</h2>
+  <div class="constraints-list">
+    <span class="constraint">Zero persistent identifiers — fully GDPR/CCPA compliant</span>
+    <span class="constraint">Bid adjustment must happen within 40ms (auction SLA)</span>
+    <span class="constraint">Must work from first pageview (no warm-up period required)</span>
+    <span class="constraint">Can't degrade page load performance</span>
+    <span class="constraint">Advertisers pay per click — false positives cost them money</span>
+  </div>
 
-  <table class="phase-table">
+  <div class="section-label">Options Considered</div>
+  <h2>Three targeting approaches</h2>
+
+  <table class="decision-table">
     <thead>
-      <tr><th>Approach</th><th>CTR Lift</th><th>Why It Failed</th></tr>
+      <tr><th>Option</th><th>Signal Source</th><th>Privacy-safe?</th><th>Within latency?</th><th>Tradeoff</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>Cookie targeting (legacy)</td>
-        <td>Baseline</td>
-        <td>Dying signal. Cross-site tracking stripped by browsers.</td>
+        <td>A: Cookie replacement</td>
+        <td>Fingerprinting, cohort IDs, or unified ID solutions</td>
+        <td>Debatable — regulatory risk</td>
+        <td>Yes</td>
+        <td>Still uses stale signal. Arms race with browser vendors.</td>
       </tr>
       <tr>
-        <td>Category session boosting</td>
-        <td>+6%</td>
-        <td>Too coarse. Treated accidental clicks identically to deep engagement. No model of intent intensity.</td>
+        <td>B: Category session boost</td>
+        <td>If user clicks 2+ items in a category, boost ads in that category</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Too coarse. Treats accidental clicks = deep engagement. No intensity model.</td>
+      </tr>
+      <tr class="selected">
+        <td>C: Velocity-based DNN</td>
+        <td>In-session micro-interactions (scroll speed, dwell, interaction sequences)</td>
+        <td>Yes — no identity needed</td>
+        <td>Yes (&lt;40ms)</td>
+        <td>Higher engineering complexity. Needs behavioral feature engineering.</td>
       </tr>
     </tbody>
   </table>
 
-  <p>The category boosting V1 was fast to ship — if a user clicked two "Electronics" items, apply a flat 1.3x bid multiplier. It proved the directional hypothesis (in-session behavior is predictive) but had fundamental flaws:</p>
-  <ul>
-    <li>A 0.8-second accidental click was treated identically to a 4-minute deep-read on a product spec sheet</li>
-    <li>"Laptops" and "Phone Cases" were both "Electronics" — same boost, fundamentally different conversion propensities</li>
-    <li>No model of whether someone was browsing casually or actively comparing final options</li>
-  </ul>
+  <p><strong>Why Option C:</strong> The category boost (Option B) proved the hypothesis — in-session behavior is predictive. But it couldn't distinguish casual browsing from active comparison shopping. The signal isn't <em>what</em> someone clicked — it's <em>how</em> they engaged. That requires measuring velocity, not just events.</p>
 
-  <div class="section-label">Solution</div>
-  <h2>In-Session Behavioral DNN with Velocity Features</h2>
-  <p>The solution replaced categorical signals with a purpose-engineered feature set that captured the <em>physics</em> of user intent — how someone engages, not just whether they engaged.</p>
+  <div class="section-label">The Bet</div>
+  <h2>A behavioral DNN that reads session physics, not identity</h2>
+  <p>The bet: you can build an accurate propensity model using only in-session behavioral velocity features — without ever knowing who the user is. The model reads the physics of engagement (how fast, how deep, what sequence) rather than the identity of the engager.</p>
 
   <div class="diagram-block">
     <div class="diagram-title">Propensity Scoring Pipeline</div>
@@ -170,68 +185,63 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
       </div>
       <div class="pipe-step">
         <div class="pipe-step-num">02</div>
-        <div class="pipe-step-name">Feature Extraction</div>
-        <div class="pipe-step-desc">Velocity, dwell, interaction depth</div>
+        <div class="pipe-step-name">Velocity Features</div>
+        <div class="pipe-step-desc">Scroll depth/sec, dwell vs content length, interaction sequences</div>
       </div>
       <div class="pipe-step active">
         <div class="pipe-step-num">03</div>
         <div class="pipe-step-name">DNN Scoring</div>
-        <div class="pipe-step-desc">Intent propensity by SKU cluster</div>
+        <div class="pipe-step-desc">Intent propensity per SKU cluster</div>
       </div>
       <div class="pipe-step">
         <div class="pipe-step-num">04</div>
-        <div class="pipe-step-name">Ad Re-ranking</div>
-        <div class="pipe-step-desc">Bid adjustment ≤ 40ms SLA</div>
+        <div class="pipe-step-name">Bid Adjustment</div>
+        <div class="pipe-step-desc">Re-rank ads within 40ms SLA</div>
       </div>
     </div>
   </div>
 
-  <p>Four key engineering decisions:</p>
+  <p>Four design choices that define this bet:</p>
   <ul>
-    <li><strong>Velocity features over raw clicks:</strong> Time-normalized interaction rates — scroll depth per second, dwell time relative to content length, image-vs-text attention ratio. Captures <em>how</em> someone engages, not just <em>whether</em> they engaged.</li>
-    <li><strong>Ephemeral session graph:</strong> A lightweight in-memory graph tracking interaction sequences. A user who viewed → filtered → zoomed → read specs has a fundamentally different topology than view → back → view → back.</li>
-    <li><strong>DNN trained on conversion-as-truth:</strong> Sessions labeled by eventual conversion within 72 hours. A shallow DNN (3 hidden layers) predicts this from velocity features alone. The model never sees user IDs or historical data.</li>
-    <li><strong>SKU-cluster targeting:</strong> Output is propensity score per item cluster (groups of 8-12 semantically similar SKUs) — much more precise than category-level boosting.</li>
+    <li><strong>Velocity features, not raw events:</strong> Time-normalized interaction rates — scroll depth per second, dwell time relative to content length, image-vs-text attention ratio. Captures engagement intensity, not just occurrence.</li>
+    <li><strong>Ephemeral session graph:</strong> In-memory graph tracking interaction sequences. A user who viewed → filtered → zoomed → read specs has a fundamentally different topology than view → back → view → back. Topology encodes intent stage.</li>
+    <li><strong>Trained on conversion-as-truth:</strong> Label sessions by whether they convert within 72 hours. The DNN (3 hidden layers) learns to predict this from velocity features alone — no user IDs, no history.</li>
+    <li><strong>SKU-cluster output, not category:</strong> Propensity score per cluster of 8-12 semantically similar items. Much more precise than category-level boosting — "wireless earbuds under ₹3K" vs just "Electronics."</li>
   </ul>
 
-  <div class="feature-compare">
-    <div class="fc-col">
-      <div class="fc-header old">Before: Cookie-Based Targeting</div>
-      <div class="fc-item">Purchase history from 30 days</div>
-      <div class="fc-item">Category-level audience segments</div>
-      <div class="fc-item">24–48hr segment refresh cycle</div>
-      <div class="fc-item">Requires persistent identity (cookie)</div>
-      <div class="fc-item">GDPR/CCPA risk exposure</div>
+  <div class="section-label">Metrics You'd Track</div>
+  <h2>Measurement plan</h2>
+
+  <div class="metrics-grid">
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label leading">Leading</div>
+      <div class="metrics-grid-val">Model confidence distribution<br/>Score variance across sessions<br/>Feature coverage (% sessions with enough signal)</div>
     </div>
-    <div class="fc-col">
-      <div class="fc-header new">After: In-Session Propensity Engine</div>
-      <div class="fc-item">Real-time micro-interaction signals</div>
-      <div class="fc-item">SKU-cluster propensity scores</div>
-      <div class="fc-item">Continuous updates every 15 seconds</div>
-      <div class="fc-item">Zero persistent identifiers required</div>
-      <div class="fc-item">Fully compliant · cookie-free</div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label lagging">Lagging</div>
+      <div class="metrics-grid-val">CTR on re-ranked ads<br/>ROAS for participating advertisers<br/>Revenue per search impression</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label guardrail">Guardrail</div>
+      <div class="metrics-grid-val">Ad relevance perception (user surveys)<br/>Bid adjustment latency P99 &lt; 40ms<br/>Advertiser cost-per-false-click</div>
     </div>
   </div>
 
-  <div class="section-label">Impact</div>
-  <h2>Results</h2>
+  <div class="section-label">Key Tradeoffs</div>
+  <h2>The hard calls</h2>
+  <ul>
+    <li><strong>SKU-cluster targeting vs category-level:</strong> Clusters are dramatically more precise but require ongoing maintenance (new products, seasonal shifts change cluster composition). Category-level is crude but stable. Chose clusters because the precision gain is large enough to justify the operational cost.</li>
+    <li><strong>No warm-up period vs accuracy:</strong> The model produces a score from the first interaction, but early-session scores have low confidence. Could wait for 5+ interactions before activating — but that means no targeting on 40% of sessions (short sessions). Chose to score immediately with a confidence-weighted bid adjustment: low-confidence scores get smaller bid multipliers.</li>
+    <li><strong>Privacy purity vs personalization:</strong> Could optionally link sessions for logged-in users to improve accuracy with cross-session features. Chose not to — keeping the system 100% identity-free simplifies compliance and makes it work identically for logged-out users (the majority).</li>
+  </ul>
 
-  <table class="phase-table">
-    <thead>
-      <tr><th>Metric</th><th>Cookie Targeting</th><th>Category Boost (V1)</th><th>Velocity DNN (Final)</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>CTR vs baseline</td><td>Baseline</td><td>+6%</td><td>+22%</td></tr>
-      <tr><td>ROAS</td><td>Baseline</td><td>+3%</td><td>+9%</td></tr>
-      <tr><td>Privacy risk</td><td>High (3P cookies)</td><td>Low</td><td>None</td></tr>
-      <tr><td>Latency (bid adjustment)</td><td>N/A</td><td>~10ms</td><td>&lt;40ms</td></tr>
-    </tbody>
-  </table>
-
-  <div class="section-label">Key Insight</div>
-  <h2>Why This Worked</h2>
-  <p><strong>Recency dominates history.</strong> The in-session propensity engine outperformed cookie-based targeting by 22% CTR — even when cookies had access to 30 days of purchase data. What a user is doing right now is a stronger signal than what they bought last month.</p>
-  <p>The privacy constraint, which initially felt like a limitation, became a forcing function for better product design. Stripping away identity forced a deeper understanding of session behavior than targeting tools historically required. Privacy compliance became a competitive advantage.</p>
+  <div class="section-label">Open Questions</div>
+  <h2>What could go wrong</h2>
+  <div class="open-q">
+    <p><strong>Bot traffic contamination:</strong> Sophisticated bots can mimic human-like interaction patterns. If bot sessions get labeled as "non-converting" (because bots don't buy), the model might learn to penalize sessions that look bot-like — which could include legitimate power users who browse quickly. Need bot-detection as a pre-filter, not a model feature.</p>
+    <p><strong>Advertiser trust gap:</strong> Advertisers are accustomed to audience segment reports ("your ads were shown to 25-34 year old women interested in fitness"). In-session propensity is opaque — you can't explain WHO saw the ad, only that the session exhibited high-intent signals. This requires educating the advertiser base on a new measurement paradigm.</p>
+    <p><strong>Cold-start for new product categories:</strong> The model trains on historical conversion data. A new product category with no conversion history has no training signal. Need a fallback to content-similarity scoring until sufficient conversion data accumulates (~2-4 weeks).</p>
+  </div>
 
 </main>
 

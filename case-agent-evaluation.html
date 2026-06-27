@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Multi-Agent Evaluation Frameworks | Siddharth Jain</title>
-<meta name="description" content="Blocking 99% of LLM policy hallucinations in real-time using a parallel shadow-evaluator architecture — without adding latency."/>
+<title>Real-Time LLM Policy Enforcement | Siddharth Jain</title>
+<meta name="description" content="Product thinking exercise: LLM safety isn't a prompting problem — it's an architectural one. How to enforce policy without adding latency."/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#a78bfa;--accent2:#4f8ef7;--green:#22c55e;--red:#ef4444;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d26;--border:#2a2f3f;--border2:#353b50;--text:#e8eaf2;--text2:#9198b0;--text3:#5c6480;--accent:#a78bfa;--accent2:#4f8ef7;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;overflow-x:hidden;}
@@ -25,12 +25,11 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .case-meta-row{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;padding-top:2rem;border-top:1px solid var(--border);}
 .meta-item{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
 .meta-item span{color:var(--text2);display:block;margin-top:0.2rem;}
-.metrics-bar{background:var(--bg2);border-bottom:1px solid var(--border);}
-.metrics-inner{max-width:860px;margin:0 auto;padding:2.5rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
-.metric-block{background:var(--bg2);padding:2rem 2.5rem;}
-.metric-num{font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:0.4rem;}
-.metric-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
-.metric-sub{font-size:0.82rem;color:var(--text2);margin-top:0.4rem;font-weight:300;}
+.summary-strip{background:var(--bg2);border-bottom:1px solid var(--border);padding:2rem 3rem;}
+.summary-inner{max-width:860px;margin:0 auto;display:flex;gap:3rem;flex-wrap:wrap;}
+.summary-item{display:flex;flex-direction:column;gap:0.2rem;}
+.summary-label{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);}
+.summary-val{font-size:0.92rem;color:var(--text);font-weight:500;}
 .case-body{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
 .section-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
 .case-body h2{font-family:var(--font-head);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;margin-top:3.5rem;line-height:1.2;}
@@ -59,15 +58,29 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
 .code-block .c-str{color:var(--green);}
 .code-block .c-val{color:#f59e0b;}
 .code-block .c-comment{color:var(--text3);}
-.phase-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
-.phase-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
-.phase-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
-.phase-table tr:last-child td{border-bottom:none;}
-.phase-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table{width:100%;border-collapse:collapse;margin:2.5rem 0;font-size:0.88rem;}
+.decision-table th{font-family:var(--font-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);text-align:left;padding:0.8rem 1rem;border-bottom:1px solid var(--border);}
+.decision-table td{padding:1rem;border-bottom:1px solid var(--border);color:var(--text2);font-weight:300;line-height:1.65;vertical-align:top;}
+.decision-table tr:last-child td{border-bottom:none;}
+.decision-table td:first-child{color:var(--accent);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;}
+.decision-table tr.selected{background:rgba(124,58,237,0.04);}
+.decision-table tr.selected td:first-child{color:var(--green);}
+.constraints-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1.5rem 0;}
+.constraint{font-family:var(--font-mono);font-size:0.68rem;padding:0.4rem 0.85rem;border-radius:2px;border:1px solid var(--border);color:var(--text2);background:var(--bg3);}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:2rem 0;}
+.metrics-grid-item{background:var(--bg2);padding:1.4rem;}
+.metrics-grid-label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.metrics-grid-label.leading{color:var(--green);}
+.metrics-grid-label.lagging{color:var(--accent);}
+.metrics-grid-label.guardrail{color:var(--amber);}
+.metrics-grid-val{font-size:0.88rem;color:var(--text2);font-weight:300;line-height:1.6;}
+.open-q{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1.5rem 2rem;margin:1rem 0;}
+.open-q p{color:var(--text2);font-size:0.92rem;font-weight:300;line-height:1.7;margin:0;}
+.open-q p + p{margin-top:0.8rem;}
 .case-footer-nav{border-top:1px solid var(--border);padding:3rem;display:flex;justify-content:center;}
 .btn-back{display:inline-flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-decoration:none;padding:0.8rem 1.5rem;border:1px solid var(--border);transition:all 0.2s;border-radius:3px;}
 .btn-back:hover{border-color:var(--accent);color:var(--accent);}
-@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.metrics-inner{grid-template-columns:1fr;}.arch-row{flex-direction:column;}.arch-arrow{transform:rotate(90deg);}}
+@media(max-width:768px){.case-hero,.case-body,.case-footer-nav{padding-left:1.5rem;padding-right:1.5rem;}nav{padding:0 1.5rem;}.summary-inner{flex-direction:column;gap:1.5rem;}.arch-row{flex-direction:column;}.arch-arrow{transform:rotate(90deg);}.metrics-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -80,165 +93,183 @@ nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-betwe
   <div class="hero-glow"></div>
   <div class="hero-inner">
     <span class="case-tag">AI Infrastructure / LLM Systems</span>
-    <h1 class="case-title">Multi-Agent<br/>Evaluation Frameworks</h1>
-    <p class="case-subtitle">How do you prevent an LLM support agent from confidently hallucinating policy violations — without adding latency that degrades the user experience?</p>
+    <h1 class="case-title">Real-Time LLM<br/>Policy Enforcement</h1>
+    <p class="case-subtitle">Everyone treats LLM hallucinations as a prompting problem. The real issue is architectural — policy enforcement doesn't belong in the same layer as language generation.</p>
     <div class="case-meta-row">
-      <div class="meta-item">Domain<span>AI / LLM Infrastructure</span></div>
-      <div class="meta-item">Scope<span>Customer Support Automation</span></div>
-      <div class="meta-item">Stack<span>MCP Server · Multi-Agent · Rules Engine API</span></div>
+      <div class="meta-item">Domain<span>AI / Enterprise Support</span></div>
+      <div class="meta-item">Primary Metric<span>Policy Violation Rate (pre-user)</span></div>
+      <div class="meta-item">Constraint<span>P90 Latency &lt; 2s · No CSAT degradation</span></div>
     </div>
   </div>
 </header>
 
-<div class="metrics-bar">
-  <div class="metrics-inner">
-    <div class="metric-block">
-      <div class="metric-num">99%</div>
-      <div class="metric-label">Policy Violation Block Rate</div>
-      <div class="metric-sub">Pre-intercept before user sees response</div>
+<div class="summary-strip">
+  <div class="summary-inner">
+    <div class="summary-item">
+      <span class="summary-label">Scale</span>
+      <span class="summary-val">Enterprise support chat, thousands of daily conversations</span>
     </div>
-    <div class="metric-block">
-      <div class="metric-num">&lt;2s</div>
-      <div class="metric-label">Perceived Latency</div>
-      <div class="metric-sub">Via parallel execution + chunk streaming</div>
+    <div class="summary-item">
+      <span class="summary-label">Core Metric</span>
+      <span class="summary-val">Policy violations reaching the end user</span>
     </div>
-    <div class="metric-block">
-      <div class="metric-num">0</div>
-      <div class="metric-label">Prompt Rules Required</div>
-      <div class="metric-sub">Policy enforcement moved to architecture layer</div>
+    <div class="summary-item">
+      <span class="summary-label">Key Constraint</span>
+      <span class="summary-val">Can't add perceptible latency to live chat</span>
     </div>
   </div>
 </div>
 
 <main class="case-body">
 
-  <div class="section-label">Context</div>
-  <h2>The Setting</h2>
-  <p>An enterprise customer support system powered by an LLM-based chat agent. The agent handles refund inquiries, warranty claims, and escalation routing. It operates under a set of business policies: refund limits, escalation thresholds, regulatory requirements.</p>
-  <p>The standard approach to enforcing these policies is to include rules in the system prompt — often growing to 4,000+ tokens of instructions.</p>
+  <div class="section-label">The Situation</div>
+  <h2>An LLM-powered support agent with business rules</h2>
+  <p>An enterprise support chatbot handles refund inquiries, warranty claims, and escalation routing. It operates under a set of business policies — refund limits, escalation thresholds, regulatory requirements. These rules are currently stuffed into the system prompt (~4,000 tokens of instructions).</p>
 
-  <div class="section-label">Problem</div>
-  <h2>Prompt-Stuffing Fails at Scale</h2>
-  <p>As system prompts grow, models exhibit <strong>attention degradation</strong>: effective attention to any single rule decreases as more rules are added. Instructions buried in the middle of a long prompt are probabilistically forgotten.</p>
-  <p>The result: an agent that confidently promises a $200 refund that violates policy, then the human team reverses it — destroying trust in both directions. In the first week of deployment, <strong>17% of conversations contained at least one policy violation</strong> (refund commitments: 61%, warranty interpretations: 28%).</p>
+  <div class="section-label">The Reframe</div>
+  <h2>This isn't a prompting problem. It's a separation-of-concerns problem.</h2>
+  <p>The default approach: add more rules to the system prompt. <em>"Never promise refunds over $50. Always escalate tier-2 complaints."</em></p>
+  <p>This fails at scale due to <strong>attention degradation</strong> — as the prompt grows, the model's effective attention to any single rule decreases. Instructions buried in the middle are probabilistically forgotten. The result: an agent that confidently makes promises that violate policy.</p>
+  <p>The real problem: <strong>asking a language model to simultaneously be fluent AND be compliant is asking one system to optimize for two conflicting objectives.</strong> Fluency and policy compliance are separate concerns and should live in separate components.</p>
 
-  <div class="callout"><p>Safe AI is not a prompting problem. It's an architectural problem. The policy layer should be as separate from the language layer as a database is from an API.</p></div>
+  <div class="callout"><p>The policy layer should be as separate from the language layer as a database is from an API. You wouldn't put validation logic inside the response serializer.</p></div>
 
-  <div class="section-label">Approaches Tried</div>
-  <h2>What Didn't Work (and Why)</h2>
+  <div class="section-label">Constraints</div>
+  <h2>What can't change</h2>
+  <div class="constraints-list">
+    <span class="constraint">P90 latency must stay under 2 seconds (live chat)</span>
+    <span class="constraint">Violations must be blocked before reaching the user</span>
+    <span class="constraint">No CSAT degradation from safety mechanism</span>
+    <span class="constraint">Policy rules change frequently — can't retrain per change</span>
+    <span class="constraint">Must scale to new domains without rewriting architecture</span>
+  </div>
 
-  <table class="phase-table">
+  <div class="section-label">Options Considered</div>
+  <h2>Four architectures, one viable</h2>
+
+  <table class="decision-table">
     <thead>
-      <tr><th>Approach</th><th>Block Rate</th><th>Latency</th><th>Why It Failed</th></tr>
+      <tr><th>Option</th><th>Mechanism</th><th>Prevents violations?</th><th>Within latency?</th><th>Tradeoff</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>Prompt-stuffing</td>
-        <td>~40%</td>
-        <td>900ms</td>
-        <td>Attention degradation at scale. Violations increase as prompt grows.</td>
+        <td>A: Prompt-stuffing</td>
+        <td>All rules in system prompt</td>
+        <td>Partially (~40% block)</td>
+        <td>Yes (900ms)</td>
+        <td>Degrades as rules grow. Fundamentally unreliable.</td>
       </tr>
       <tr>
-        <td>Post-hoc audit</td>
-        <td>100% detected, 0% prevented</td>
-        <td>No impact</td>
-        <td>Violations already reached the user. Useful for analytics, useless for safety.</td>
+        <td>B: Post-hoc audit</td>
+        <td>Async batch review of transcripts</td>
+        <td>No — detects but doesn't prevent</td>
+        <td>N/A</td>
+        <td>Useful for analytics. Useless for safety.</td>
       </tr>
       <tr>
-        <td>Linear chain (sequential evaluator)</td>
-        <td>97%</td>
-        <td>2,800ms</td>
-        <td>P90 latency too high. Anything above 2s causes measurable drop-off in live chat.</td>
+        <td>C: Sequential evaluator</td>
+        <td>Primary → Evaluator → User (linear chain)</td>
+        <td>Yes (~97%)</td>
+        <td>No (P90: 2,800ms)</td>
+        <td>Adds a full LLM call to the critical path.</td>
+      </tr>
+      <tr class="selected">
+        <td>D: Parallel evaluator</td>
+        <td>Primary and Evaluator run simultaneously; gate holds release</td>
+        <td>Yes (~99%)</td>
+        <td>Yes (~1,050ms)</td>
+        <td>Higher infra cost (2x compute). More complex orchestration.</td>
       </tr>
     </tbody>
   </table>
 
-  <div class="diagram-block">
-    <div class="diagram-title">Linear Chain Architecture (Rejected — Too Slow)</div>
-    <div class="agent-arch">
-      <div class="arch-row">
-        <div class="arch-node">User Message</div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node primary">Primary Agent<br/><span style="font-size:0.55rem;color:var(--text3);">~900ms</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node evaluator">Evaluator Agent<br/><span style="font-size:0.55rem;color:var(--text3);">~1,100ms</span></div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node gate">User Response<br/><span style="font-size:0.55rem;color:var(--text3);">P90: 2,800ms</span></div>
-      </div>
-    </div>
-  </div>
+  <p><strong>Why Option D:</strong> The Primary and Evaluator don't have a data dependency — they both operate on the same input (user message + conversation context). Running them in parallel means total latency ≈ max(primary, evaluator) rather than sum(primary, evaluator).</p>
 
-  <div class="section-label">Solution</div>
-  <h2>Parallel Shadow-Evaluator via MCP Server</h2>
-  <p>The key insight: the Primary Agent and Evaluator Agent don't need to run sequentially. They can run <strong>in parallel</strong> on the same input context, with a gate that holds the response until the evaluator clears it.</p>
+  <div class="section-label">The Bet</div>
+  <h2>Parallel shadow-evaluator via MCP orchestration</h2>
+  <p>The bet: separate generation from compliance entirely. The Primary Agent only optimizes for fluency. The Evaluator only optimizes for correctness. An orchestration layer (MCP server) runs both in parallel and gates the response on the Evaluator's score.</p>
 
   <div class="diagram-block">
-    <div class="diagram-title">Parallel Shadow-Evaluator Architecture (Shipped)</div>
+    <div class="diagram-title">Architecture</div>
     <div class="agent-arch">
       <div class="arch-row">
-        <div class="arch-node">User Message</div>
+        <div class="arch-node">User Message + Context</div>
         <div class="arch-arrow">→</div>
         <div class="arch-node primary" style="min-width:160px;">MCP Orchestrator</div>
       </div>
       <div class="arch-row" style="gap:2rem;">
         <div>
-          <div class="arch-node primary" style="min-width:160px;">Primary Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Response Draft · 900ms</span></div>
-          <div class="arch-label">Tone + Fluency</div>
+          <div class="arch-node primary" style="min-width:160px;">Primary Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Fluency · ~900ms</span></div>
+          <div class="arch-label">Optimizes: tone, helpfulness</div>
         </div>
         <div style="display:flex;align-items:center;font-family:var(--font-mono);font-size:0.7rem;color:var(--text3);">parallel</div>
         <div>
-          <div class="arch-node evaluator" style="min-width:160px;">Evaluator Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Policy Check · 950ms</span></div>
-          <div class="arch-label">→ Rules Engine API</div>
+          <div class="arch-node evaluator" style="min-width:160px;">Evaluator Agent<br/><span style="font-size:0.55rem;color:var(--text3);">Compliance · ~950ms</span></div>
+          <div class="arch-label">Optimizes: policy correctness</div>
         </div>
       </div>
       <div class="arch-row">
-        <div class="arch-node gate">Score ≥ 0.95<br/>→ Release to User</div>
+        <div class="arch-node gate">Score ≥ 0.95 → Release</div>
         <div style="font-family:var(--font-mono);font-size:0.9rem;color:var(--text3);margin:0 0.5rem;">|</div>
-        <div class="arch-node block">Score &lt; 0.95<br/>→ Block + Fallback</div>
+        <div class="arch-node block">Score &lt; 0.95 → Block + Fallback</div>
       </div>
     </div>
   </div>
 
-  <p>The architecture separates three concerns:</p>
+  <p>Three components, three separate concerns:</p>
   <ul>
-    <li><strong>Primary Agent:</strong> A fast, lightweight model optimized for tone and conversational fluency. Has no awareness of policy rules — only generates human-sounding responses.</li>
-    <li><strong>Evaluator Agent (Shadow):</strong> A specialized model with strict JSON-schema output. Runs in parallel on the same context. Has access to the company's deterministic Rules Engine API for refund limits, escalation thresholds, and regulatory checks. Returns structured confidence scores per policy category.</li>
-    <li><strong>MCP Intercept Gate:</strong> Before the Primary Agent's response reaches the websocket, the orchestrator checks the Evaluator's aggregate confidence score. Below 0.95 threshold → response blocked, replaced by pre-approved fallback or routed to human agent.</li>
+    <li><strong>Primary Agent:</strong> Lightweight model optimized for conversational fluency. Has zero knowledge of policy rules. Only job: sound helpful and human.</li>
+    <li><strong>Evaluator Agent:</strong> Specialized model with strict JSON output schema. Calls a deterministic Rules Engine API for refund limits, escalation thresholds, regulatory checks. Returns confidence scores per policy category.</li>
+    <li><strong>Intercept Gate:</strong> Holds the Primary's response in buffer. If Evaluator's aggregate score ≥ 0.95, releases to user. If below, blocks and substitutes a pre-approved fallback or routes to human.</li>
   </ul>
 
   <div class="code-block">
-    <pre><span class="c-comment"># Evaluator response schema (simplified)</span>
+    <pre><span class="c-comment"># Evaluator output schema</span>
 {
   <span class="c-key">"policy_scores"</span>: {
     <span class="c-key">"refund_compliance"</span>: <span class="c-val">0.98</span>,
     <span class="c-key">"warranty_claims"</span>: <span class="c-val">0.96</span>,
-    <span class="c-key">"escalation_triggers"</span>: <span class="c-val">0.91</span>  <span class="c-comment">← BLOCKED</span>
+    <span class="c-key">"escalation_triggers"</span>: <span class="c-val">0.91</span>  <span class="c-comment">← below threshold</span>
   },
   <span class="c-key">"aggregate_score"</span>: <span class="c-val">0.93</span>,
   <span class="c-key">"action"</span>: <span class="c-str">"BLOCK"</span>,
-  <span class="c-key">"reason"</span>: <span class="c-str">"Escalation trigger missed: complaint tier-2 detected"</span>
+  <span class="c-key">"reason"</span>: <span class="c-str">"Tier-2 escalation trigger missed"</span>
 }</pre>
   </div>
 
-  <div class="section-label">Impact</div>
-  <h2>Results</h2>
+  <div class="section-label">Metrics You'd Track</div>
+  <h2>Measurement plan</h2>
 
-  <table class="phase-table">
-    <thead>
-      <tr><th>Metric</th><th>Before (Prompt-stuffing)</th><th>After (Shadow Evaluator)</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Policy violation block rate</td><td>~40%</td><td>99%</td></tr>
-      <tr><td>P90 response latency</td><td>900ms</td><td>1,050ms (+16%)</td></tr>
-      <tr><td>Policy rules in prompt</td><td>4,000+ tokens</td><td>0 tokens</td></tr>
-      <tr><td>CSAT impact</td><td>N/A</td><td>No degradation</td></tr>
-    </tbody>
-  </table>
+  <div class="metrics-grid">
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label leading">Leading</div>
+      <div class="metrics-grid-val">Evaluator block rate<br/>False positive rate (correct responses blocked)<br/>Evaluator latency P90</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label lagging">Lagging</div>
+      <div class="metrics-grid-val">Policy violations reaching users<br/>Manual reversal rate<br/>Escalation accuracy</div>
+    </div>
+    <div class="metrics-grid-item">
+      <div class="metrics-grid-label guardrail">Guardrail</div>
+      <div class="metrics-grid-val">CSAT (no degradation)<br/>End-to-end P90 latency &lt; 2s<br/>Fallback trigger rate &lt; 5%</div>
+    </div>
+  </div>
 
-  <div class="section-label">Key Insight</div>
-  <h2>Why This Worked</h2>
-  <p><strong>Separation of concerns at the agent level.</strong> The Primary Agent doesn't need to know about policy — it only generates fluent language. The Evaluator doesn't need to be fluent — it only needs to be right. Specialization made both fast and accurate.</p>
-  <p>This architecture became the template for every new AI feature deployment: before an agent goes to production, it gets a bespoke Evaluator Agent with domain-specific policy schemas. Safety is architectural, not prompt-level.</p>
+  <div class="section-label">Key Tradeoffs</div>
+  <h2>The hard calls</h2>
+  <ul>
+    <li><strong>Parallel execution vs streaming-then-gating:</strong> An alternative is to stream the Primary's response token-by-token and evaluate on-the-fly. This gives lower perceived latency (user sees typing indicator immediately). But partial responses that get blocked mid-sentence create a worse UX than a slightly delayed complete response. Chose parallel with full-response gating.</li>
+    <li><strong>2x compute cost vs single-model safety:</strong> Running two models costs roughly double the inference budget. But the alternative (prompt-stuffing) has a ~40% miss rate at scale. The cost of one policy violation reaching a customer (reversal cost + trust damage) far exceeds the marginal compute cost.</li>
+    <li><strong>0.95 threshold vs lower/higher:</strong> Lower threshold (0.90) lets more borderline responses through — lower false positive rate but higher violation risk. Higher threshold (0.99) blocks too aggressively — good responses get caught and users see too many fallbacks. 0.95 is calibrated to the domain's risk tolerance.</li>
+  </ul>
+
+  <div class="section-label">Open Questions</div>
+  <h2>What could go wrong</h2>
+  <div class="open-q">
+    <p><strong>Evaluator drift:</strong> If the Rules Engine API changes (new policy added, threshold updated) but the Evaluator's training data doesn't reflect this, the Evaluator might not catch new violation types. Need a feedback loop where blocked/unblocked decisions are periodically audited against current policy state.</p>
+    <p><strong>Adversarial users:</strong> What happens when a user deliberately tries to elicit policy violations — e.g., framing a request so the Primary is likely to comply and the violation is subtle enough to pass the Evaluator? Need red-team testing specifically targeting the parallel architecture's blind spots.</p>
+    <p><strong>Fallback fatigue:</strong> If the block rate is too high, users repeatedly hit generic fallback responses and lose trust in the system's competence. The fallback itself needs to feel helpful, not robotic — perhaps routing to human immediately rather than a canned response.</p>
+  </div>
 
 </main>
 
