@@ -478,6 +478,157 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 .hero-ctas { flex-direction: column; }
 }
 </style>
+<style>
+/* ── DASHBOARD HERO ── */
+#hero { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; padding: 7rem 3rem 4rem; min-height: 100vh; align-content: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+.hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 80px 80px; mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%); opacity: 0.25; }
+.hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(79,142,247,0.12) 0%, transparent 70%); top: -100px; right: -100px; pointer-events: none; }
+.hero-glow2 { position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%); bottom: 0; left: 10%; pointer-events: none; }
+.hero-inner { display: contents; }
+.hero-profile { display: flex; flex-direction: column; justify-content: center; padding-right: 1rem; }
+.hero-profile .hero-badge { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(79,142,247,0.3); padding: 0.35rem 0.85rem; border-radius: 2px; width: fit-content; margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards; }
+.hero-profile .hero-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: pulse-dot 2s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-profile .hero-name { font-family: var(--font-head); font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.03em; color: var(--text); margin-bottom: 1.2rem; opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards; }
+.hero-profile .hero-name .accent { color: var(--accent); }
+.hero-profile .hero-tagline { font-size: 1rem; font-weight: 300; color: var(--text2); line-height: 1.75; max-width: 480px; margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards; }
+.hero-profile .hero-ctas { display: flex; gap: 0.75rem; opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards; }
+.hero-scroll-hint { position: absolute; bottom: 2rem; left: 3rem; display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); opacity: 0; animation: fadeUp 0.7s ease 1s forwards; }
+.scroll-line { width: 40px; height: 1px; background: var(--border2); }
+.hero-stats, .hero-stat, .hero-stat-num, .hero-stat-label { display: none; }
+
+/* ── DASHBOARD PANEL ── */
+.dashboard-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; box-shadow: 0 0 60px rgba(79,142,247,0.06); opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; background: var(--bg3); border-bottom: 1px solid var(--border); }
+.dashboard-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.dashboard-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dashboard-dot.red { background: var(--red); }
+.dashboard-dot.amber { background: var(--amber); }
+.dashboard-dot.green { background: var(--green); }
+.dashboard-title { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; }
+.dashboard-status { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--green); text-transform: uppercase; }
+.dashboard-status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse-dot 1.5s ease-in-out infinite; }
+.dashboard-body { padding: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+/* ── METRIC CARDS ── */
+.metric-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; }
+.metric-card.wide { grid-column: 1 / -1; }
+.metric-card-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.35rem; }
+.metric-card-value { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 0.25rem; }
+.metric-card-value .unit { font-size: 0.85rem; color: var(--accent); }
+.metric-card-change { font-family: var(--font-mono); font-size: 0.55rem; }
+.metric-card-change.up { color: var(--green); }
+.metric-card-change.down { color: var(--red); }
+.metric-row { display: flex; justify-content: space-between; align-items: center; }
+.metric-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.06em; padding: 0.2rem 0.5rem; border-radius: 2px; }
+.metric-badge.green { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+.metric-badge.amber { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+.metric-badge.blue { background: rgba(79,142,247,0.1); color: var(--accent); border: 1px solid rgba(79,142,247,0.25); }
+
+/* ── SPARKLINE ── */
+.metric-sparkline { margin-top: 0.5rem; height: 24px; width: 100%; display: flex; align-items: flex-end; gap: 2px; }
+.spark-bar { flex: 1; border-radius: 1px 1px 0 0; background: rgba(79,142,247,0.4); min-height: 3px; }
+.spark-bar.active { background: var(--accent); }
+
+/* ── MINI CHART ── */
+.mini-chart { grid-column: 1 / -1; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; }
+.mini-chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.mini-chart-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); }
+.mini-chart-legend { font-family: var(--font-mono); font-size: 0.5rem; color: var(--text3); display: flex; gap: 0.75rem; }
+.legend-dot { display: inline-block; width: 5px; height: 5px; border-radius: 1px; margin-right: 0.25rem; }
+.chart-canvas-wrap { height: 48px; display: flex; align-items: flex-end; gap: 2px; }
+.chart-line { flex: 1; border-radius: 1px; min-height: 2px; }
+.chart-line.primary { background: var(--accent); }
+.chart-line.secondary { background: rgba(79,142,247,0.25); }
+
+/* ── TERMINAL ── */
+.terminal-section { padding: 0 3rem 3rem; }
+.terminal-inner { max-width: 1280px; margin: 0 auto; }
+.terminal { background: #0d0e14; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; font-family: var(--font-mono); box-shadow: 0 0 60px rgba(79,142,247,0.04); opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards; }
+.terminal-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1rem; background: #151721; border-bottom: 1px solid var(--border); }
+.terminal-dot { width: 8px; height: 8px; border-radius: 50%; }
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.amber { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+.terminal-title { font-size: 0.6rem; color: var(--text3); letter-spacing: 0.05em; margin-left: 0.5rem; text-transform: uppercase; }
+.terminal-body { padding: 1.25rem; min-height: 200px; display: flex; flex-direction: column; }
+.terminal-line { font-size: 0.78rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; color: var(--text2); animation: fade-line 0.3s ease; }
+@keyframes fade-line { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.terminal-line .prompt { color: var(--green); }
+.terminal-line .cmd { color: var(--text); }
+.terminal-line .output { color: var(--text2); }
+.terminal-line .highlight { color: var(--accent); }
+.terminal-line .success { color: var(--green); }
+.terminal-line .label { color: var(--text3); }
+.terminal-input-line { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; }
+.terminal-prompt { color: var(--green); font-size: 0.78rem; }
+.terminal-input { background: none; border: none; outline: none; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text); flex: 1; caret-color: var(--accent); }
+.terminal-input::placeholder { color: var(--text3); font-size: 0.7rem; }
+.terminal-typing { display: inline-block; width: 7px; height: 14px; background: var(--accent); animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 1px; }
+.terminal-commands-hint { margin-top: 0.5rem; padding: 0.5rem 1rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; background: #151721; }
+.terminal-cmd-hint { font-size: 0.6rem; color: var(--text3); letter-spacing: 0.05em; }
+.terminal-cmd-hint kbd { color: var(--accent); border: 1px solid rgba(79,142,247,0.2); padding: 0.1rem 0.4rem; border-radius: 2px; background: rgba(79,142,247,0.05); }
+
+@media (max-width: 960px) {
+  #hero { grid-template-columns: 1fr; gap: 2rem; padding: 6rem 1.5rem 3rem; }
+  .hero-profile { padding-right: 0; }
+  .terminal-section { padding: 0 1.5rem 2rem; }
+  .dashboard-body { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .dashboard-body { grid-template-columns: 1fr; }
+  .terminal-body { min-height: 240px; }
+  .hero-profile .hero-ctas { flex-direction: column; }
+  .hero-profile .hero-tagline { max-width: 100%; }
+  .terminal-cmd-hint { font-size: 0.55rem; }
+}
+
+/* ── MODE TOGGLE ── */
+.mode-toggle-wrap { display: flex; justify-content: center; max-width: 1280px; margin: 0 auto 0.5rem; }
+.mode-toggle { display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; width: fit-content; margin: 0 auto; }
+.mode-btn { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; padding: 0.4rem 1rem; border: none; cursor: pointer; background: var(--bg3); color: var(--text3); transition: all 0.2s; }
+.mode-btn:hover { color: var(--text2); }
+.mode-btn.active { background: var(--accent); color: #fff; }
+.mode-btn:first-child { border-right: 1px solid var(--border); }
+
+/* ── IDE LAYOUT ── */
+.ide-layout { display: grid; grid-template-columns: 220px 1fr; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; min-height: 420px; background: var(--bg2); box-shadow: 0 0 60px rgba(79,142,247,0.04); opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards; }
+.ide-sidebar { background: #0d0e14; border-right: 1px solid var(--border); }
+.ide-sidebar-header { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; color: var(--text3); padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); text-transform: uppercase; }
+.ide-file-list { padding: 0.25rem 0; }
+.ide-file { font-family: var(--font-mono); font-size: 0.7rem; padding: 0.4rem 1rem; color: var(--text2); cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: background 0.15s, color 0.15s; }
+.ide-file:hover { background: rgba(79,142,247,0.06); color: var(--text); }
+.ide-file.active { background: rgba(79,142,247,0.1); color: var(--accent); }
+.ide-file.indent { padding-left: 2rem; }
+.ide-file-icon { font-size: 0.65rem; flex-shrink: 0; }
+.ide-folder { font-family: var(--font-mono); font-size: 0.7rem; padding: 0.4rem 1rem; color: var(--text3); display: flex; align-items: center; gap: 0.4rem; cursor: default; }
+.ide-main { display: flex; flex-direction: column; flex: 1; background: var(--bg2); min-height: 420px; }
+.ide-tabs { display: flex; background: #0d0e14; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.ide-tab { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.45rem 1rem; color: var(--text3); border-right: 1px solid var(--border); white-space: nowrap; }
+.ide-tab.active { background: var(--bg2); color: var(--text); border-bottom: 2px solid var(--accent); }
+.ide-editor { flex: 1; padding: 0; overflow: auto; min-height: 200px; }
+.ide-content { font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.65; padding: 1rem; color: var(--text2); white-space: pre-wrap; word-break: break-word; margin: 0; }
+.ide-content .ide-heading { color: var(--accent); font-weight: 600; }
+.ide-content .ide-bold { color: var(--text); font-weight: 600; }
+.ide-content .ide-hr { color: var(--border); }
+.ide-content .ide-bullet { color: var(--accent); }
+.ide-content .ide-string { color: var(--green); }
+.ide-content .ide-number { color: var(--amber); }
+.ide-content a { color: var(--accent); text-decoration: underline; }
+.ide-terminal-panel { border-top: 1px solid var(--border); background: #0d0e14; }
+.ide-terminal-header { display: flex; justify-content: space-between; align-items: center; padding: 0.35rem 1rem; font-family: var(--font-mono); font-size: 0.58rem; color: var(--text3); border-bottom: 1px solid var(--border); text-transform: uppercase; }
+.ide-terminal-body { padding: 0.5rem 1rem; min-height: 80px; max-height: 140px; overflow-y: auto; }
+.ide-terminal-output { display: flex; flex-direction: column; }
+.ide-terminal-output .terminal-line { font-size: 0.7rem; line-height: 1.5; }
+.ide-terminal-input-line { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem; }
+.ide-terminal-input { background: none; border: none; outline: none; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text); flex: 1; caret-color: var(--accent); }
+.ide-terminal-input::placeholder { color: var(--text3); }
+
+@media (max-width: 960px) {
+  .ide-layout { grid-template-columns: 1fr; min-height: auto; }
+  .ide-sidebar { display: none; }
+}
+</style>
 </head>
 <body>
 <!-- NAV -->
@@ -492,28 +643,171 @@ footer { flex-direction: column; gap: 0.5rem; text-align: center; }
 </ul>
 </nav>
 
-<!-- HERO -->
+<!-- HERO: DASHBOARD LAYOUT -->
 <section id="hero">
 <div class="hero-grid-bg"></div>
 <div class="hero-glow"></div>
 <div class="hero-glow2"></div>
 <div class="hero-inner">
-<div class="hero-badge"><div class="hero-badge-dot"></div>Product Manager · Bengaluru, India</div>
-<h1 class="hero-name">Siddharth<br/><span class="accent">Jain.</span></h1>
-<p class="hero-tagline">PM with 4.5 years building marketplace, logistics, and AI-augmented products. Most PM problems are disguised incentive design problems — I follow the data until that becomes obvious.</p>
-<div class="hero-stats">
-<div class="hero-stat"><div class="hero-stat-num">4.5<span class="unit">yr</span></div><div class="hero-stat-label">In Product</div></div>
-<div class="hero-stat"><div class="hero-stat-num">4<span class="unit">M</span></div><div class="hero-stat-label">MAUs Scaled</div></div>
-<div class="hero-stat"><div class="hero-stat-num">₹80<span class="unit">Cr+</span></div><div class="hero-stat-label">ARR Generated</div></div>
-<div class="hero-stat"><div class="hero-stat-num">14<span class="unit">%</span></div><div class="hero-stat-label">Conversion Lift</div></div>
-</div>
-<div class="hero-ctas">
-<a href="#cases" class="btn-primary">View Case Studies →</a>
-<a href="#contact" class="btn-outline">Get in Touch</a>
-</div>
+  <!-- LEFT: PROFILE -->
+  <div class="hero-profile">
+    <div class="hero-badge"><div class="hero-badge-dot"></div>Senior PM · Marketplace &amp; AI</div>
+    <h1 class="hero-name">Siddharth<br/><span class="accent">Jain.</span></h1>
+    <p class="hero-tagline">PM who builds. Marketplace logistics, AI infrastructure, and 0-to-1 consumer products. I treat agentic coding as a PM skill.</p>
+    <div class="hero-ctas">
+      <a href="#cases" class="btn-primary">View Case Studies →</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <!-- RIGHT: DASHBOARD PANEL -->
+  <div class="dashboard-panel">
+    <div class="dashboard-header">
+      <div class="dashboard-header-left">
+        <div style="display:flex;gap:3px;"><div class="dashboard-dot red"></div><div class="dashboard-dot amber"></div><div class="dashboard-dot green"></div></div>
+        <span class="dashboard-title">PM Control Center · Live</span>
+      </div>
+      <div class="dashboard-status">
+        <div class="dashboard-status-dot"></div>
+        All Systems · 99.9% Uptime
+      </div>
+    </div>
+    <div class="dashboard-body">
+      <div class="metric-card">
+        <div class="metric-card-label">Orders Today</div>
+        <div class="metric-row">
+          <div class="metric-card-value" id="orders-counter">18,<span id="orders-anim">247</span></div>
+          <span class="metric-badge green">+12%</span>
+        </div>
+        <div class="metric-card-change up">↑ 2,100 vs yesterday</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">P80 Pickup Time</div>
+        <div class="metric-row">
+          <div class="metric-card-value">15<span class="unit">min</span></div>
+          <span class="metric-badge green">Target Met</span>
+        </div>
+        <div class="metric-card-change up">↓ from 24min · −37%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Surge Multiplier</div>
+        <div class="metric-row">
+          <div class="metric-card-value">1.3<span class="unit">×</span></div>
+          <span class="metric-badge amber">Peak Hour</span>
+        </div>
+        <div class="metric-card-change up">6 cities active</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Zero-Dispatch Rate</div>
+        <div class="metric-row">
+          <div class="metric-card-value">4.2<span class="unit">%</span></div>
+          <span class="metric-badge green">−18%</span>
+        </div>
+        <div class="metric-card-change down">Target: &lt;5%</div>
+      </div>
+      <div class="metric-card wide">
+        <div class="metric-card-label">MAU Growth (12mo)</div>
+        <div class="metric-row" style="margin-bottom:0.25rem;">
+          <div class="metric-card-value" style="font-size:1.3rem;">4<span class="unit">M</span></div>
+          <span class="metric-badge blue">8× Scale</span>
+        </div>
+        <div class="metric-sparkline" id="spark-mau"></div>
+      </div>
+      <div class="mini-chart">
+        <div class="mini-chart-header">
+          <span class="mini-chart-label">Quarterly Revenue (₹ Cr)</span>
+          <div class="mini-chart-legend">
+            <span><span class="legend-dot" style="background:var(--accent);"></span>Intercity</span>
+            <span><span class="legend-dot" style="background:rgba(79,142,247,0.25);"></span>Intracity</span>
+          </div>
+        </div>
+        <div class="chart-canvas-wrap" id="chart-revenue"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="hero-scroll-hint"><div class="scroll-line"></div>Scroll to explore</div>
 </section>
+
+<!-- TERMINAL -->
+<div class="terminal-section">
+<div class="terminal-inner">
+
+<div class="mode-toggle-wrap">
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="terminal">⌨️ Claude Code</button>
+    <button class="mode-btn" data-mode="ide">📄 Cursor IDE</button>
+  </div>
+</div>
+
+<!-- TERMINAL MODE (Claude Code-like) -->
+<div class="terminal" id="terminal-mode">
+<div class="terminal-header">
+<div style="display:flex;gap:4px;"><div class="terminal-dot red"></div><div class="terminal-dot amber"></div><div class="terminal-dot green"></div></div>
+<span class="terminal-title">sj@pm — ~/portfolio — zsh</span>
+</div>
+<div class="terminal-body" id="terminal-body">
+<div class="terminal-line"><span class="prompt">$ </span><span class="cmd">cat profile.md</span></div>
+<div class="terminal-line"><span class="output">Siddharth Jain · Senior PM · Marketplace &amp; AI</span></div>
+<div class="terminal-line"><span class="output">4.5yr · 4M MAUs · ₹80Cr+ ARR · 14% conversion lift</span></div>
+<div class="terminal-line"><span class="output">AI builder: Kiro, Cursor, Claude Code · Shipped production MCP server</span></div>
+<div class="terminal-line" style="margin-top:0.3rem;"><span class="prompt">$ </span><span class="cmd" id="typed-command"></span><span class="terminal-typing" id="typing-cursor"></span></div>
+<div id="terminal-output-area"></div>
+<div class="terminal-input-line" id="terminal-input-line" style="display:none;">
+<span class="terminal-prompt">$</span>
+<input type="text" class="terminal-input" id="terminal-input" placeholder="Type a command…" autofocus spellcheck="false">
+</div>
+</div>
+<div class="terminal-commands-hint">
+<span class="terminal-cmd-hint"><kbd>stats</kbd> Key metrics</span>
+<span class="terminal-cmd-hint"><kbd>cases</kbd> Case studies</span>
+<span class="terminal-cmd-hint"><kbd>stack</kbd> AI toolkit</span>
+<span class="terminal-cmd-hint"><kbd>philosophy</kbd> My approach</span>
+<span class="terminal-cmd-hint"><kbd>contact</kbd> Get in touch</span>
+<span class="terminal-cmd-hint"><kbd>help</kbd> All commands</span>
+</div>
+</div>
+
+<!-- IDE MODE (Cursor-like) -->
+<div class="ide-layout" id="ide-mode" style="display:none;">
+<div class="ide-sidebar">
+<div class="ide-sidebar-header">EXPLORER</div>
+<div class="ide-file-list">
+<div class="ide-file active" data-file="about"><span class="ide-file-icon">📄</span> about.md</div>
+<div class="ide-file" data-file="experience"><span class="ide-file-icon">📄</span> experience.md</div>
+<div class="ide-folder"><span class="ide-file-icon">📁</span> cases</div>
+<div class="ide-file indent" data-file="case-1"><span class="ide-file-icon">📄</span> 01-geofencing.md</div>
+<div class="ide-file indent" data-file="case-2"><span class="ide-file-icon">📄</span> 02-agent-eval.md</div>
+<div class="ide-file indent" data-file="case-3"><span class="ide-file-icon">📄</span> 03-propensity.md</div>
+<div class="ide-file indent" data-file="case-4"><span class="ide-file-icon">📄</span> 04-omnichannel.md</div>
+<div class="ide-file" data-file="stack"><span class="ide-file-icon">📄</span> ai-stack.md</div>
+<div class="ide-file" data-file="contact"><span class="ide-file-icon">📄</span> contact.md</div>
+</div>
+</div>
+<div class="ide-main">
+<div class="ide-tabs">
+<span class="ide-tab active">about.md</span>
+</div>
+<div class="ide-editor">
+<pre class="ide-content" id="ide-content"></pre>
+</div>
+<div class="ide-terminal-panel">
+<div class="ide-terminal-header">
+<span>TERMINAL</span>
+<span>sj@pm</span>
+</div>
+<div class="ide-terminal-body">
+<div class="ide-terminal-output" id="ide-terminal-output"></div>
+<div class="ide-terminal-input-line">
+<span class="terminal-prompt">$</span>
+<input type="text" class="ide-terminal-input" id="ide-terminal-input" placeholder="Type a command…" spellcheck="false">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
 
 <!-- EXPERTISE BELT -->
 <div id="expertise">
@@ -1033,6 +1327,564 @@ const sectionObs = new IntersectionObserver(entries => {
 entries.forEach(e => { if (e.isIntersecting && typeof gtag !== 'undefined') gtag('event', 'section_viewed', { section_name: e.target.id }); });
 }, { threshold: 0.4 });
 sections.forEach(s => sectionObs.observe(s));
+
+// ─── DASHBOARD: MAU Sparkline ───
+(function() {
+  const container = document.getElementById('spark-mau');
+  if (!container) return;
+  const values = [0.5, 0.8, 1.2, 1.5, 1.9, 2.3, 2.7, 3.1, 3.4, 3.7, 3.9, 4.0];
+  const max = Math.max(...values);
+  container.innerHTML = values.map((v, i) =>
+    `<div class="spark-bar ${i >= values.length - 2 ? 'active' : ''}" style="height:${Math.max(3, (v / max) * 22)}px"></div>`
+  ).join('');
+})();
+
+// ─── DASHBOARD: Revenue Mini Chart ───
+(function() {
+  const container = document.getElementById('chart-revenue');
+  if (!container) return;
+  const primary = [8, 12, 15, 18, 20, 22, 25, 28, 30];
+  const secondary = [3, 5, 7, 10, 12, 15, 17, 19, 22];
+  const max = Math.max(...primary, ...secondary) * 1.2;
+  container.innerHTML = primary.map((v, i) => {
+    const h1 = Math.max(2, (v / max) * 44);
+    const h2 = Math.max(2, (secondary[i] / max) * 44);
+    return `<div style="flex:1;display:flex;flex-direction:column-reverse;gap:1px;align-items:center;"><div class="chart-line primary" style="height:${h1}px;width:100%;"></div><div class="chart-line secondary" style="height:${h2}px;width:100%;"></div></div>`;
+  }).join('');
+})();
+
+// ─── DASHBOARD: Live Orders Counter ───
+(function() {
+  const el = document.getElementById('orders-anim');
+  if (!el) return;
+  let count = 18247;
+  setInterval(() => {
+    count += Math.floor(Math.random() * 3) + 1;
+    el.textContent = count.toLocaleString();
+  }, 4000);
+})();
+
+// ─── MODE TOGGLE ───
+(function() {
+  const btns = document.querySelectorAll('.mode-btn');
+  const terminalMode = document.getElementById('terminal-mode');
+  const ideMode = document.getElementById('ide-mode');
+  if (!btns.length) return;
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mode = btn.dataset.mode;
+      if (mode === 'terminal') {
+        terminalMode.style.display = 'block';
+        ideMode.style.display = 'none';
+      } else {
+        terminalMode.style.display = 'none';
+        ideMode.style.display = 'grid';
+        document.getElementById('ide-terminal-input')?.focus();
+      }
+      if (typeof gtag !== 'undefined') gtag('event', 'terminal_mode_toggle', { mode: mode });
+    });
+  });
+  // Restore saved mode
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('sj_terminal_session'));
+    if (saved && saved.mode === 'ide') document.querySelector('[data-mode="ide"]')?.click();
+  } catch(e) {}
+})();
+
+// ─── IDE FILE SYSTEM ───
+(function() {
+  const files = {
+    about: `# Siddharth Jain
+
+**Senior Product Manager** — Marketplace & AI
+Bengaluru, India | 4.5 years in product
+
+---
+
+## Bio
+
+My background is CS, but I ended up in product because the hardest problems I found weren't technical — they were the ones where you'd built the right system and people still didn't use it the way you expected.
+
+At **Delhivery**, I own intracity: the algorithms that match drivers to orders, the surge pricing that adjusts in real time, and the acceptance mechanics that determine whether a driver takes a trip.
+
+## Education
+
+B.Tech (CS) + MBA, Integrated — IIITM Gwalior · 2017–2022
+
+## Philosophy
+
+"When a metric isn't moving, the first question isn't what's broken — it's what does the user think this costs them."`,
+
+    experience: `# Experience
+
+## Delhivery | Dec 2023 — Present
+**Senior PM — Intracity Marketplace**
+
+- Scaled from 0.5M to 4M MAUs (8× growth)
+- Generated ₹80 Cr+ ARR
+- 14% intercity conversion lift via A/B experimentation
+- P80 pickup time of 15 min at 99.9% uptime
+- Shipped Driver Tips product after 100+ earner interviews
+- B2B enterprise API suite enabling ₹10 Cr+ quarterly integrations
+- Built production-grade MCP server with zero eng hand-off
+
+## Urbanladder (Reliance Retail) | Jan 2022 — Dec 2023
+**APM — Consumer & CRM Product**
+
+- Built UrbanInteriors from 0 to ₹37.5L monthly revenue
+- 47% reduction in support costs via AI chatbot (95%+ CSAT)
+- 30% increase in store revenue per sq. ft via CRM integration
+- 67% reduction in ticket reopens via Salesforce redesign
+
+## Internships | 2020–2022
+Jupiter (Data Science) · Rakuten Viber (AI/Healthcare) · Xiaomi (Product & Data) · Policybazaar (PM)`,
+
+    'case-1': `# Case Study 01: Dynamic Geofencing & Pre-emptive Routing
+
+**Tag:** Logistics & Operations
+
+## Problem
+
+Surge pricing is fundamentally reactive — it only responds after demand has already spiked. Result: 22% zero-dispatch rate during peak hours.
+
+## Solution
+
+H3 hexagonal grid (Uber's library) + gradient-boosted demand forecast (T+25 min) + Global Supply Optimizer running every 90 seconds.
+
+## Impact
+
+- −18% zero-dispatch rate
+- P80 pickup improved from 24min to 16min
+- −12% empty-leg trips
+
+→ View full case: case-predictive-routing.html`,
+
+    'case-2': `# Case Study 02: Multi-Agent Evaluation Frameworks
+
+**Tag:** AI Infrastructure
+
+## Problem
+
+LLM support agents hallucinated policy violations — 17% of conversations contained violations with prompt-stuffing approach.
+
+## Solution
+
+Parallel Shadow-Evaluator architecture via MCP Server: Primary Agent (fluency) + Evaluator Agent (policy checking via Rules Engine API) run simultaneously with an intercept gate.
+
+## Impact
+
+- 99% policy violation block rate
+- P90 latency only +16% (1,050ms)
+- 0 policy rules in prompts
+
+→ View full case: case-agent-evaluation.html`,
+
+    'case-3': `# Case Study 03: Privacy-Preserving Propensity Scoring
+
+**Tag:** Ad-Tech / Data
+
+## Problem
+
+Third-party cookie deprecation + stale purchase history signals.
+
+## Solution
+
+In-session behavioral DNN with velocity features (scroll depth, dwell time, interaction patterns) — zero persistent identifiers, fully cookie-free.
+
+## Impact
+
+- +22% CTR lift
+- +9% ROAS
+- Zero privacy risk (GDPR/CCPA compliant)
+
+→ View full case: case-propensity-ad-tech.html`,
+
+    'case-4': `# Case Study 04: Bridging the Offline-Online Intent Gap
+
+**Tag:** Consumer 0-to-1
+
+## Problem
+
+63% of high-AOV customers research online then visit stores, but salespeople start cold with no context.
+
+## Solution
+
+Encrypted QR handshake that transfers full digital session context (3D layout, cart, fabric preferences) to a salesperson's tablet in 1.5 seconds.
+
+## Impact
+
+- +34% in-store close rate (52% vs 31% offline-only)
+- +18% AOV premium (₹3.9L vs ₹3.2L)
+- Omnichannel customers had highest close rate and AOV
+
+→ View full case: case-omnichannel-intent.html`,
+
+    stack: `# AI Builder Toolkit
+
+**Status:** Active builder
+
+| Tool | Usage |
+|------|-------|
+| Kiro | Agentic coding & workflow design |
+| Cursor | AI-native IDE (daily driver) |
+| Claude Code | Production-grade code generation |
+| MCP Server | Shipped remote MCP (zero eng hand-off) |
+| RAG | Retrieval-augmented pipelines |
+| LLM Eval | Benchmarking & safety alignment |
+
+Notable: Independently shipped a production-grade remote MCP server using AI agents with zero engineering hand-off.`,
+
+    contact: `# Contact
+
+**Email:** siddharthjain1611@gmail.com
+**Phone:** +91 92568 00777
+**LinkedIn:** linkedin.com/in/siddharthjain1611
+**Portfolio:** siddharthjain1611.github.io
+**Location:** Bengaluru, India
+
+---
+
+Open to senior PM roles at companies building marketplace, fintech, consumer, or AI-native products.`
+  };
+
+  function highlight(text) {
+    return text
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/^# .+$/gm, m => `<span class="ide-heading">${m}</span>`)
+      .replace(/^\*\*(.+)\*\*$/gm, m => `<span class="ide-bold">${m}</span>`)
+      .replace(/^-{3,}$/gm, m => `<span class="ide-hr">${m}</span>`)
+      .replace(/\*\*(.+?)\*\*/g, (_, g) => `<span class="ide-bold">${g}</span>`)
+      .replace(/^(\s*)- /gm, (_, s) => `${s}<span class="ide-bullet">-</span> `)
+      .replace(/(?<==)=\s*(.+)\s*$/gm, m => `<span class="ide-string">${m}</span>`)
+      .replace(/\b(\d+[.%]?)\b/g, m => `<span class="ide-number">${m}</span>`);
+  }
+
+  const contentEl = document.getElementById('ide-content');
+  const tabsEl = document.querySelector('.ide-tabs');
+  const fileItems = document.querySelectorAll('.ide-file');
+  if (!contentEl) return;
+  let currentFile = 'about';
+
+  function loadFile(fileName) {
+    currentFile = fileName;
+    const content = files[fileName] || '# File not found';
+    contentEl.innerHTML = highlight(content);
+    const tab = tabsEl?.querySelector('.ide-tab');
+    if (tab) tab.textContent = fileName + '.md';
+    fileItems.forEach(f => f.classList.toggle('active', f.dataset.file === fileName));
+    if (typeof gtag !== 'undefined') gtag('event', 'ide_file_open', { file: fileName });
+  }
+
+  loadFile('about');
+  fileItems.forEach(item => {
+    item.addEventListener('click', () => loadFile(item.dataset.file));
+  });
+
+  window.ideFiles = files;
+  window.loadIdeFile = loadFile;
+})();
+
+// ─── ENHANCED TERMINAL ───
+(function() {
+  const typedCmdEl = document.getElementById('typed-command');
+  const cursorEl = document.getElementById('typing-cursor');
+  const outputArea = document.getElementById('terminal-output-area');
+  const inputLine = document.getElementById('terminal-input-line');
+  const input = document.getElementById('terminal-input');
+  const ideInput = document.getElementById('ide-terminal-input');
+  const ideOutput = document.getElementById('ide-terminal-output');
+  if (!typedCmdEl || !outputArea) return;
+
+  // ── Session Storage ──
+  const SESSION_KEY = 'sj_terminal_session';
+  function saveState() {
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+        terminalHtml: outputArea.innerHTML,
+        ideHtml: ideOutput ? ideOutput.innerHTML : '',
+        typedCmd: typedCmdEl.textContent,
+        mode: (document.querySelector('.mode-btn.active')?.dataset.mode) || 'terminal'
+      }));
+    } catch(e) {}
+  }
+  function loadState() {
+    try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch(e) { return null; }
+  }
+  window.__saveTerminalState = saveState;
+
+  const caseLinks = {
+    '01': { url: 'case-predictive-routing.html', name: 'Dynamic Geofencing & Pre-emptive Routing' },
+    '02': { url: 'case-agent-evaluation.html', name: 'Multi-Agent Evaluation Frameworks' },
+    '03': { url: 'case-propensity-ad-tech.html', name: 'Privacy-Preserving Propensity Scoring' },
+    '04': { url: 'case-omnichannel-intent.html', name: 'Bridging the Offline-Online Intent Gap' }
+  };
+
+  const responses = {
+    stats: [
+      { type: 'sep', text: 'Key Metrics' },
+      { type: 'stat', name: 'MAUs Scaled', val: '4M', note: '8× growth' },
+      { type: 'stat', name: 'ARR Generated', val: '₹80 Cr+', note: 'intercity + intracity' },
+      { type: 'stat', name: 'Conversion Lift', val: '14%', note: '₹8 Cr quarterly uplift' },
+      { type: 'stat', name: 'P80 Pickup', val: '15 min', note: 'from 24 min, 99.9% uptime' },
+      { type: 'stat', name: 'Zero-Dispatch', val: '−18%', note: 'via H3 geofencing' },
+      { type: 'stat', name: 'Orders/Day', val: '18,000+', note: '6 cities' },
+      { type: 'stat', name: 'Policy Block', val: '99%', note: 'shadow-evaluator architecture' }
+    ],
+    cases: [
+      { type: 'sep', text: 'Case Studies' },
+      { type: 'link', num: '01', label: 'Dynamic Geofencing & Pre-emptive Routing' },
+      { type: 'link', num: '02', label: 'Multi-Agent Evaluation Frameworks' },
+      { type: 'link', num: '03', label: 'Privacy-Preserving Propensity Scoring' },
+      { type: 'link', num: '04', label: 'Bridging the Offline-Online Intent Gap' },
+      { type: 'text', text: '→ Try: open 1  ·  open 2  ·  open 3  ·  open 4' }
+    ],
+    stack: [
+      { type: 'sep', text: 'AI Builder Toolkit' },
+      { type: 'row', label: 'Kiro', val: 'Agentic coding & workflow design' },
+      { type: 'row', label: 'Cursor', val: 'AI-native IDE (daily driver)' },
+      { type: 'row', label: 'Claude Code', val: 'Production-grade code generation' },
+      { type: 'row', label: 'MCP Server', val: 'Shipped remote MCP (zero eng hand-off)' },
+      { type: 'row', label: 'RAG', val: 'Retrieval-augmented pipelines' },
+      { type: 'row', label: 'LLM Eval', val: 'Benchmarking & safety alignment' }
+    ],
+    contact: [
+      { type: 'sep', text: 'Contact' },
+      { type: 'row', label: 'Email', val: 'siddharthjain1611@gmail.com' },
+      { type: 'row', label: 'Phone', val: '+91 92568 00777' },
+      { type: 'row', label: 'LinkedIn', val: 'linkedin.com/in/siddharthjain1611' },
+      { type: 'row', label: 'Portfolio', val: 'siddharthjain1611.github.io' }
+    ],
+    help: [
+      { type: 'sep', text: 'Available Commands' },
+      { type: 'cmd', name: 'stats', desc: 'Key metrics & impact numbers' },
+      { type: 'cmd', name: 'cases', desc: 'Case study overview (clickable)' },
+      { type: 'cmd', name: 'open 1-4', desc: 'Open a case study (e.g. open 3)' },
+      { type: 'cmd', name: 'stack', desc: 'AI tools & capabilities' },
+      { type: 'cmd', name: 'philosophy', desc: 'My product philosophy' },
+      { type: 'cmd', name: 'contact', desc: 'Get in touch' },
+      { type: 'cmd', name: 'about', desc: 'Who I am' },
+      { type: 'cmd', name: 'mcp', desc: 'MCP server deep-dive' },
+      { type: 'cmd', name: 'help', desc: 'Show this message' }
+    ],
+    about: [
+      { type: 'sep', text: 'About' },
+      { type: 'text', text: 'Senior PM · Delhivery (Intracity Marketplace)' },
+      { type: 'text', text: 'Previously APM · Urbanladder (Reliance Retail)' },
+      { type: 'text', text: 'Built UrbanInteriors from 0 to ₹37.5L/mo' },
+      { type: 'text', text: 'Shipped production MCP server independently' },
+      { type: 'text', text: 'MBA (CS + Business) · IIITM Gwalior' },
+      { type: 'text', text: '"PM problems are incentive design problems"' }
+    ],
+    philosophy: [
+      { type: 'sep', text: 'Product Philosophy' },
+      { type: 'text', text: '"When a metric isn\'t moving, the first question' },
+      { type: 'text', text: 'isn\'t what\'s broken — it\'s what does the user' },
+      { type: 'text', text: 'think this costs them."' },
+      { type: 'text', text: '' },
+      { type: 'text', text: 'Most PM problems are disguised incentive design' },
+      { type: 'text', text: 'problems. Follow the data until that becomes obvious.' },
+      { type: 'text', text: '' },
+      { type: 'text', text: 'I don\'t just write specs for AI features — I build them.' }
+    ],
+    mcp: [
+      { type: 'sep', text: 'MCP Server' },
+      { type: 'row', label: 'Status', val: 'Production, shipped independently' },
+      { type: 'row', label: 'Stack', val: 'Kiro, Cursor, Claude Code' },
+      { type: 'row', label: 'Architecture', val: 'Shadow-Evaluator pattern' },
+      { type: 'row', label: 'Components', val: 'Primary Agent + Evaluator + Intercept Gate' },
+      { type: 'row', label: 'Block Rate', val: '99% policy violations' },
+      { type: 'text', text: '→ Type open 2 for the full case study' }
+    ]
+  };
+
+  // Show a line in the output area
+  function addLine(category, lineData) {
+    const div = document.createElement('div');
+    div.className = 'terminal-line';
+
+    if (lineData.type === 'sep') {
+      div.textContent = `─ ${lineData.text} ───────────────────────────`;
+      div.style.color = 'var(--text3)';
+      div.style.fontSize = '0.7rem';
+    } else if (lineData.type === 'link') {
+      const linkUrl = caseLinks[lineData.num]?.url;
+      const span = document.createElement('span');
+      span.textContent = `  ${lineData.num}  ${lineData.label}`;
+      span.style.color = 'var(--accent)';
+      span.style.cursor = 'pointer';
+      span.style.display = 'block';
+      span.addEventListener('mouseenter', () => span.style.textDecoration = 'underline');
+      span.addEventListener('mouseleave', () => span.style.textDecoration = 'none');
+      span.addEventListener('click', () => {
+        if (linkUrl) { saveState(); if (typeof gtag !== 'undefined') gtag('event', 'case_study_open', { case: linkUrl, method: 'link_click' }); window.location.href = linkUrl; }
+      });
+      div.appendChild(span);
+    } else if (lineData.type === 'stat') {
+      div.innerHTML = `  <span style="color:var(--text)">${lineData.name}</span> <span style="color:var(--accent)">${lineData.val}</span>  <span style="color:var(--text3);font-size:0.65rem">(${lineData.note})</span>`;
+    } else if (lineData.type === 'row') {
+      div.innerHTML = `  <span style="color:var(--text)">${lineData.label}</span>  · ${lineData.val}`;
+    } else if (lineData.type === 'cmd') {
+      div.innerHTML = `  <span style="color:var(--green)">${lineData.name}</span>    ${lineData.desc}`;
+    } else {
+      div.textContent = lineData.text;
+    }
+
+    outputArea.appendChild(div);
+    outputArea.scrollTop = outputArea.scrollHeight;
+  }
+
+  function addResponse(category, lines) {
+    if (!lines) {
+      const fail = document.createElement('div');
+      fail.className = 'terminal-line';
+      fail.innerHTML = `Unknown command. Type <span style="color:var(--accent)">help</span> for available commands.`;
+      outputArea.appendChild(fail);
+      return;
+    }
+    lines.forEach((line, idx) => {
+      setTimeout(() => addLine(category, line), idx * 25);
+    });
+  }
+
+  // Handle a command from any input
+  function handleCommand(cmd, sourceOutput) {
+    if (!cmd) return;
+    const echo = document.createElement('div');
+    echo.className = 'terminal-line';
+    echo.innerHTML = `<span class="prompt">$ </span><span class="cmd">${cmd}</span>`;
+    sourceOutput.appendChild(echo);
+    sourceOutput.scrollTop = sourceOutput.scrollHeight;
+
+    // Track command
+    if (typeof gtag !== 'undefined') gtag('event', 'terminal_command', { command: cmd });
+
+    // Check for open command
+    const openMatch = cmd.match(/^open\s+(\d+)$/);
+    if (openMatch) {
+      const num = openMatch[1].padStart(2, '0');
+      const link = caseLinks[num];
+      if (link) {
+        saveState();
+        if (typeof gtag !== 'undefined') gtag('event', 'case_study_open', { case: link.url, method: 'command' });
+        setTimeout(() => { window.location.href = link.url; }, 300);
+        return;
+      }
+    }
+
+    // Check for case name match (e.g. "geofencing")
+    const caseMatch = Object.entries(caseLinks).find(([_, v]) =>
+      v.name.toLowerCase().includes(cmd) || v.url.includes(cmd)
+    );
+    if (caseMatch) {
+      saveState();
+      if (typeof gtag !== 'undefined') gtag('event', 'case_study_open', { case: caseMatch[1].url, method: 'keyword' });
+      setTimeout(() => { window.location.href = caseMatch[1].url; }, 300);
+      return;
+    }
+
+    const resp = responses[cmd];
+    if (resp) {
+      setTimeout(() => {
+        resp.forEach((line, idx) => {
+          setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = 'terminal-line';
+            if (line.type === 'sep') {
+              div.textContent = `─ ${line.text} ───────────────────────────`;
+              div.style.color = 'var(--text3)'; div.style.fontSize = '0.7rem';
+            } else if (line.type === 'link') {
+              const linkUrl = caseLinks[line.num]?.url;
+              const span = document.createElement('span');
+              span.textContent = `  ${line.num}  ${line.label}`;
+              span.style.color = 'var(--accent)'; span.style.cursor = 'pointer';
+              span.addEventListener('mouseenter', () => span.style.textDecoration = 'underline');
+              span.addEventListener('mouseleave', () => span.style.textDecoration = 'none');
+              span.addEventListener('click', () => {
+                if (linkUrl) { saveState(); if (typeof gtag !== 'undefined') gtag('event', 'case_study_open', { case: linkUrl, method: 'link_click' }); window.location.href = linkUrl; }
+              });
+              div.appendChild(span);
+            } else if (line.type === 'stat') {
+              div.innerHTML = `  <span style="color:var(--text)">${line.name}</span> <span style="color:var(--accent)">${line.val}</span>  <span style="color:var(--text3);font-size:0.65rem">(${line.note})</span>`;
+            } else if (line.type === 'row') {
+              div.innerHTML = `  <span style="color:var(--text)">${line.label}</span>  · ${line.val}`;
+            } else if (line.type === 'cmd') {
+              div.innerHTML = `  <span style="color:var(--green)">${line.name}</span>    ${line.desc}`;
+            } else {
+              div.textContent = line.text;
+            }
+            sourceOutput.appendChild(div);
+            sourceOutput.scrollTop = sourceOutput.scrollHeight;
+          }, idx * 25);
+        });
+      }, 100);
+    } else {
+      const fail = document.createElement('div');
+      fail.className = 'terminal-line';
+      fail.innerHTML = `Unknown command. Type <span style="color:var(--accent)">help</span> for available commands.`;
+      sourceOutput.appendChild(fail);
+    }
+  }
+
+  // Restore from session or auto-type
+  const savedState = loadState();
+  if (savedState && savedState.terminalHtml) {
+    outputArea.innerHTML = savedState.terminalHtml;
+    if (ideOutput && savedState.ideHtml) ideOutput.innerHTML = savedState.ideHtml;
+    typedCmdEl.textContent = savedState.typedCmd || '';
+    cursorEl.style.display = 'none';
+    if (inputLine) { inputLine.style.display = 'flex'; if (input) input.focus(); }
+  } else {
+    // Auto-type first command
+    const firstCmd = 'help';
+    let i = 0;
+    const typeInterval = setInterval(() => {
+      if (i < firstCmd.length) {
+        typedCmdEl.textContent += firstCmd[i];
+        i++;
+      } else {
+        clearInterval(typeInterval);
+        setTimeout(() => {
+          cursorEl.style.display = 'none';
+          const resp = responses[firstCmd];
+          if (resp) {
+            resp.forEach((line, idx) => {
+              setTimeout(() => addLine(firstCmd, line), idx * 25);
+            });
+          }
+          setTimeout(() => {
+            if (inputLine) { inputLine.style.display = 'flex'; if (input) input.focus(); }
+          }, 600);
+        }, 300);
+      }
+    }, 100);
+  }
+
+  if (input) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handleCommand(input.value.trim().toLowerCase(), outputArea);
+        input.value = '';
+        setTimeout(() => { outputArea.scrollTop = outputArea.scrollHeight; saveState(); }, 150);
+      }
+    });
+    terminalBody?.addEventListener('click', () => input.focus());
+  }
+
+  if (ideInput && ideOutput) {
+    ideInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handleCommand(ideInput.value.trim().toLowerCase(), ideOutput);
+        ideInput.value = '';
+        setTimeout(() => { document.querySelector('.ide-terminal-body')?.scrollTo(0, 9999); saveState(); }, 150);
+      }
+    });
+  }
+
+  // Expose handleCommand for IDE file nav
+  window.terminal = { handleCommand, caseLinks, responses };
+})();
 </script>
 </body>
 </html>
