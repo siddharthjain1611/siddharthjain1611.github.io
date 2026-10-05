@@ -293,8 +293,6 @@
   const outputArea = document.getElementById('terminal-output-area');
   const inputLine = document.getElementById('terminal-input-line');
   const input = document.getElementById('terminal-input');
-  const ideInput = document.getElementById('ide-terminal-input');
-  const ideOutput = document.getElementById('ide-terminal-output');
   const terminalBody = document.getElementById('terminal-body');
   const scrollToEnd = () => { if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight; };
   if (!typedCmdEl || !outputArea) return;
@@ -305,9 +303,7 @@
     try {
       sessionStorage.setItem(SESSION_KEY, JSON.stringify({
         terminalHtml: outputArea.innerHTML,
-        ideHtml: ideOutput ? ideOutput.innerHTML : '',
-        typedCmd: typedCmdEl.textContent,
-        mode: (document.querySelector('.mode-btn.active')?.dataset.mode) || 'terminal'
+        typedCmd: typedCmdEl.textContent
       }));
     } catch(e) {}
   }
@@ -526,7 +522,6 @@
   const savedState = loadState();
   if (savedState && savedState.terminalHtml) {
     outputArea.innerHTML = savedState.terminalHtml;
-    if (ideOutput && savedState.ideHtml) ideOutput.innerHTML = savedState.ideHtml;
     typedCmdEl.textContent = savedState.typedCmd || '';
     cursorEl.style.display = 'none';
     if (inputLine) { inputLine.style.display = 'flex'; if (input) input.focus({ preventScroll: true }); }
@@ -574,18 +569,6 @@
     });
   }
 
-  if (ideInput && ideOutput) {
-    ideInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        handleCommand(ideInput.value.trim().toLowerCase(), ideOutput);
-        ideInput.value = '';
-        setTimeout(() => { document.querySelector('.ide-terminal-body')?.scrollTo(0, 9999); saveState(); }, 150);
-      }
-    });
-  }
-
-  // Expose handleCommand for IDE file nav
-  
   window.terminal = { handleCommand, caseLinks, responses };
 })();
 </script>
