@@ -1,0 +1,180 @@
+%-------------------------
+% ATS-Friendly Resume v2 — Siddharth Jain
+% Visually polished · Guaranteed one-pager
+% Compile with: pdflatex (Overleaf-ready)
+%-------------------------
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ── Premium Fonts (available on Overleaf) ────────────────
+\usepackage[default]{raleway}               % headers — geometric, modern
+\usepackage[default,light]{sourcesanspro}   % body — clean, highly readable
+
+\usepackage[top=0.45in,bottom=0.45in,left=0.5in,right=0.5in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fontawesome5}                    % icons for contact
+\usepackage{setspace}                        % line spacing control
+\usepackage{calc}                            % for width calculations
+
+% ── Colour Palette ───────────────────────────────────────
+\definecolor{accent}{HTML}{2563EB}           % vibrant blue
+\definecolor{accentlight}{HTML}{EFF6FF}      % light blue tint
+\definecolor{darktext}{HTML}{111827}
+\definecolor{medtext}{HTML}{374151}
+\definecolor{lighttext}{HTML}{6B7280}
+\definecolor{rulecolor}{HTML}{D1D5DB}
+\definecolor{skillbg}{HTML}{F3F4F6}
+\definecolor{headerbg}{HTML}{F8FAFC}
+
+% ── Hyperlink setup ──────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  pdfauthor={Siddharth Jain},
+  pdftitle={Siddharth Jain — Senior Product Manager},
+}
+
+% ── Remove page numbers ─────────────────────────────────
+\pagestyle{empty}
+
+% ── Line spacing ─────────────────────────────────────────
+\setstretch{1.05}
+
+% ── Section formatting — partial-width accent rule ───────
+\titleformat{\section}{
+  \vspace{-8pt}\color{darktext}\large\bfseries\uppercase
+}{}{0em}{}[\vspace{2pt}{\color{accent}\rule{0.2\textwidth}{2pt}}%
+{\color{rulecolor}\rule{0.8\textwidth}{0.4pt}}\vspace{-4pt}]
+
+% ── Compact list defaults ────────────────────────────────
+\setlist[itemize]{
+  leftmargin=1.1em,
+  itemsep=1pt,
+  parsep=0pt,
+  topsep=2pt,
+  label=\textcolor{accent}{\small\faAngleRight}
+}
+
+% ── Custom commands ──────────────────────────────────────
+
+% Role header: {Company}{Title}{Location}{Dates}
+\newcommand{\roleheader}[4]{%
+  \vspace{3pt}%
+  \noindent\textbf{\color{darktext}\large #1}%
+  \hfill{\footnotesize\color{lighttext}#4}\\[-1pt]%
+  {\color{accent}\textit{#2}}%
+  \hfill{\footnotesize\color{lighttext}#3}%
+  \vspace{1pt}%
+}
+
+% Compact role for internships: {Company · Title}{Dates}
+\newcommand{\rolecompact}[2]{%
+  \noindent\textbf{\color{darktext}#1}%
+  \hfill{\footnotesize\color{lighttext}#2}%
+}
+
+% Metric highlight in accent colour
+\newcommand{\metric}[1]{\textcolor{accent}{\textbf{#1}}}
+
+% Skill tag box
+\newcommand{\skilltag}[1]{%
+  \colorbox{skillbg}{\small\color{medtext}\strut\,#1\,}%
+  \hspace{1pt}%
+}
+
+% Skill category
+\newcommand{\skillrow}[2]{%
+  \noindent{\small\textbf{\color{darktext}#1\,:}}\enspace #2\\[4pt]%
+}
+
+% ─────────────────────────────────────────────────────────
+\begin{document}
+
+% ══════════════ HEADER ═══════════════════════════════════
+\begin{center}
+  {\Huge\bfseries\color{darktext} Siddharth Jain}\\[3pt]
+  {\large\color{accent} Senior Product Manager}\\[6pt]
+  \textcolor{accent}{\rule{\textwidth}{1.5pt}}\\[6pt]
+  {\small\color{medtext}
+    \faMapMarkerAlt\enspace Bengaluru, India
+    \enspace\textcolor{rulecolor}{|}\enspace
+    \faPhone*\enspace +91\,9256800777
+    \enspace\textcolor{rulecolor}{|}\enspace
+    \faEnvelope\enspace \href{mailto:siddharthjain1611@gmail.com}{siddharthjain1611@gmail.com}
+    \enspace\textcolor{rulecolor}{|}\enspace
+    \faLinkedin\enspace \href{https://linkedin.com/in/siddharth-jain}{siddharth-jain}
+    \enspace\textcolor{rulecolor}{|}\enspace
+    \faGlobe\enspace \href{https://siddharthjain1611.github.io}{Portfolio}
+  }
+\end{center}
+
+\vspace{-4pt}
+
+% ══════════════ SUMMARY ══════════════════════════════════
+\section{Summary}
+\vspace{1pt}
+\noindent{\color{medtext}%
+Product Manager with 4.5+ years scaling \textbf{marketplace, logistics, and consumer} platforms. Grew Delhivery Direct from 0.5M to \metric{4M MAUs} (\metric{INR 80\,Cr+ ARR}). Hands-on AI builder shipping production systems with Kiro, Cursor, and Claude Code. Deep expertise in surge pricing, real-time dispatch, and 0-to-1 product launches.}
+
+% ══════════════ EXPERIENCE ═══════════════════════════════
+\section{Experience}
+
+% ── Delhivery ────────────────────────────────────────────
+\roleheader{Delhivery}{Senior Product Manager \textnormal{\small(Promoted)}}{Bengaluru}{Dec 2023 -- Present}
+\begin{itemize}
+  \item \textbf{Marketplace Scaling:} Grew Delhivery Direct from 0.5M to \metric{4M MAUs}, generating \metric{INR 80\,Cr+ ARR} through intercity courier \& hyperlocal last-mile delivery.
+  \item \textbf{AI \& Technical Ownership:} Independently architected and shipped a production-grade remote MCP server using Cursor, Kiro, and Claude Code — zero engineering hand-off.
+  \item \textbf{0-to-1 Launch:} Shipped hyperlocal MVP in 6 months; 200+ user research sessions, real-time routing algorithms, \metric{P80 pickup 15\,min}.
+  \item \textbf{System Reliability:} Built order management, surge-pricing, and reconciliation workflows sustaining \metric{99.9\% uptime} across 18K+ daily transactions.
+  \item \textbf{Growth:} Lifted intercity conversion by \metric{14\%} via A/B-tested UX redesigns \& GenAI automation, unlocking \metric{INR 8\,Cr} incremental quarterly revenue.
+  \item \textbf{B2B Leadership:} Led squad of 12 (eng + design) to ship enterprise B2B suite (admin panels + APIs), securing \metric{INR 10\,Cr+}/quarter in partnership value.
+\end{itemize}
+
+% ── Urbanladder ──────────────────────────────────────────
+\roleheader{Urbanladder \textnormal{\small(Reliance Retail)}}{Associate Product Manager}{Bengaluru}{Jan 2022 -- Dec 2023}
+\begin{itemize}
+  \item \textbf{0-to-1 Revenue:} Scaled UrbanInteriors from MVP to \metric{INR 37.5L monthly GMV}; 5 to 50+ projects/month at INR 7.5L AOV.
+  \item \textbf{Support Automation:} Cut support costs by \metric{47\%} via AI chatbot \& automated triage, sustaining \metric{95\%+ CSAT}.
+  \item \textbf{Omnichannel CRM:} Drove \metric{30\% revenue uplift} per sq.\,ft by unifying offline/online via CleverTap--Salesforce integration.
+  \item \textbf{Workflow Optimisation:} Slashed ticket re-open rate by \metric{67\%} in 4 months through Salesforce case-management redesign.
+\end{itemize}
+
+% ── Internships (collapsed) ──────────────────────────────
+\vspace{3pt}
+\noindent\textbf{\large\color{darktext}Selected Internships}
+\hfill{\footnotesize\color{lighttext}2020 -- 2022}\\[-1pt]
+{\color{accent}\textit{Jupiter \,$\cdot$\, Rakuten Viber \,$\cdot$\, Policybazaar}}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Jupiter:} Built clustering \& DNN pipeline on 2M+ SMS records for high-precision customer segments in fintech product targeting.
+  \item \textbf{Rakuten Viber:} Shipped Skin Cancer Detection platform via ResNet-50 transfer learning; \metric{89\% accuracy} on ISIC dataset.
+  \item \textbf{Policybazaar:} Boosted checkout conversion by \metric{25\%} via UPI 2.0 AutoPay; reduced payment failures to \metric{<1.5\%} with auto-fallback logic.
+\end{itemize}
+
+% ══════════════ EDUCATION ════════════════════════════════
+\section{Education}
+
+\noindent\textbf{\large\color{darktext}IIITM Gwalior}%
+\hfill{\footnotesize\color{lighttext}May 2017 -- May 2022}\\[-1pt]
+{\color{accent}\textit{B.Tech (Computer Science) + MBA — Integrated Program}}%
+\hfill{\footnotesize\color{lighttext}Gwalior, India}
+\vspace{1pt}
+\begin{itemize}
+  \item \textbf{Thesis:} Applied KANO model on 300+ user surveys to map digital payment adoption barriers — trust \& transaction costs as top friction points.
+\end{itemize}
+
+% ══════════════ SKILLS ═══════════════════════════════════
+\section{Skills}
+\vspace{3pt}
+\skillrow{Product}{Roadmapping, 0-to-1, Go-to-Market, A/B Testing, Pricing Strategy, Consumer Growth, Competitive Analysis, KPI Optimisation}
+\skillrow{AI / LLM}{Claude Code, Cursor IDE, Kiro, MCP Servers, GenAI Workflows, Prompt Engineering, LLM Workflow Design}
+\skillrow{Analytics}{Python, SQL, Tableau, Amplitude, Mixpanel, Funnel Analysis, AWS QuickSight}
+\skillrow{Platform}{API Design, Microservices, Salesforce, CleverTap, Jira, Agile/Scrum, User Research}
+
+\end{document}
