@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Growth KAM — Siddharth Jain</title>
+<meta name="description" content="Designing proactive account management with a deterministic permission gate, human escalation, and a holdout-based measure of incremental reorders.">
+<meta name="theme-color" content="#15263e">
+<link rel="stylesheet" href="portfolio.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body><a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap nav"><a class="brand" href="index.html">Siddharth Jain<span>AI PRODUCT</span></a>
+<nav class="nav-links" aria-label="Main navigation"><a href="index.html#work">Work</a><a href="growth-kam-lab.html">Decision lab</a><a class="desktop-link" href="index.html#about">About</a><a class="nav-contact" href="mailto:siddharthjain1611@gmail.com">Let’s talk ↗</a>
+</nav>
+</div>
+</header>
+<main id="main">
+<div class="wrap">
+<header class="case-hero"><a class="back-link" href="index.html#work">← Selected work</a>
+<p class="eyebrow blue">02 / AI AGENTS · IN DESIGN</p>
+<h1>Deciding which accounts<br>deserve a call, and which<br>need a human instead.</h1>
+<p class="lead">Account care does not scale linearly, so this is a coverage problem before it is an AI problem. I built the eligibility gate first and left the conversation downstream of it.</p>
+<div class="evidence-note"><strong>Status: in design, with a working prototype.</strong> This is a product design case drawn from working documents and prompt iterations. It is not a report of a deployed system, and no customer outcomes are attributed to it. The demo runs a deterministic policy against synthetic accounts.</div>
+<dl class="case-facts">
+<div>
+<dt>Context</dt>
+<dd>Delhivery · business shippers</dd>
+</div>
+<div>
+<dt>My role</dt>
+<dd>Framing, playbooks, agent behaviour</dd>
+</div>
+<div>
+<dt>Artifact</dt>
+<dd>Design case + policy prototype</dd>
+</div>
+<div>
+<dt>Success measure</dt>
+<dd>Incremental reorders vs holdout</dd>
+</div>
+</dl>
+</header>
+<div class="case-layout">
+<nav class="case-toc" aria-label="On this page"><a href="#ownership">Summary</a><a href="#problem">Why coverage breaks</a><a href="#decisions">Three decisions</a><a href="#architecture">The permission gate</a><a href="#learning">Two corrections</a><a href="#measurement">Measuring it</a><a href="#demo">Try the prototype</a>
+</nav>
+<article class="article">
+<section id="ownership"><p class="eyebrow blue">In one minute</p><h2>When the population<br>grows faster than the team,<br>coverage changes shape.</h2>
+<div class="case-summary"><div><h3>The brief</h3><p>Figure out what AI can take off the account-management team without dropping the standard of care on the accounts that matter.</p></div><div><h3>My direction</h3><p>Lead with coverage, not call volume. Decide whether a conversation is worth having before choosing an agent or writing a word of it.</p></div><div><h3>What I actually did</h3><p>Wrote the intervention playbooks, defined what each objective is allowed to do, set the reactivation rules, and rewrote the onboarding conversation.</p></div><div><h3>Where it stands</h3><p>Working documents, two recorded design corrections, and a reproducible policy prototype with 34 passing checks. Deployment is not claimed.</p></div></div>
+<p><strong>Scope:</strong> I own the product framing and the agent behaviour design. Speech recognition, synthesis, and telephony are a partner's stack, and I do not claim them.</p></section>
+<section id="problem">
+<p class="eyebrow blue">The problem</p>
+<h2>Account managers<br>have finite hours.</h2>
+<p>Every hour a KAM spends on a routine check-in is an hour not spent on an onboarding, a service recovery, or a commercially important conversation. The accounts that suffer are the smaller business shippers, who get no proactive attention at all.</p>
+<p>That is a coverage problem before it is an AI problem. Widening it means deciding, per account, whether a conversation would actually help. A pitch to a shipper whose last three deliveries failed is worse than no call, because it confirms that we noticed and did not fix anything.</p>
+<div class="callout">
+<p class="quote">Should we call this account? comes before what should the agent say.</p>
+</div>
+<p>So I started with eligibility, not scripts. The policy gate below is the product. The conversation is downstream of it.</p>
+</section>
+<section id="decisions">
+<p class="eyebrow blue">Decisions</p>
+<h2>Three choices that<br>changed the design.</h2>
+<h3>Diagnose the account before I pitch it</h3>
+<p>An order decline means one of three things: an unresolved supply problem, a change in the shipper's own business, or a naturally infrequent ordering pattern. The first one is not a growth opportunity, it is a service failure we have not closed yet.</p>
+<p><strong>What I changed:</strong> service context is checked before an objective is selected. Known systemic failures route to Operations. Sensitive cases and explicit human requests route to a person. Only an eligible account with no blocker gets a reactivation conversation.</p>
+<p><strong>What it cost:</strong> fewer automated calls, because most declines are not growth opportunities. The design is also only as good as its inputs. Without incident feeds and contact-consent state, the gate has to refuse to dispatch, and that is the correct failure direction.</p>
+<h3>Separate objectives, one shared memory</h3>
+<p>Onboarding, retention, service recovery, and growth want different outcomes and are allowed different things. They share one account history so the next conversation cannot contradict the promise made in the last one.</p>
+<div class="table-wrap">
+<table>
+<caption>Target operating model. The prototype implements the reactivation gate only.</caption>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Outcome it is for</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Onboarding</td>
+<td>Understand the first experience and the next real need</td>
+<td>Ask only for what is actually missing</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>Find the blocker and agree a next step</td>
+<td>No autonomous compensation, no cross-sell</td>
+</tr>
+<tr>
+<td>Service recovery</td>
+<td>Close the issue and restore trust</td>
+<td>Sensitive cases stay with a person</td>
+</tr>
+<tr>
+<td>Growth</td>
+<td>Explore one relevant additional use case</td>
+<td>Never outranks an unresolved service problem</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>What it cost:</strong> more coordination, since four objectives now share state. I would not start with all four. Start bounded, share the state, expand when the evaluation supports it.</p>
+<h3>Build the decision layer, buy the voice stack</h3>
+<p>Targeting, account context, playbooks, and evaluation encode what we know about a shipper. That knowledge is ours and it is the product. Turning text into a phone call is a solved problem with a price tag.</p>
+<p><strong>What I decided:</strong> keep the intervention logic and rent the voice capability. The open work is the unglamorous part of that boundary: what happens when the partner call fails, who reads the transcript, and what latency we are willing to accept before a shipper notices.</p>
+</section>
+<section id="architecture">
+<p class="eyebrow blue">System design</p>
+<h2>Permission lives in code<br>the model cannot edit.</h2>
+<p>The language model is good at summarising context and holding a conversation. It should not be the thing that decides whether it is allowed to call, issue compensation, or overwrite a customer record.</p>
+<div class="architecture">
+<div><span>01 / CONTEXT</span>
+<h3>Grounded account brief</h3>
+<p>Observed behaviour, prior commitments, current service state, and an explicit list of what is not known.</p>
+</div>
+<div><span>02 / POLICY</span>
+<h3>Inspectable gate</h3>
+<p>Eligibility, contact limits, incident routing, human ownership, holdout assignment.</p>
+</div>
+<div><span>03 / CONVERSATION</span>
+<h3>One bounded objective</h3>
+<p>A model-assisted agenda and call, restricted to the actions this account permits.</p>
+</div>
+<div><span>04 / EXECUTION</span>
+<h3>Validate before writing</h3>
+<p>Re-check eligibility and caps, reject replayed actions, record the result, keep an audit trail.</p>
+</div>
+</div>
+<div class="callout">
+<p><strong>The distinction that matters:</strong> screening an input for risk runs alongside generation, because the risk is in what came in. Checking a generated answer has to wait for the answer. An evaluator that never saw the output cannot certify the output is safe, whatever score it reports.</p>
+</div>
+<p>The prototype runs the deterministic gate and assembles a template brief. It does not call a model, contact a shipper, or write to an account record.</p>
+</section>
+<section id="learning">
+<p class="eyebrow blue">Corrections</p>
+<h2>Two times I had to<br>throw out my own analysis.</h2>
+<h3>The timing model was selected on the outcome</h3>
+<p>My first inactivity analysis measured the gaps between orders among shippers who came back. That excluded every non-returner, and it made long waits look reasonable. I had picked the population on the exact outcome I was trying to move.</p>
+<p>Including non-returners helped, and then made it worse: the revised thresholds were calling infrequent shippers earlier than frequent ones, which is the opposite of the intended cadence logic.</p>
+<div class="decision-journal"><div><span>Where I started</span><p>Order gaps among returning shippers, to estimate when to call.</p></div><div><span>Why it failed</span><p>Non-returners were excluded. The sample was selected on the outcome under test.</p></div><div><span>What broke next</span><p>With them included, thresholds were backwards. Infrequent shippers got called before frequent ones.</p></div><div><span>Where it landed</span><p>Intervene relative to demonstrated habit. Treat every threshold as a hypothesis until it survives a backtest and a controlled pilot.</p></div></div>
+<p>What actually changed was my standard of evidence, not a retention number. The timing rule is different and the bar for believing it is higher.</p>
+<h3>The voice was re-asking things it already knew</h3>
+<p>Onboarding calls kept confirming information the shipper had just given. A typical turn: the shipper says they send thirty to forty deliveries a day, and the agent spends another beat checking whether that was understood correctly.</p>
+<p>The problem is not one wasted turn. It is that the shipper learns the conversation is not listening, and then starts cooperating less with the rest of it.</p>
+<div class="conversation-comparison"><div><p class="eyebrow">Behaviour I was pushing back on</p><blockquote>So, thirty to forty deliveries. Did I understand that correctly?</blockquote><p>Validating an answer that was already usable.</p></div><div><p class="eyebrow blue">What the revision looks like</p><blockquote>Which vehicle do you usually use?</blockquote><p>Capture the range silently. Move to the next missing question, or close if there isn't one.</p></div></div>
+<p class="small muted">Illustrative of the correction I documented, not a transcript. Vehicle preference is skipped when it is already known.</p>
+<p><strong>Acceptance criteria I set:</strong> no reopened questions, no second introduction, no invented precision, no repeated request for permission after a clear answer. These need conversation evaluation, which the routing tests in the lab do not cover.</p>
+<h3>Coverage means the whole base, not the validation set</h3>
+<p>The same pass caught a coverage estimate that divided by the validation subset rather than the full population. Accuracy on the eligible subset and reach across the whole base are different questions, and a release decision needs both answered.</p>
+</section>
+<section id="measurement">
+<p class="eyebrow blue">Evaluation</p>
+<h2>Proving the call<br>changed something</h2>
+<p>Most of the accounts I would call were going to reorder anyway. Report gross reorder rate and I take credit for the season. The design has to be able to separate the two before anyone is contacted.</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What I measure</th>
+<th>What it establishes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Policy</td>
+<td>Expected route on fixed scenarios</td>
+<td>Whether the implemented rules respect the boundaries they were written against</td>
+</tr>
+<tr>
+<td>Conversation</td>
+<td>Unsupported claims, repeated questions, extraction accuracy, handoff completion</td>
+<td>Whether the voice experience holds up. Not covered by this prototype</td>
+</tr>
+<tr>
+<td>Business</td>
+<td>Reorder rate against a randomised holdout, over a predeclared window</td>
+<td>Incremental effect, with confidence intervals and cohort cuts</td>
+</tr>
+<tr>
+<td>Economics</td>
+<td>Voice, model, retry, incentive, and review cost per incremental reorder</td>
+<td>Whether the extra coverage is worth paying for</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>Rollout, with exits</h3>
+<ol>
+<li><strong>Offline.</strong> Gate, data freshness, and failure handling against agreed scenarios.</li>
+<li><strong>Human-assisted.</strong> KAMs review briefs and log rejection reasons. This validates the workflow. It is not proof of low risk.</li>
+<li><strong>Controlled pilot.</strong> One use case, one holdout, reliable contact state, escalation capacity that is actually staffed.</li>
+<li><strong>Expand.</strong> Only after incremental value and guardrails are reviewed. Autonomous dispatch stops on the first critical permission breach.</li>
+</ol>
+<p>No retention lift, model accuracy, or latency figure in this case comes from a production system.</p>
+</section>
+<section id="demo">
+<p class="eyebrow blue">The prototype</p>
+<h2>Change one fact.<br>Watch the decision move.</h2>
+<p>Take the same quiet account. Add a supply incident, a missing consent flag, a recent reorder, or a named human owner. The correct next action changes every time, and you can see which rule did it.</p>
+<div class="actions"><a class="button" href="growth-kam-lab.html">Open the Growth KAM lab ↗</a><a class="button secondary" href="growth-kam-lab.html#evaluations">See the test results</a></div>
+</section>
+<div class="next-case"><span class="muted small">Next / Market research and launch</span><a class="text-link" href="case-hyperlocal.html">From market sizing to a hyperlocal MVP ↗</a></div>
+</article>
+</div>
+</div>
+</main>
+<footer class="site-footer wrap">
+<div class="footer"><span>© 2026 Siddharth Jain · Bengaluru, India</span>
+<div><a href="resume.html">Resume</a><a href="https://www.linkedin.com/in/siddharthjain1611/">LinkedIn ↗</a><a href="mailto:siddharthjain1611@gmail.com">Email ↗</a>
+</div>
+</div>
+</footer>
+</body>
+</html>

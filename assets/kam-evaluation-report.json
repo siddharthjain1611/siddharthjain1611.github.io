@@ -1,0 +1,238 @@
+{
+  "suite": "Synthetic reactivation policy checks",
+  "policy": "portfolio-reactivation-v1",
+  "total": 28,
+  "passed": 28,
+  "results": [
+    {
+      "id": "eligible",
+      "name": "A quiet account, no known blockers",
+      "category": "Eligibility",
+      "expected": "AI_BRIEF",
+      "actual": "AI_BRIEF",
+      "pass": true
+    },
+    {
+      "id": "incident",
+      "name": "Quiet account during a supply incident",
+      "category": "Service",
+      "expected": "OPS",
+      "actual": "OPS",
+      "pass": true
+    },
+    {
+      "id": "kam",
+      "name": "Existing human account owner",
+      "category": "Ownership",
+      "expected": "KAM",
+      "actual": "KAM",
+      "pass": true
+    },
+    {
+      "id": "human",
+      "name": "Customer asks for a person",
+      "category": "Safety",
+      "expected": "HUMAN",
+      "actual": "HUMAN",
+      "pass": true
+    },
+    {
+      "id": "severe",
+      "name": "A theft or damage complaint",
+      "category": "Safety",
+      "expected": "HUMAN",
+      "actual": "HUMAN",
+      "pass": true
+    },
+    {
+      "id": "support",
+      "name": "An unresolved support ticket",
+      "category": "Service",
+      "expected": "RECOVERY",
+      "actual": "RECOVERY",
+      "pass": true
+    },
+    {
+      "id": "optout",
+      "name": "Contact permission withdrawn",
+      "category": "Permission",
+      "expected": "SUPPRESS",
+      "actual": "SUPPRESS",
+      "pass": true
+    },
+    {
+      "id": "unknown-consent",
+      "name": "Contact permission unknown",
+      "category": "Permission",
+      "expected": "SUPPRESS",
+      "actual": "SUPPRESS",
+      "pass": true
+    },
+    {
+      "id": "stale",
+      "name": "Service and contact feeds are stale",
+      "category": "Data",
+      "expected": "WAIT_DATA",
+      "actual": "WAIT_DATA",
+      "pass": true
+    },
+    {
+      "id": "unavailable",
+      "name": "Required feed is unavailable",
+      "category": "Data",
+      "expected": "WAIT_DATA",
+      "actual": "WAIT_DATA",
+      "pass": true
+    },
+    {
+      "id": "reorder",
+      "name": "Reordered after entering the queue",
+      "category": "Freshness",
+      "expected": "CANCEL",
+      "actual": "CANCEL",
+      "pass": true
+    },
+    {
+      "id": "cooldown",
+      "name": "Recently contacted by another workflow",
+      "category": "Coordination",
+      "expected": "WAIT",
+      "actual": "WAIT",
+      "pass": true
+    },
+    {
+      "id": "holdout",
+      "name": "Assigned to the experiment holdout",
+      "category": "Experiment",
+      "expected": "HOLDOUT",
+      "actual": "HOLDOUT",
+      "pass": true
+    },
+    {
+      "id": "not-due",
+      "name": "Within the normal ordering interval",
+      "category": "Timing",
+      "expected": "OBSERVE",
+      "actual": "OBSERVE",
+      "pass": true
+    },
+    {
+      "id": "at-boundary",
+      "name": "Exactly at the illustrative trigger",
+      "category": "Boundary",
+      "expected": "AI_BRIEF",
+      "actual": "AI_BRIEF",
+      "pass": true
+    },
+    {
+      "id": "before-boundary",
+      "name": "One day before the trigger",
+      "category": "Boundary",
+      "expected": "OBSERVE",
+      "actual": "OBSERVE",
+      "pass": true
+    },
+    {
+      "id": "low-history",
+      "name": "Only one delivered order",
+      "category": "Data",
+      "expected": "OBSERVE",
+      "actual": "OBSERVE",
+      "pass": true
+    },
+    {
+      "id": "personal",
+      "name": "Personal-use account",
+      "category": "Eligibility",
+      "expected": "SUPPRESS",
+      "actual": "SUPPRESS",
+      "pass": true
+    },
+    {
+      "id": "unknown-experience",
+      "name": "Optional experience data missing",
+      "category": "Grounding",
+      "expected": "AI_BRIEF",
+      "actual": "AI_BRIEF",
+      "pass": true
+    },
+    {
+      "id": "outside-window",
+      "name": "Outside the permitted calling window",
+      "category": "Timing",
+      "expected": "WAIT",
+      "actual": "WAIT",
+      "pass": true
+    },
+    {
+      "id": "duplicate",
+      "name": "The attempt is a replay",
+      "category": "Coordination",
+      "expected": "WAIT",
+      "actual": "WAIT",
+      "pass": true
+    },
+    {
+      "id": "commitment",
+      "name": "An earlier promise is unresolved",
+      "category": "Coordination",
+      "expected": "HUMAN",
+      "actual": "HUMAN",
+      "pass": true
+    },
+    {
+      "id": "conflict",
+      "name": "Incident and human owner coexist",
+      "category": "Precedence",
+      "expected": "OPS",
+      "actual": "OPS",
+      "pass": true
+    },
+    {
+      "id": "permission-conflict",
+      "name": "Opt-out and overdue timing coexist",
+      "category": "Precedence",
+      "expected": "SUPPRESS",
+      "actual": "SUPPRESS",
+      "pass": true
+    },
+    {
+      "id": "hostile-note",
+      "name": "A note asks to bypass contact permission",
+      "category": "Untrusted data",
+      "expected": "SUPPRESS",
+      "actual": "SUPPRESS",
+      "pass": true
+    },
+    {
+      "id": "missing-state",
+      "name": "Required account state is absent",
+      "category": "Validation",
+      "expected": "WAIT_DATA",
+      "actual": "WAIT_DATA",
+      "pass": true
+    },
+    {
+      "id": "invalid-state",
+      "name": "A negative order interval",
+      "category": "Validation",
+      "expected": "WAIT_DATA",
+      "actual": "WAIT_DATA",
+      "pass": true
+    },
+    {
+      "id": "invalid-flag",
+      "name": "A text value replaces a boolean",
+      "category": "Validation",
+      "expected": "WAIT_DATA",
+      "actual": "WAIT_DATA",
+      "pass": true
+    }
+  ],
+  "limitations": [
+    "Author-defined synthetic fixtures; no held-out production cases.",
+    "Checks decision rules, not LLM responses, speech, extraction, or tool reliability.",
+    "Replay and freshness flags are supplied inputs; this prototype does not implement distributed state.",
+    "No evidence of business uplift, model accuracy, or real-world safety."
+  ]
+}

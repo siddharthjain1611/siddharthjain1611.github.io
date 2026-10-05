@@ -1,0 +1,272 @@
+    %-------------------------
+% Resume in Latex
+% Based on: 70+ ATS rating Resume Template by Prashant Singh
+% License : MIT
+%------------------------
+
+%---- Required Packages and Functions ----
+
+\documentclass[a4paper,11pt]{article}
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage[empty]{fullpage}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{marvosym}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{cfr-lm}
+\usepackage[T1]{fontenc}
+\setlength{\multicolsep}{0pt} 
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
+% Adjust margins
+%\addtolength{\oddsidemargin}{-0.5in}
+%\addtolength{\evensidemargin}{-0.5in}
+%\addtolength{\textwidth}{1in}
+\usepackage[most]{tcolorbox}
+\tcbset{
+	frame code={},
+	center title,
+	left=0pt,
+	right=0pt,
+	top=0pt,
+	bottom=0pt,
+	colback=gray!20,
+	colframe=white,
+	width=\dimexpr\textwidth\relax,
+	enlarge left by=-2mm,
+	boxsep=4pt,
+	arc=0pt,outer arc=0pt,
+}
+
+\urlstyle{same}
+
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item{
+    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
+  }
+}
+
+\newcommand{\resumePOR}[3]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1}\hspace{0.3mm}#2 & \textit{\small{#3}} 
+    \end{tabular*}
+    \vspace{-2mm}
+}
+
+\newcommand{\resumeSubheading}[4]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#4}} \\
+        \textit{\footnotesize{#3}} &  \footnotesize{#2}\\
+    \end{tabular*}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeProject}[4]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#3}} \\
+        \footnotesize{\textit{#2}} & \footnotesize{#4}
+    \end{tabular*}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+% \renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,labelsep=0mm]}
+\newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.7mm, rightmargin=2ex]}
+\newcommand{\resumeItemListStart}{\begin{justify}\begin{itemize}[leftmargin=3ex, rightmargin=2ex, noitemsep,labelsep=1.2mm,itemsep=0mm]\small}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{2mm}}
+\newcommand{\resumeHeadingSkillEnd}{\end{itemize}\vspace{-2mm}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\end{justify}\vspace{-2mm}}
+\newcommand{\cvsection}[1]{%
+\vspace{2mm}
+\begin{tcolorbox}
+    \textbf{\large #1}
+\end{tcolorbox}
+    \vspace{-4mm}
+}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}%
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
+\newcolumntype{C}{>{\centering\arraybackslash}X}%
+%---- End of Packages and Functions ------
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%
+%%%%%% DEFINE ELEMENTS HERE %%%%%%%
+\newcommand{\name}{Siddharth Jain} % Your Name
+\newcommand{\course}{B.Tech (CS) + MBA} % Your Program
+\newcommand{\phone}{9256800777} % Your Phone Number
+\newcommand{\emaila}{siddharthjain1611@gmail.com} %Email 1
+
+\begin{document}
+\fontfamily{cmr}\selectfont
+%----------HEADING-----------------
+
+{
+\begin{tabularx}{\linewidth}{L r} \\
+  \textbf{\Large \name} & {\raisebox{0.0\height}{\footnotesize \faPhone}\ +91-\phone}\\
+  {Senior Product Manager} & \href{mailto:\emaila}{\raisebox{0.0\height}{\footnotesize \faEnvelope}\ {\emaila}} \\
+  {Bengaluru, India} & \href{https://linkedin.com/in/siddharth-jain}{\raisebox{0.0\height}{\footnotesize \faLinkedin}\ {LinkedIn Profile}} \\  
+  {\course\ -- IIITM Gwalior} & \href{https://siddharthjain1611.github.io}{\raisebox{0.0\height}{\footnotesize \faGlobe}\ {Portfolio Website}}
+\end{tabularx}
+}
+
+
+%-----------SUMMARY-----------
+\section{\textbf{Summary}}
+\vspace{1mm}
+\small{Product Manager with 4.5+ years scaling marketplace, logistics, and consumer platforms. Grew Delhivery Direct from 0.5M to \textbf{4M MAUs} generating \textbf{INR 80 Cr+ ARR}. Hands-on AI builder shipping production systems with Kiro, Cursor, and Claude Code. Deep expertise in surge pricing, real-time dispatch, driver-side product, and 0-to-1 launches.}
+\vspace{-2mm}
+
+%-----------EXPERIENCE-----------------
+\section{\textbf{Experience}}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Delhivery}{Bengaluru, India}
+      {Senior Product Manager -- Intracity Marketplace (Promoted)}{Dec 2023 -- Present}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {Scaled Delhivery Direct from 0.5M to \textbf{4M MAUs}, generating \textbf{INR 80 Cr+ ARR} through intercity courier and hyperlocal last-mile delivery.}
+    \item {Independently architected and shipped a production-grade remote MCP server using Cursor, Kiro, and Claude Code -- zero engineering hand-off.}
+    \item {Launched hyperlocal MVP in 6 months; 200+ user research sessions, real-time routing algorithms, \textbf{P80 pickup time of 15 min} at \textbf{99.9\% uptime} across 18,000+ daily orders.}
+    \item {Lifted intercity conversion by \textbf{14\%} via A/B-tested UX redesigns and GenAI workflow automation, unlocking \textbf{INR 8 Cr} incremental quarterly revenue.}
+    \item {Led cross-functional squad of 12 (eng + design) to ship enterprise B2B suite (admin panels + APIs), securing \textbf{INR 10 Cr+} per quarter in partnership value.}
+    \item {Shipped Driver Tips product after 100+ earner discovery interviews; designed acceptance mechanics and surge-pricing algorithms across 6 cities.}
+    \resumeItemListEnd
+    
+    \vspace{-3.0mm}
+    
+    \resumeSubheading
+      {Urbanladder (Reliance Retail)}{Bengaluru, India}
+      {Associate Product Manager -- Consumer \& CRM Product}{Jan 2022 -- Dec 2023}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {Built UrbanInteriors from zero to \textbf{INR 37.5L monthly GMV}; scaled design projects from 5 to 50+/month at INR 7.5L AOV.}
+    \item {Cut customer support costs by \textbf{47\%} via AI chatbot deployment and automated triage workflows, sustaining \textbf{95\%+ CSAT}.}
+    \item {Drove \textbf{30\% revenue uplift} per sq. ft by unifying offline/online journeys via CleverTap--Salesforce omnichannel CRM integration.}
+    \item {Slashed ticket re-open rate by \textbf{67\%} in 4 months through ground-up Salesforce case-management workflow redesign.}
+    \resumeItemListEnd
+    
+    \vspace{-3.0mm}
+    
+    \resumeSubheading
+      {Jupiter (Fintech)}{Mumbai, India}
+      {Data Science Intern}{Oct 2021 -- Jan 2022}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {Designed clustering and DNN pipeline on \textbf{2M+ SMS records} to generate high-precision customer segments for financial product targeting.}
+    \resumeItemListEnd
+
+    \vspace{-3.0mm}
+
+    \resumeSubheading
+      {Rakuten Viber}{Bengaluru, India}
+      {Technical Intern}{Jun 2021 -- Oct 2021}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {Architected a Skin Cancer Detection platform using ResNet-50 transfer learning on the ISIC dataset, attaining \textbf{89\% diagnostic accuracy}.}
+    \resumeItemListEnd
+
+    \vspace{-3.0mm}
+
+    \resumeSubheading
+      {Xiaomi}{Bengaluru, India}
+      {Product \& Data Intern}{2021}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {Built a product visibility tracker and engineered a sentiment analysis model achieving \textbf{96\% accuracy} on customer reviews.}
+    \resumeItemListEnd
+
+    \vspace{-3.0mm}
+
+    \resumeSubheading
+      {Policybazaar}{Gurugram, India}
+      {Product Management Intern}{Sep 2020 -- Dec 2020}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {Boosted checkout conversion by \textbf{25\%} via UPI 2.0 AutoPay adoption; reduced payment failure to \textbf{<1.5\%} with multi-gateway auto-fallback logic.}
+    \resumeItemListEnd
+      
+  \resumeSubHeadingListEnd
+\vspace{-5.5mm}
+
+
+%-----------EDUCATION-----------
+\section{\textbf{Education}}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {IIITM Gwalior}{Gwalior, India}
+      {B.Tech (Computer Science) + MBA -- Integrated Program}{May 2017 -- May 2022}
+      \vspace{-2.0mm}
+      \resumeItemListStart
+    \item {\textbf{MBA Thesis:} Applied KANO model on 300+ user surveys to map digital payment adoption barriers -- identified trust and transaction costs as primary friction points.}
+    \resumeItemListEnd
+  \resumeSubHeadingListEnd
+\vspace{-5.5mm}
+
+
+%-----------Technical skills-----------------
+\section{\textbf{Technical Skills and Interests}}
+ \begin{itemize}[leftmargin=0.05in, label={}]
+    \small{\item{
+     \textbf{Product Strategy}{: Roadmapping, 0-to-1 Development, Go-to-Market, A/B Testing, Pricing Strategy, Consumer Growth, KPI Optimisation } \\
+     \textbf{AI / LLM Skills}{: Claude Code, Cursor IDE, Kiro, MCP Server Development, GenAI Workflows, Prompt Engineering, RAG Architectures, LLM Evaluation \& Benchmarking, Agentic AI Systems, AI Safety \& Guardrails, Model Selection \& Cost Optimisation, ML Pipelines }\\ 
+     \textbf{Analytics \& Data}{: Python, SQL, Tableau, Amplitude, Mixpanel, Funnel Analysis, AWS QuickSight } \\ 
+     \textbf{Platform \& Delivery}{: API Design, Microservices Architecture, Salesforce, CleverTap, Jira, Agile/Scrum } \\
+     \textbf{Domain Expertise}{: Multi-sided Marketplace, Logistics, Surge Pricing, Real-time Dispatch, Driver/Earner Product, Payments, Fintech } \\  
+     \textbf{Soft Skills}{: User Research, Cross-functional Leadership, Stakeholder Management, Data Storytelling, Experimentation Design } \\
+    }}
+ \end{itemize}
+ \vspace{-16pt}
+
+
+
+%-----------Key Achievements-----------------
+\section{\textbf{Key Achievements}}
+\vspace{-0.4mm}
+\resumeSubHeadingListStart
+\resumePOR{8x MAU Growth } % Achievement
+    {-- Scaled Delhivery Direct from 0.5M to 4M monthly active users in under 18 months} %Description
+    {2024}
+\resumePOR{INR 80 Cr+ ARR } % Achievement
+    {-- Built and sustained annual recurring revenue across intracity and intercity products} %Description
+    {2024}
+\resumePOR{0-to-1 Builder } % Achievement
+    {-- Launched UrbanInteriors from scratch to INR 37.5L/month GMV; launched hyperlocal MVP in 6 months} %Description
+    {2022--24}
+\resumeSubHeadingListEnd
+\vspace{-5mm}
+
+
+
+%-------------------------------------------
+\end{document}

@@ -1,0 +1,84 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage[empty]{fullpage}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fontawesome5}
+\usepackage{cfr-lm}
+\usepackage[T1]{fontenc}
+
+% Adjust margins
+\geometry{left=1.4cm, top=1.4cm, right=1.4cm, bottom=1.4cm}
+
+\urlstyle{same}
+\raggedright
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+\newcommand{\name}{Siddharth Jain}
+\newcommand{\phone}{9256800777}
+\newcommand{\emaila}{siddharthjain1611@gmail.com}
+
+\begin{document}
+\fontfamily{cmr}\selectfont
+
+%----------HEADING-----------------
+% Matches the styling of your V3 Resume
+{
+\begin{tabularx}{\linewidth}{L r}
+  \textbf{\Large \name} & {\raisebox{0.0\height}{\footnotesize \faPhone}\ +91-\phone}\\
+  {Senior Product Manager} & \href{mailto:\emaila}{\raisebox{0.0\height}{\footnotesize \faEnvelope}\ {\emaila}} \\
+  {Bengaluru, India} & \href{https://linkedin.com/in/siddharth-jain}{\raisebox{0.0\height}{\footnotesize \faLinkedin}\ {LinkedIn Profile}} \\  
+  {B.Tech (CS) + MBA -- IIITM Gwalior} & \href{https://siddharthjain1611.github.io}{\raisebox{0.0\height}{\footnotesize \faGlobe}\ {Portfolio Website}}
+\end{tabularx}
+}
+
+\vspace{0.2cm}
+{\color{gray}\hrule}
+\vspace{1cm}
+
+%----------DATE & ADDRESSEE-----------------
+\today
+
+\vspace{0.5cm}
+
+\textbf{Hiring Manager / Recruiting Team} \\
+[Company Name] \\
+[Company Address / Location]
+
+\vspace{0.5cm}
+
+\textbf{Subject: Application for Senior Product Manager - [Optional: specific team/product]}
+
+\vspace{0.5cm}
+
+Dear Hiring Manager,
+
+I am writing to express my strong interest in the Senior Product Manager position at [Company Name]. With over 4.5 years of experience scaling zero-to-one consumer platforms, building complex marketplaces, and leveraging Agentic AI to solve business problems, I am excited about the opportunity to bring my dual background in product strategy and technical execution to your team.
+
+Most recently at Delhivery, I led the intracity marketplace product, scaling Delhivery Direct from 0.5M to 4M Monthly Active Users and generating over INR 80 Cr+ ARR within 18 months. Leading a cross-functional squad of 12 engineers and designers, I successfully shipped our hyperlocal MVP, engineered real-time routing dispatch algorithms, and achieved an 80th percentile pickup time of 15 minutes at 99.9\% system uptime. 
+
+What sets me apart from traditional Product Managers is my deep, hands-on technical ownership. I don't just write specs for AI features; I build them. I recently architected and shipped a production-grade remote Model Context Protocol (MCP) server entirely independently using Cursor, Kiro, and Claude Code. My background spans building AI-powered customer support triage that cut costs by 47\% at Urbanladder, to deploying ResNet-50 models and data pipelines across millions of records. This engineering fluency allows me to bridge the gap between complex ML infrastructure (RAG, LLM evaluations, Agentic systems) and consumer-facing UX, accelerating time-to-market without engineering hand-offs for prototyping.
+
+[Company Name]'s focus on [insert a sentence about the company's mission or a specific product challenge they are facing] aligns perfectly with my ambition to build highly scalable, AI-native products. I thrive in high-ambiguity environments where balancing unit economics with world-class user experiences is critical.
+
+I have attached my resume for your review, and my portfolio website (siddharthjain1611.github.io) contains detailed walkthroughs of the systems I've built. I would welcome the opportunity to discuss how my expertise in marketplace dynamics and applied AI can drive growth for your team.
+
+Thank you for your time and consideration.
+
+\vspace{0.5cm}
+
+Sincerely,
+
+\vspace{0.3cm}
+\textbf{Siddharth Jain}
+
+\end{document}
