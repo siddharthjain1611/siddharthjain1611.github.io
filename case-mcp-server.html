@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>MCP server — Siddharth Jain</title>
+<meta name="description" content="Designing, building, and deploying a production remote MCP server with no engineering handoff: protocol surface, policy gate, and what it took to ship alone.">
+<meta name="theme-color" content="#15263e">
+<link rel="stylesheet" href="portfolio.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body><a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap nav"><a class="brand" href="index.html">Siddharth Jain<span>AI PRODUCT</span></a>
+<nav class="nav-links" aria-label="Main navigation"><a href="index.html#work">Work</a><a href="growth-kam-lab.html">Decision lab</a><a class="desktop-link" href="index.html#about">About</a><a class="nav-contact" href="mailto:siddharthjain1611@gmail.com">Let’s talk ↗</a>
+</nav>
+</div>
+</header>
+<main id="main">
+<div class="wrap">
+<header class="case-hero"><a class="back-link" href="index.html#work">← Selected work</a>
+<p class="eyebrow blue">01 / APPLIED AI · IN PRODUCTION</p>
+<h1>I built a remote MCP server<br>and put it in production<br>without an engineering handoff.</h1>
+<p class="lead">The internal systems had no interface an AI tool could call. Building the interface was the product decision; the server was just how I got there.</p>
+<div class="evidence-note"><strong>Status: shipped.</strong> This case describes design decisions, architecture, and delivery constraints. Internal system names, credentials, and customer data are excluded. Adoption and usage numbers are on request rather than published here.</div>
+<dl class="case-facts">
+<div>
+<dt>Context</dt>
+<dd>Delhivery · internal platform</dd>
+</div>
+<div>
+<dt>My role</dt>
+<dd>Design, implementation, deployment</dd>
+</div>
+<div>
+<dt>Handoff</dt>
+<dd>None</dd>
+</div>
+<div>
+<dt>Clients</dt>
+<dd>Kiro, Cursor, Claude Code</dd>
+</div>
+</dl>
+</header>
+<div class="case-layout">
+<nav class="case-toc" aria-label="On this page"><a href="#problem">The gap</a><a href="#surface">Protocol surface</a><a href="#gate">The policy gate</a><a href="#learning">A correction I made</a><a href="#delivery">Shipping alone</a><a href="#next-steps">What came next</a>
+</nav>
+<article class="article">
+<section id="problem"><p class="eyebrow blue">The problem</p>
+<h2>Nobody was going to build it for me.</h2>
+<p>There was no way for an AI assistant to read our internal systems. Not a bad interface, not a missing integration, no interface at all. Any request that needed real data meant a human went and pulled it by hand.</p>
+<p>I needed that access for my own work, and I could see the same wall in front of anyone else trying to use these tools here. The obvious path was to file a platform request and wait. Platform teams are not staffed to build this for one PM, so that path had no end date.</p>
+<div class="callout"><p class="quote">The bottleneck was not the protocol. It was that no one owned the request, so no one was accountable for it landing.</p></div>
+<p>So I owned it. I designed the surface, wrote the server, and deployed it. Three different clients talk to it now without any of them knowing anything about the underlying systems.</p></section>
+<section id="surface"><p class="eyebrow blue">Design</p>
+<h2>Deciding what the model is allowed to ask for.</h2>
+<p>The interesting product problem was not the server. It was the boundary. A tool interface is a permission surface, and how you cut it determines what the model can go wrong at.</p>
+<p>The first cut was too coarse. A single wide tool that could return a record turned every hallucinated argument into a confused result three steps later, with nothing in between to catch it. Narrowing it fixed most of that.</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One tool per user intent, not per screen</td>
+<td>Matches the request a client can actually make, so arguments stay predictable and testable</td>
+</tr>
+<tr>
+<td>Reads and writes separated</td>
+<td>Anything that changes state is a different tool with a different approval path from anything that reads</td>
+</tr>
+<tr>
+<td>Errors return state, not prose</td>
+<td>A model that gets a structured error can recover from it. A model that gets a sentence has to guess</td>
+</tr>
+<tr>
+<td>No tool that returns bulk data</td>
+<td>Large payloads blow the context window and the model's ability to reason about any of it</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>That last one cost me a rewrite. The first version paginated properly and I still should not have shipped it, because correct pagination is not the problem. The problem is that more tokens is worse than fewer tokens, regardless of how cleanly they arrive.</p>
+</section>
+<section id="gate"><p class="eyebrow blue">Architecture</p>
+<h2>Two components, and a gate in front of both.</h2>
+<p>The system runs in three parts: a primary agent that does the work, an evaluator that inspects the attempt, and an intercept gate that sits in front of every tool call and decides whether it is allowed to proceed.</p>
+<div class="architecture">
+<div><span>PRIMARY AGENT</span>
+<h3>Produces the action</h3>
+<p>Reads context, decides what to do, proposes a tool call with its arguments.</p>
+</div>
+<div><span>EVALUATOR</span>
+<h3>Inspects the attempt</h3>
+<p>Reviews the proposed action against policy before it runs, and can reject it with a reason.</p>
+</div>
+<div><span>INTERCEPT GATE</span>
+<h3>Enforces at the boundary</h3>
+<p>The last checkpoint before execution. Non-bypassable, and independent of what the model believes about its own permissions.</p>
+</div>
+</div>
+<p>The split matters because an evaluator that is part of the same reasoning pass as the generator is not really evaluating. It is agreeing with itself. Putting the gate outside that loop is what makes the constraint real rather than advisory.</p>
+</section>
+<section id="learning"><p class="eyebrow blue">A correction</p>
+<h2>I had the evaluator design backwards,<br>and it took a while to see it.</h2>
+<p>My first design ran the evaluator in parallel with the generator, on the same input, and treated the two as independent checks. The stated logic was that if neither flagged a policy violation, the action was safe.</p>
+<p>That reasoning does not hold for output. Screening an input is genuinely a parallel operation, because the risk is in what came in. But if you want to know whether a <em>generated answer</em> violates policy, the evaluator has to see the answer. Two checks over the same input tell you the input was fine twice. They tell you nothing about what came out.</p>
+<div class="callout"><p><strong>The rule I settled on:</strong> anything inspecting a produced artifact must be downstream of that artifact. Parallel checking is for inputs. If it cannot see the output, it cannot certify the output, and the confidence it reports is not evidence.</p></div>
+<p>Reworking it into a sequential gate closed the gap. It is a small design change and it changes the guarantee completely, which is roughly the ratio I like in this work.</p>
+</section>
+<section id="delivery"><p class="eyebrow blue">Delivery</p>
+<h2>What shipping alone<br>actually required.</h2>
+<p>No engineering handoff sounds like a shortcut. It is the opposite. Nobody was going to review my code, so I had to handle everything a reviewer would have caught.</p>
+<div class="brief-grid">
+<div>
+<h3>Had to be right first time</h3>
+<ul>
+<li>Auth that does not leak a credential into a client config</li>
+<li>Idempotency, because a retried write is worse than a failed one</li>
+<li>Structured errors on every failure path, including the ones I hoped would not happen</li>
+<li>Logging that identifies the caller without logging the payload</li>
+</ul>
+</div>
+<div>
+<h3>Had to be adoptable alone</h3>
+<ul>
+<li>Docs good enough that a PM can connect a client without me in the room</li>
+<li>Failure modes explained, not hidden, so nobody blames the tool when the system is down</li>
+<li>A clear boundary on what the server will never do, so nobody asks it to</li>
+<li>Versioning from day one, because I would be living with my own interface</li>
+</ul>
+</div>
+</div>
+<p>Shipping alone is a real trade and I would still do it again here, but I want to be precise about the trade: speed on the first version, paid for in review coverage I had to provide myself. The right call depends entirely on whether you are the bottleneck.</p>
+</section>
+<section id="next-steps"><p class="eyebrow blue">Where it went</p>
+<h2>What I would do with more runway.</h2>
+<ul>
+<li>Replace the coarse error contract with typed errors per tool, so a client can recover without parsing prose.</li>
+<li>Put the tool-call trace in front of a human for a sampled share of writes, and use the disagreement rate as the eval set.</li>
+<li>Publish the interface to a wider internal audience, which means auth and rate limiting become a real problem instead of a hypothetical one.</li>
+<li>Version the protocol surface properly and write down what a deprecation looks like, before the first client depends on it.</li>
+</ul>
+<p>The same pattern shows up in the account-care work, at a much larger scale and with far more damage available if the gate is wrong. <a class="text-link" href="case-growth-kam.html">Read the Growth KAM case ↗</a></p>
+</section>
+<div class="next-case"><span class="muted small">Next / AI × customer lifecycle</span><a class="text-link" href="case-growth-kam.html">AI Growth KAM ↗</a></div>
+</article>
+</div>
+</div>
+</main>
+<footer class="site-footer wrap">
+<div class="footer"><span>© 2026 Siddharth Jain · Bengaluru, India</span>
+<div><a href="resume.html">Resume</a><a href="https://www.linkedin.com/in/siddharthjain1611/">LinkedIn ↗</a><a href="mailto:siddharthjain1611@gmail.com">Email ↗</a>
+</div>
+</div>
+</footer>
+</body>
+</html>

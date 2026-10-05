@@ -1,0 +1,150 @@
+%-------------------------
+% ATS-Friendly Resume — Siddharth Jain
+% Compile with: pdflatex
+% Works out-of-the-box on Overleaf
+%-------------------------
+\documentclass[letterpaper,10.5pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}                       % clean, ATS-parsable font
+\usepackage[margin=0.55in]{geometry}        % tight margins for one-pager
+\usepackage{enumitem}                       % compact lists
+\usepackage{titlesec}                       % section formatting
+\usepackage{hyperref}                       % clickable links
+\usepackage{xcolor}                         % subtle colour accents
+\usepackage{tabularx}                       % for header alignment only
+
+% ── Colours ──────────────────────────────────────────────
+\definecolor{accent}{HTML}{1a56db}
+\definecolor{darktext}{HTML}{1f2937}
+\definecolor{medtext}{HTML}{374151}
+\definecolor{lighttext}{HTML}{6b7280}
+
+% ── Hyperlink setup ──────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  pdfauthor={Siddharth Jain},
+  pdftitle={Siddharth Jain — Senior Product Manager Resume},
+}
+
+% ── Remove page numbers ─────────────────────────────────
+\pagestyle{empty}
+
+% ── Section formatting ───────────────────────────────────
+\titleformat{\section}{
+  \vspace{-10pt}\color{darktext}\scshape\large\bfseries
+}{}{0em}{}[\color{lighttext}\titlerule\vspace{-4pt}]
+
+% ── Compact list defaults ────────────────────────────────
+\setlist[itemize]{
+  leftmargin=1.2em,
+  itemsep=1.5pt,
+  parsep=0pt,
+  topsep=2pt,
+  label=\textcolor{accent}{\textbullet}
+}
+
+% ── Custom commands ──────────────────────────────────────
+% Role header: {Company}{Title}{Location}{Dates}
+\newcommand{\roleheader}[4]{%
+  \vspace{4pt}
+  \noindent\textbf{\color{darktext}#1}%
+  \hfill{\small\color{lighttext}#4}\\[1pt]
+  {\color{medtext}\textit{#2}}%
+  \hfill{\small\color{lighttext}#3}%
+  \vspace{2pt}
+}
+
+% Inline metric highlight
+\newcommand{\metric}[1]{\textbf{#1}}
+
+% ─────────────────────────────────────────────────────────
+\begin{document}
+
+% ══════════════ HEADER ═══════════════════════════════════
+\begin{center}
+  {\LARGE\bfseries\color{darktext} Siddharth Jain}\\[5pt]
+  {\color{medtext}Senior Product Manager}\\[4pt]
+  {\small\color{lighttext}
+    Bengaluru, India
+    \enspace$\cdot$\enspace
+    +91\,9256800777
+    \enspace$\cdot$\enspace
+    \href{mailto:siddharthjain1611@gmail.com}{siddharthjain1611@gmail.com}
+    \enspace$\cdot$\enspace
+    \href{https://linkedin.com/in/siddharth-jain}{LinkedIn}
+    \enspace$\cdot$\enspace
+    \href{https://siddharthjain1611.github.io}{Portfolio}
+  }
+\end{center}
+
+\vspace{-2pt}
+
+% ══════════════ SUMMARY ══════════════════════════════════
+\section{Professional Summary}
+\vspace{2pt}
+\noindent\color{medtext}
+Senior Product Manager with 4.5+ years driving 0-to-1 and scaled consumer platforms across \textbf{marketplaces, logistics, and e-commerce}. Hands-on with AI-augmented product development (Kiro, Cursor, Claude Code) with full-stack technical ownership. Scaled Delhivery Direct from 0.5M to \metric{4M MAUs}, generating \metric{INR 80\,Cr+ ARR}. Seeking Senior PM roles where product strategy, data-driven execution, and AI infrastructure intersect.
+
+% ══════════════ EXPERIENCE ═══════════════════════════════
+\section{Professional Experience}
+
+% ── Delhivery ────────────────────────────────────────────
+\roleheader{Delhivery}{Senior Product Manager \textnormal{(Promoted)}}{Bengaluru, India}{Dec 2023 -- Present}
+\begin{itemize}
+  \item \textbf{Marketplace Scaling:} Grew Delhivery Direct from 0.5\,M to \metric{4\,M MAUs}, generating \metric{INR 80\,Cr+ ARR} through intercity courier and hyperlocal last-mile delivery.
+  \item \textbf{AI \& Technical Ownership:} Independently architected and shipped a production-grade remote MCP server using Cursor, Kiro, and Claude Code without engineering hand-off.
+  \item \textbf{0-to-1 Product:} Launched hyperlocal MVP in 6 months; conducted user research with 200+ participants, designed real-time routing algorithms, and achieved \metric{P80 pickup time of 15\,min}.
+  \item \textbf{System Reliability:} Engineered order management, surge-pricing, and reconciliation workflows sustaining \metric{99.9\% uptime} across 18,000+ daily transactions.
+  \item \textbf{Growth \& Optimisation:} Lifted intercity conversion by \metric{14\%} via A/B-tested UX redesigns and GenAI workflow automation, unlocking \metric{INR 8\,Cr} incremental quarterly revenue.
+  \item \textbf{B2B Leadership:} Directed a cross-functional squad of 12 (eng + design) to ship an enterprise B2B suite, securing \metric{INR 10\,Cr+} per quarter in partnership value.
+\end{itemize}
+
+% ── Urbanladder ──────────────────────────────────────────
+\roleheader{Urbanladder \textnormal{\small(Reliance Retail)}}{Associate Product Manager}{Bengaluru, India}{Jan 2022 -- Dec 2023}
+\begin{itemize}
+  \item \textbf{0-to-1 Revenue:} Scaled UrbanInteriors from MVP to \metric{INR 37.5\,L monthly GMV}; grew projects from 5 to 50+/month at INR 7.5\,L AOV.
+  \item \textbf{Support Automation:} Cut support costs by \metric{47\%} via AI chatbot deployment and automated triage, sustaining \metric{95\%+ CSAT}.
+  \item \textbf{Omnichannel CRM:} Drove \metric{30\% uplift} in revenue per sq.\,ft by unifying offline/online journeys via CleverTap--Salesforce integration.
+  \item \textbf{Workflow Optimisation:} Slashed ticket re-open rate by \metric{67\%} in 4 months through Salesforce case-management redesign.
+\end{itemize}
+
+% ── Internships ──────────────────────────────────────────
+\roleheader{Jupiter}{Data Science Intern}{Mumbai, India}{Oct 2021 -- Jan 2022}
+\begin{itemize}
+  \item Designed clustering and DNN pipeline across 2\,M+ SMS records to generate high-precision customer segments for financial product targeting.
+\end{itemize}
+
+\vspace{-2pt}
+\roleheader{Rakuten Viber}{Technical Intern}{Remote}{Jun 2021 -- Oct 2021}
+\begin{itemize}
+  \item Built a Skin Cancer Detection platform using ResNet-50 transfer learning on the ISIC dataset, attaining \metric{89\% diagnostic accuracy}.
+\end{itemize}
+
+\vspace{-2pt}
+\roleheader{Policybazaar}{Product Management Intern}{Gurugram, India}{Sep 2020 -- Dec 2020}
+\begin{itemize}
+  \item Boosted checkout conversion by \metric{25\%} via UPI 2.0 AutoPay adoption; reduced payment failure to \metric{<1.5\%} with multi-gateway auto-fallback logic.
+\end{itemize}
+
+% ══════════════ EDUCATION ════════════════════════════════
+\section{Education}
+
+\roleheader{IIITM Gwalior}{B.Tech (Computer Science) + MBA -- Integrated Program}{Gwalior, India}{May 2017 -- May 2022}
+\begin{itemize}
+  \item \textbf{MBA Thesis:} Applied KANO model across 300+ user surveys to map digital payment adoption barriers — identified trust and transaction costs as primary friction points.
+\end{itemize}
+
+% ══════════════ SKILLS ═══════════════════════════════════
+\section{Skills}
+\vspace{2pt}
+\noindent
+\textbf{Product Strategy:} Roadmapping, 0-to-1 Development, Go-to-Market, A/B Testing, Competitive Analysis, KPI Optimisation, Consumer Growth, Pricing Strategy \\[3pt]
+\textbf{AI / LLM Tools:} Claude Code, Cursor IDE, Kiro, MCP Server Development, Generative AI Workflows, Prompt Engineering, LLM Workflow Design \\[3pt]
+\textbf{Analytics \& Data:} Python, SQL, Tableau, Amplitude, Mixpanel, Funnel Analysis, AWS QuickSight \\[3pt]
+\textbf{Platform \& Delivery:} API Development, Microservices Architecture, Salesforce, CleverTap, Jira, Agile/Scrum, User Research
+
+\end{document}
