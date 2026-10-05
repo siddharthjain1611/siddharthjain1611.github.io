@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>MCP server — Siddharth Jain</title>
-<meta name="description" content="Designing, building, and deploying a production remote MCP server with no engineering handoff: protocol surface, policy gate, and what it took to ship alone.">
+<meta name="description" content="Designing, building, and deploying a production remote MCP server end to end: the tool surface, the policy gate, and the evaluator correction that changed the guarantee.">
 <meta name="theme-color" content="#15263e">
 <link rel="stylesheet" href="portfolio.css">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -11,7 +11,7 @@
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
 <div class="wrap nav"><a class="brand" href="index.html">Siddharth Jain<span>AI PRODUCT</span></a>
-<nav class="nav-links" aria-label="Main navigation"><a href="index.html#work">Work</a><a href="growth-kam-lab.html">Decision lab</a><a class="desktop-link" href="index.html#about">About</a><a class="nav-contact" href="mailto:siddharthjain1611@gmail.com">Let’s talk ↗</a>
+<nav class="nav-links" aria-label="Main navigation"><a href="index.html#work">Work</a><a href="growth-kam-lab.html">Decision lab</a><a class="desktop-link" href="index.html#scale">About</a><a class="nav-contact" href="mailto:siddharthjain1611@gmail.com">Let’s talk ↗</a>
 </nav>
 </div>
 </header>
@@ -19,9 +19,9 @@
 <div class="wrap">
 <header class="case-hero"><a class="back-link" href="index.html#work">← Selected work</a>
 <p class="eyebrow blue">01 / APPLIED AI · IN PRODUCTION</p>
-<h1>I built a remote MCP server<br>and put it in production<br>without an engineering handoff.</h1>
+<h1>I designed and shipped<br>the MCP server that lets<br>AI tools reach internal systems.</h1>
 <p class="lead">The internal systems had no interface an AI tool could call. Building the interface was the product decision; the server was just how I got there.</p>
-<div class="evidence-note"><strong>Status: shipped.</strong> This case describes design decisions, architecture, and delivery constraints. Internal system names, credentials, and customer data are excluded. Adoption and usage numbers are on request rather than published here.</div>
+<div class="evidence-note"><strong>Status: shipped.</strong> This case describes design decisions, architecture, and delivery constraints. Internal system names, credentials, and customer data are excluded. Adoption and usage figures are internal and available on request.</div>
 <dl class="case-facts">
 <div>
 <dt>Context</dt>
@@ -32,8 +32,8 @@
 <dd>Design, implementation, deployment</dd>
 </div>
 <div>
-<dt>Handoff</dt>
-<dd>None</dd>
+<dt>Delivery</dt>
+<dd>End to end, no handoff</dd>
 </div>
 <div>
 <dt>Clients</dt>
@@ -42,7 +42,7 @@
 </dl>
 </header>
 <div class="case-layout">
-<nav class="case-toc" aria-label="On this page"><a href="#problem">The gap</a><a href="#surface">Protocol surface</a><a href="#gate">The policy gate</a><a href="#learning">A correction I made</a><a href="#delivery">Shipping alone</a><a href="#next-steps">What came next</a>
+<nav class="case-toc" aria-label="On this page"><a href="#problem">The gap</a><a href="#surface">Protocol surface</a><a href="#gate">The policy gate</a><a href="#learning">A correction I made</a><a href="#delivery">Shipping it</a><a href="#next-steps">What came next</a>
 </nav>
 <article class="article">
 <section id="problem"><p class="eyebrow blue">The problem</p>
@@ -86,7 +86,7 @@
 <p>That last one cost me a rewrite. The first version paginated properly and I still should not have shipped it, because correct pagination is not the problem. The problem is that more tokens is worse than fewer tokens, regardless of how cleanly they arrive.</p>
 </section>
 <section id="gate"><p class="eyebrow blue">Architecture</p>
-<h2>Two components, and a gate in front of both.</h2>
+<h2>An agent proposes, an evaluator checks,<br>a gate enforces.</h2>
 <p>The system runs in three parts: a primary agent that does the work, an evaluator that inspects the attempt, and an intercept gate that sits in front of every tool call and decides whether it is allowed to proceed.</p>
 <div class="architecture">
 <div><span>PRIMARY AGENT</span>
@@ -109,11 +109,11 @@
 <p>My first design ran the evaluator in parallel with the generator, on the same input, and treated the two as independent checks. The stated logic was that if neither flagged a policy violation, the action was safe.</p>
 <p>That reasoning does not hold for output. Screening an input is genuinely a parallel operation, because the risk is in what came in. But if you want to know whether a <em>generated answer</em> violates policy, the evaluator has to see the answer. Two checks over the same input tell you the input was fine twice. They tell you nothing about what came out.</p>
 <div class="callout"><p><strong>The rule I settled on:</strong> anything inspecting a produced artifact must be downstream of that artifact. Parallel checking is for inputs. If it cannot see the output, it cannot certify the output, and the confidence it reports is not evidence.</p></div>
-<p>Reworking it into a sequential gate closed the gap. It is a small design change and it changes the guarantee completely, which is roughly the ratio I like in this work.</p>
+<p>Reworking it into a sequential gate closed the gap. A small design change that changes the guarantee completely.</p>
 </section>
 <section id="delivery"><p class="eyebrow blue">Delivery</p>
-<h2>What shipping alone<br>actually required.</h2>
-<p>No engineering handoff sounds like a shortcut. It is the opposite. Nobody was going to review my code, so I had to handle everything a reviewer would have caught.</p>
+<h2>What shipping it end to end<br>actually required.</h2>
+<p>No engineering handoff sounds like a shortcut. It is the opposite. Without a dedicated engineering reviewer, I had to design in everything a review would have caught.</p>
 <div class="brief-grid">
 <div>
 <h3>Had to be right first time</h3>
@@ -125,7 +125,7 @@
 </ul>
 </div>
 <div>
-<h3>Had to be adoptable alone</h3>
+<h3>Had to be adoptable without me</h3>
 <ul>
 <li>Docs good enough that a PM can connect a client without me in the room</li>
 <li>Failure modes explained, not hidden, so nobody blames the tool when the system is down</li>
@@ -134,7 +134,7 @@
 </ul>
 </div>
 </div>
-<p>Shipping alone is a real trade and I would still do it again here, but I want to be precise about the trade: speed on the first version, paid for in review coverage I had to provide myself. The right call depends entirely on whether you are the bottleneck.</p>
+<p>Building it myself was a deliberate trade, and I would make it again here: speed on the first version, paid for in review coverage I had to provide myself. The right call depends entirely on whether you are the bottleneck.</p>
 </section>
 <section id="next-steps"><p class="eyebrow blue">Where it went</p>
 <h2>What I would do with more runway.</h2>
